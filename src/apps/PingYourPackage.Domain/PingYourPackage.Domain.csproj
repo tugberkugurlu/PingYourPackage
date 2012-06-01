@@ -44,6 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Delivery.cs" />
+    <Compile Include="Entities\EntityRepository.cs" />
+    <Compile Include="Entities\IEntitiesContext.cs" />
+    <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IEntityRepository.cs" />
+    <Compile Include="Entities\PackagePrice.cs" />
+    <Compile Include="Entities\PackageReceiver.cs" />
+    <Compile Include="Entities\PackageSender.cs" />
+    <Compile Include="Entities\PackageType.cs" />
+    <Compile Include="Entities\PaginatedList.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Shipment.cs" />
+    <Compile Include="Entities\ShipmentStatus.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserInRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
