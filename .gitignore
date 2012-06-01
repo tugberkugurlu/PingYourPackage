@@ -75,4 +75,5 @@ Desktop.ini
 #################
 
 #build script will output into this folder
-**/artifacts/
+artifacts
+_docs

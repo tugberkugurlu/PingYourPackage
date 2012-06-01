@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{74157E37-B532-4924-A66B-95D2B3F04E64}"
+	ProjectSection(SolutionItems) = preProject
+		PingYourPackage.msbuild = PingYourPackage.msbuild
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{6333B09F-C77E-4C6C-983B-E9070FDBB05F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A9BC3B11-7731-43F1-BD7F-0B6403261B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.Domain", "src\apps\PingYourPackage.Domain\PingYourPackage.Domain.csproj", "{07577155-9347-4C1B-A54B-0E621D293A03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.API", "src\apps\PingYourPackage.API\PingYourPackage.API.csproj", "{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07577155-9347-4C1B-A54B-0E621D293A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07577155-9347-4C1B-A54B-0E621D293A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07577155-9347-4C1B-A54B-0E621D293A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07577155-9347-4C1B-A54B-0E621D293A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07577155-9347-4C1B-A54B-0E621D293A03} = {6333B09F-C77E-4C6C-983B-E9070FDBB05F}
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB} = {6333B09F-C77E-4C6C-983B-E9070FDBB05F}
+	EndGlobalSection
+EndGlobal

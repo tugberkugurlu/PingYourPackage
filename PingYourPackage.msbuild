@@ -1,0 +1,25 @@
+﻿<Project DefaultTargets="Default" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <PropertyGroup Condition="'$(Configuration)' == ''">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <BuildArtifactsDir Include=".\artifacts" />
+    <Solutionfile Include=".\PingYourPackage.sln" />
+    <AppProjFiles Include=".\src\apps\**\*.csproj" />
+    <TestProjFiles Include=".\src\test\**\*.csproj" />
+  </ItemGroup>
+  
+  <Target Name="Default" DependsOnTargets="Build" />
+  
+  <Target Name="Init">
+    <RemoveDir Directories="@(BuildArtifactsDir)" />
+    <MakeDir Directories="@(BuildArtifactsDir)" />
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="Init">
+    <MSBuild Projects="@(AppProjFiles)" Targets="Rebuild" Properties="OutDir=%(BuildArtifactsDir.FullPath);Configuration=$(Configuration)" />
+  </Target>
+  
+</Project>
