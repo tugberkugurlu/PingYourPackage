@@ -9,8 +9,8 @@ param(
     $remoteDesktopCertificateThumbprint = $env:PINGYOURPACKAGE_REMOTE_DESKTOP_CERTIFICATE_THUMBPRINT,
     $remoteDesktopPassword     			    = $env:PINGYOURPACKAGE_REMOTE_DESKTOP_PASSWORD,
     $remoteDesktopUsername              = $env:PINGYOURPACKAGE_REMOTE_DESKTOP_USERNAME,
-  	$commitSha,
-  	$commitBranch
+    $commitSha,
+    $commitBranch
 )
 
 # Import Common Stuff
