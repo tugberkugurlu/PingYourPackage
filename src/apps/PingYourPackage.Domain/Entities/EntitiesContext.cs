@@ -27,6 +27,8 @@ namespace PingYourPackage.Domain.Entities {
 
     public class EntitiesContext : DbContext, IEntitiesContext {
 
+        public EntitiesContext() : base("PingYourPackage") { }
+
         public DbSet<PackageType> PackageTypes { get; set; }
         public DbSet<PackagePrice> PackagePrices { get; set; }
         public DbSet<PackageSender> PackageSenders { get; set; }

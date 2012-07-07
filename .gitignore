@@ -76,4 +76,6 @@ Desktop.ini
 
 #build script will output into this folder
 artifacts
-_docs
+_docs/
+_AzurePackage/
+*.bak

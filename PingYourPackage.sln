@@ -16,12 +16,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.API", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.API.WebHost", "src\apps\PingYourPackage.API.WebHost\PingYourPackage.API.WebHost.csproj", "{D3AD5114-FB84-45A4-9AF9-53963651FB12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.WebClient", "src\apps\PingYourPackage.WebClient\PingYourPackage.WebClient.csproj", "{001D1C48-CD04-43C6-B428-18A2B5DAE00A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{24EC2A87-AB3E-4553-ABF7-F6FB0F05B710}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{001D1C48-CD04-43C6-B428-18A2B5DAE00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{001D1C48-CD04-43C6-B428-18A2B5DAE00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{001D1C48-CD04-43C6-B428-18A2B5DAE00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{001D1C48-CD04-43C6-B428-18A2B5DAE00A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07577155-9347-4C1B-A54B-0E621D293A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07577155-9347-4C1B-A54B-0E621D293A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07577155-9347-4C1B-A54B-0E621D293A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,8 +47,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{07577155-9347-4C1B-A54B-0E621D293A03} = {6333B09F-C77E-4C6C-983B-E9070FDBB05F}
-		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB} = {6333B09F-C77E-4C6C-983B-E9070FDBB05F}
+		{001D1C48-CD04-43C6-B428-18A2B5DAE00A} = {6333B09F-C77E-4C6C-983B-E9070FDBB05F}
+		{07577155-9347-4C1B-A54B-0E621D293A03} = {24EC2A87-AB3E-4553-ABF7-F6FB0F05B710}
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB} = {24EC2A87-AB3E-4553-ABF7-F6FB0F05B710}
 		{D3AD5114-FB84-45A4-9AF9-53963651FB12} = {6333B09F-C77E-4C6C-983B-E9070FDBB05F}
 	EndGlobalSection
 EndGlobal

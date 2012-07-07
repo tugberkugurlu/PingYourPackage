@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="Azure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+  <WebRole name="PingYourPackage" vmsize="ExtraSmall">
+    <Sites>
+      <Site name="PingYourPackage.API">
+        <Bindings>
+          <Binding name="NonSSLBinding" endpointName="APINon-SSL" />
+        </Bindings>
+      </Site>
+      <Site name="PingYourPackage.WebClient">
+        <Bindings>
+          <Binding name="NonSSLBinding" endpointName="WebClientNon-SSL" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="APINon-SSL" protocol="http" port="8081" />
+      <InputEndpoint name="WebClientNon-SSL" protocol="http" port="80" />
+    </Endpoints>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
+  </WebRole>
+</ServiceDefinition>
