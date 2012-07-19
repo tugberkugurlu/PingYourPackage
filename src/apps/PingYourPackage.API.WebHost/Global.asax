@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="PingYourPackage.Domain.WebHost.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="PingYourPackage.API.WebHost.Global" Language="C#" %>

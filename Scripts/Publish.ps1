@@ -153,7 +153,7 @@ $gitPath = join-path (programfiles-dir) "Git\bin\git.exe"
 "Building deployment name from date"
 $deploymentLabel = "$((get-date).ToString("MMM dd @ HHmm"))"
 $deploymentName = "$((get-date).ToString("yyyyMMddHHmmss"))-auto"
-print-success("Deployment name has been built: $deploymentName")
+"Deployment name has been built: $deploymentName"
 
 if ($commitSha -eq $null) {
 	"Retrieving the commiy SHA"
@@ -228,8 +228,13 @@ await-operation($operationId)
 await-start
 
 "Moving staging deployment $deploymentName to productionon on $serviceName"
-move-deployment -subscriptionId $subscriptionId -serviceName $serviceName -certificate $certificate -name $deploymentName
+$operationId = (move-deployment -subscriptionId $subscriptionId -serviceName $serviceName -certificate $certificate -name $deploymentName).operationId
+await-operation($operationId)
 
 print-success("Deployment $deploymentName on $serviceName has been completed")
+
+"Deleting staging deployment $deploymentName on $serviceName"
+$operationId = (remove-deployment -subscriptionId $subscriptionId -certificate $certificate -slot Staging -serviceName $serviceName ).operationId
+await-operation($operationId)
 
 Exit 0

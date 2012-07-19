@@ -22,7 +22,7 @@ namespace PingYourPackage.Domain.Entities {
         DbSet<ShipmentStatus> ShipmentStatuses { get; set; }
 
         DbSet<User> Users { get; set; }
-        DbSet<User> Roles { get; set; }
+        DbSet<Role> Roles { get; set; }
     }
 
     public class EntitiesContext : DbContext, IEntitiesContext {
@@ -37,6 +37,6 @@ namespace PingYourPackage.Domain.Entities {
         public DbSet<ShipmentStatus> ShipmentStatuses { get; set; }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<User> Roles { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }

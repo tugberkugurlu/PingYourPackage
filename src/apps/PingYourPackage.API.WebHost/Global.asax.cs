@@ -16,6 +16,8 @@ namespace PingYourPackage.API.WebHost {
 
             RouteConfig.RegisterRoutes(config.Routes);
             WebAPIConfig.Configure(config);
+            AutofacWebAPI.Initialize(config);
+            EFConfig.Initialize();
         }
     }
 }
