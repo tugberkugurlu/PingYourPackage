@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public abstract class EntityRepository<T> : IEntityRepository<T>
+    public class EntityRepository<T> : IEntityRepository<T>
         where T : class, IEntity, new() {
 
         readonly IEntitiesContext _entities;
