@@ -16,9 +16,6 @@ namespace PingYourPackage.API.WebHost {
 
         private static void RunMigrations() {
 
-            //PingYourPackage connectionstring
-            var connectionString = ConfigurationManager.ConnectionStrings["PingYourPackage"];
-
             var efMigrationSettings = new PingYourPackage.Domain.Migrations.Configuration();
             var efMigrator = new DbMigrator(efMigrationSettings);
 
