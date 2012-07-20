@@ -11,5 +11,16 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public int Key { get; set; }
+        public int PackageTypeKey { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime ValidFrom { get; set; }
+        
+        [DataType(DataType.Date)]
+        public DateTime ValidTill { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public virtual PackageType PackageType { get; set; }
     }
 }

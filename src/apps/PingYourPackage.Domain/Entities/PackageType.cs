@@ -11,5 +11,18 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public int Key { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public ICollection<PackagePrice> PackagePrices { get; set; }
+
+        public PackageType() {
+
+            PackagePrices = new HashSet<PackagePrice>();
+        }
     }
 }
