@@ -11,5 +11,8 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public int Key { get; set; }
+        public int ShipmentKey { get; set; }
+
+        public Shipment Shipment { get; set; }
     }
 }

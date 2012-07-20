@@ -11,5 +11,14 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public int Key { get; set; }
+        public int ShipmentKey { get; set; }
+
+        [Required]
+        public Shipment Shipment { get; set; }
+
+        public Delivery() {
+
+            Shipment = new Shipment();
+        }
     }
 }

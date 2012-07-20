@@ -18,9 +18,8 @@ namespace PingYourPackage.Domain.Entities {
         
         [DataType(DataType.Date)]
         public DateTime ValidTill { get; set; }
-
         public DateTime CreatedOn { get; set; }
 
-        public virtual PackageType PackageType { get; set; }
+        public PackageType PackageType { get; set; }
     }
 }

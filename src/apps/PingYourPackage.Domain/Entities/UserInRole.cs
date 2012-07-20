@@ -15,7 +15,7 @@ namespace PingYourPackage.Domain.Entities {
         public int UserKey { get; set; }
         public int RoleKey { get; set; }
 
-        public virtual User User { get; set; }
-        public virtual Role Role { get; set; }
+        public User User { get; set; }
+        public Role Role { get; set; }
     }
 }

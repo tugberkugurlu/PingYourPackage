@@ -18,11 +18,13 @@ namespace PingYourPackage.Domain.Entities {
 
         public DateTime CreatedOn { get; set; }
 
-        public ICollection<PackagePrice> PackagePrices { get; set; }
+        public virtual ICollection<PackagePrice> PackagePrices { get; set; }
+        public virtual ICollection<Shipment> Shipments { get; set; }
 
         public PackageType() {
 
             PackagePrices = new HashSet<PackagePrice>();
+            Shipments = new HashSet<Shipment>();
         }
     }
 }

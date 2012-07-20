@@ -11,5 +11,12 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public int Key { get; set; }
+
+        public virtual ICollection<Shipment> Shipments { get; set; }
+
+        public PackageSender() {
+
+            Shipments = new HashSet<Shipment>();
+        }
     }
 }
