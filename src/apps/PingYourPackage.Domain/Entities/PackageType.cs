@@ -10,7 +10,7 @@ namespace PingYourPackage.Domain.Entities {
     public class PackageType : IEntity {
 
         [Key]
-        public int Key { get; set; }
+        public Guid Key { get; set; }
 
         [Required]
         [StringLength(50)]

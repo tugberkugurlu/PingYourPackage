@@ -10,8 +10,8 @@ namespace PingYourPackage.Domain.Entities {
     public class Delivery : IEntity {
 
         [Key]
-        public int Key { get; set; }
-        public int ShipmentKey { get; set; }
+        public Guid Key { get; set; }
+        public Guid ShipmentKey { get; set; }
 
         [Required]
         public Shipment Shipment { get; set; }

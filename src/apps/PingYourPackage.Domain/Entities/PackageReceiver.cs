@@ -10,7 +10,7 @@ namespace PingYourPackage.Domain.Entities {
     public class PackageReceiver : IEntity {
 
         [Key]
-        public int Key { get; set; }
+        public Guid Key { get; set; }
 
         public ICollection<Shipment> Shipments { get; set; }
 

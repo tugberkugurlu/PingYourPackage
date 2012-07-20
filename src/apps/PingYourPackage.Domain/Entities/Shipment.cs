@@ -10,9 +10,10 @@ namespace PingYourPackage.Domain.Entities {
     public class Shipment : IEntity {
 
         [Key]
-        public int Key { get; set; }
-        public int PackageSenderKey { get; set; }
-        public int PackageReceiverKey { get; set; }
+        public Guid Key { get; set; }
+        public Guid PackageSenderKey { get; set; }
+        public Guid PackageReceiverKey { get; set; }
+        public Guid PackageTypeKey { get; set; }
 
         public PackageSender PackageSender { get; set; }
         public PackageReceiver PackageReceiver { get; set; }

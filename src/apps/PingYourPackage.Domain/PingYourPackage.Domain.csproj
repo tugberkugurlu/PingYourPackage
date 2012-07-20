@@ -59,9 +59,9 @@
     <Compile Include="Entities\ShipmentStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserInRole.cs" />
-    <Compile Include="Migrations\201207192228529_init.cs" />
-    <Compile Include="Migrations\201207192228529_init.Designer.cs">
-      <DependentUpon>201207192228529_init.cs</DependentUpon>
+    <Compile Include="Migrations\201207202002398_GuidKeys.cs" />
+    <Compile Include="Migrations\201207202002398_GuidKeys.Designer.cs">
+      <DependentUpon>201207202002398_GuidKeys.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

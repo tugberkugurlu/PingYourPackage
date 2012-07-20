@@ -10,8 +10,8 @@ namespace PingYourPackage.Domain.Entities {
     public class PackagePrice : IEntity {
 
         [Key]
-        public int Key { get; set; }
-        public int PackageTypeKey { get; set; }
+        public Guid Key { get; set; }
+        public Guid PackageTypeKey { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime ValidFrom { get; set; }

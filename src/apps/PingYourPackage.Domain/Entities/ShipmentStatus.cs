@@ -10,8 +10,8 @@ namespace PingYourPackage.Domain.Entities {
     public class ShipmentStatus : IEntity {
 
         [Key]
-        public int Key { get; set; }
-        public int ShipmentKey { get; set; }
+        public Guid Key { get; set; }
+        public Guid ShipmentKey { get; set; }
 
         public Shipment Shipment { get; set; }
     }
