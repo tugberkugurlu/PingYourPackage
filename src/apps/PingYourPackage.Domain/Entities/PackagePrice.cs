@@ -14,6 +14,8 @@ namespace PingYourPackage.Domain.Entities {
         public Guid Key { get; set; }
         public Guid PackageTypeKey { get; set; }
 
+        public decimal Price { get; set; }
+
         [Column(TypeName = "Date")]
         public DateTime ValidFrom { get; set; }
         

@@ -56,6 +56,7 @@
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Shipment.cs" />
     <Compile Include="Entities\ShipmentState.cs" />
+    <Compile Include="Entities\ShipmentStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserInRole.cs" />
     <Compile Include="Migrations\201207221921306_init.cs" />
@@ -81,6 +82,10 @@
     <Compile Include="Migrations\201207222117026_addedIsLockedForUser.cs" />
     <Compile Include="Migrations\201207222117026_addedIsLockedForUser.Designer.cs">
       <DependentUpon>201207222117026_addedIsLockedForUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207222212103_BunchOfChanges.cs" />
+    <Compile Include="Migrations\201207222212103_BunchOfChanges.Designer.cs">
+      <DependentUpon>201207222212103_BunchOfChanges.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -27,10 +27,16 @@ namespace PingYourPackage.Domain.Entities {
         public DateTime? LastUpdatedOn { get; set; }
 
         public virtual ICollection<UserInRole> UserInRoles { get; set; }
+        public virtual ICollection<PackageSender> PackageSenders { get; set; }
+        public virtual ICollection<PackageReceiver> PackageReceivers { get; set; }
+        public virtual ICollection<Shipment> Shipments { get; set; }
 
         public User() {
 
             UserInRoles = new HashSet<UserInRole>();
+            PackageSenders = new HashSet<PackageSender>();
+            PackageReceivers = new HashSet<PackageReceiver>();
+            Shipments = new HashSet<Shipment>();
         }
     }
 }

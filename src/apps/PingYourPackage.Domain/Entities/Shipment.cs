@@ -14,10 +14,14 @@ namespace PingYourPackage.Domain.Entities {
         public Guid PackageSenderKey { get; set; }
         public Guid PackageReceiverKey { get; set; }
         public Guid PackageTypeKey { get; set; }
+        public Guid UserKey { get; set; }
+
+        public decimal Price { get; set; }
 
         public PackageSender PackageSender { get; set; }
         public PackageReceiver PackageReceiver { get; set; }
         public PackageType PackageType { get; set; }
+        public User User { get; set; }
         public virtual ICollection<ShipmentState> ShipmentStates { get; set; }
 
         public Shipment() {
