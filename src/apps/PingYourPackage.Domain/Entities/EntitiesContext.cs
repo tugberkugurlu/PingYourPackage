@@ -11,32 +11,30 @@ namespace PingYourPackage.Domain.Entities {
     public interface IEntitiesContext : IDisposable {
 
         int SaveChanges();
-        DbSet<T> Set<T>() where T : class;
-        DbEntityEntry Entry(object entry);
 
-        DbSet<PackageType> PackageTypes { get; set; }
-        DbSet<PackagePrice> PackagePrices { get; set; }
-        DbSet<PackageSender> PackageSenders { get; set; }
-        DbSet<PackageReceiver> PackageReceivers { get; set; }
-        DbSet<Shipment> Shipments { get; set; }
-        DbSet<ShipmentState> ShipmentStatuses { get; set; }
+        IDbSet<PackageType> PackageTypes { get; set; }
+        IDbSet<PackagePrice> PackagePrices { get; set; }
+        IDbSet<PackageSender> PackageSenders { get; set; }
+        IDbSet<PackageReceiver> PackageReceivers { get; set; }
+        IDbSet<Shipment> Shipments { get; set; }
+        IDbSet<ShipmentState> ShipmentStatuses { get; set; }
 
-        DbSet<User> Users { get; set; }
-        DbSet<Role> Roles { get; set; }
+        IDbSet<User> Users { get; set; }
+        IDbSet<Role> Roles { get; set; }
     }
 
     public class EntitiesContext : DbContext, IEntitiesContext {
 
         public EntitiesContext() : base("PingYourPackage") { }
 
-        public DbSet<PackageType> PackageTypes { get; set; }
-        public DbSet<PackagePrice> PackagePrices { get; set; }
-        public DbSet<PackageSender> PackageSenders { get; set; }
-        public DbSet<PackageReceiver> PackageReceivers { get; set; }
-        public DbSet<Shipment> Shipments { get; set; }
-        public DbSet<ShipmentState> ShipmentStatuses { get; set; }
+        public IDbSet<PackageType> PackageTypes { get; set; }
+        public IDbSet<PackagePrice> PackagePrices { get; set; }
+        public IDbSet<PackageSender> PackageSenders { get; set; }
+        public IDbSet<PackageReceiver> PackageReceivers { get; set; }
+        public IDbSet<Shipment> Shipments { get; set; }
+        public IDbSet<ShipmentState> ShipmentStatuses { get; set; }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public IDbSet<User> Users { get; set; }
+        public IDbSet<Role> Roles { get; set; }
     }
 }

@@ -11,9 +11,9 @@ namespace PingYourPackage.Domain.Entities {
     public class EntityRepository<T> : IEntityRepository<T>
         where T : class, IEntity, new() {
 
-        readonly IEntitiesContext _entities;
+        readonly DbContext _entities;
 
-        public EntityRepository(IEntitiesContext entities) {
+        public EntityRepository(DbContext entities) {
 
             _entities = entities;
         }
