@@ -21,6 +21,7 @@ namespace PingYourPackage.Domain.Entities {
 
         IDbSet<User> Users { get; set; }
         IDbSet<Role> Roles { get; set; }
+        IDbSet<UserInRole> UserInRoles { get; set; }
     }
 
     public class EntitiesContext : DbContext, IEntitiesContext {
@@ -36,5 +37,6 @@ namespace PingYourPackage.Domain.Entities {
 
         public IDbSet<User> Users { get; set; }
         public IDbSet<Role> Roles { get; set; }
+        public IDbSet<UserInRole> UserInRoles { get; set; }
     }
 }
