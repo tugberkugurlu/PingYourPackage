@@ -78,6 +78,10 @@
     <Compile Include="Migrations\201207222115034_addedUsersInRole.Designer.cs">
       <DependentUpon>201207222115034_addedUsersInRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207222117026_addedIsLockedForUser.cs" />
+    <Compile Include="Migrations\201207222117026_addedIsLockedForUser.Designer.cs">
+      <DependentUpon>201207222117026_addedIsLockedForUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CryptoService.cs" />

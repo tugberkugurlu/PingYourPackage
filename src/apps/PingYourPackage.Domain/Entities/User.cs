@@ -22,6 +22,7 @@ namespace PingYourPackage.Domain.Entities {
         [Required]
         public string Salt { get; set; }
 
+        public bool IsLocked { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? LastUpdatedOn { get; set; }
 
