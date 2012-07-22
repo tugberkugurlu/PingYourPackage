@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public interface IEntityRepository<T> : IDisposable where T : class, IEntity, new() {
+    public interface IEntityRepository<T> where T : class, IEntity, new() {
 
         IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
         IQueryable<T> All { get; }
