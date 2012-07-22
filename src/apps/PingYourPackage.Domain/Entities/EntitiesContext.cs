@@ -19,7 +19,7 @@ namespace PingYourPackage.Domain.Entities {
         DbSet<PackageSender> PackageSenders { get; set; }
         DbSet<PackageReceiver> PackageReceivers { get; set; }
         DbSet<Shipment> Shipments { get; set; }
-        DbSet<ShipmentStatus> ShipmentStatuses { get; set; }
+        DbSet<ShipmentState> ShipmentStatuses { get; set; }
 
         DbSet<User> Users { get; set; }
         DbSet<Role> Roles { get; set; }
@@ -34,7 +34,7 @@ namespace PingYourPackage.Domain.Entities {
         public DbSet<PackageSender> PackageSenders { get; set; }
         public DbSet<PackageReceiver> PackageReceivers { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
-        public DbSet<ShipmentStatus> ShipmentStatuses { get; set; }
+        public DbSet<ShipmentState> ShipmentStatuses { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

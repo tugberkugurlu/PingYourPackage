@@ -18,14 +18,11 @@ namespace PingYourPackage.Domain.Entities {
         public PackageSender PackageSender { get; set; }
         public PackageReceiver PackageReceiver { get; set; }
         public PackageType PackageType { get; set; }
-        public virtual ICollection<ShipmentStatus> ShipmentStatuses { get; set; }
-
-        public Delivery Delivery { get; set; }
+        public virtual ICollection<ShipmentState> ShipmentStates { get; set; }
 
         public Shipment() {
 
-            ShipmentStatuses = new HashSet<ShipmentStatus>();
-            Delivery = new Delivery();
+            ShipmentStates = new HashSet<ShipmentState>();
         }
     }
 }

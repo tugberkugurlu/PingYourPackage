@@ -12,6 +12,14 @@ namespace PingYourPackage.Domain.Entities {
         [Key]
         public Guid Key { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Surname { get; set; }
+
         public ICollection<Shipment> Shipments { get; set; }
 
         public PackageReceiver () {
