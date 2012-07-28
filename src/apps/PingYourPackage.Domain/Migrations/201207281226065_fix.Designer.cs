@@ -4,11 +4,11 @@ namespace PingYourPackage.Domain.Migrations
     using System.Data.Entity.Migrations;
     using System.Data.Entity.Migrations.Infrastructure;
     
-    public sealed partial class BunchOfChanges : IMigrationMetadata
+    public sealed partial class fix : IMigrationMetadata
     {
         string IMigrationMetadata.Id
         {
-            get { return "201207222212103_BunchOfChanges"; }
+            get { return "201207281226065_fix"; }
         }
         
         string IMigrationMetadata.Source

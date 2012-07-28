@@ -59,33 +59,9 @@
     <Compile Include="Entities\ShipmentStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserInRole.cs" />
-    <Compile Include="Migrations\201207221921306_init.cs" />
-    <Compile Include="Migrations\201207221921306_init.Designer.cs">
-      <DependentUpon>201207221921306_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207221948420_removedDelivery.cs" />
-    <Compile Include="Migrations\201207221948420_removedDelivery.Designer.cs">
-      <DependentUpon>201207221948420_removedDelivery.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207221956145_fromShipmentToShipping.cs" />
-    <Compile Include="Migrations\201207221956145_fromShipmentToShipping.Designer.cs">
-      <DependentUpon>201207221956145_fromShipmentToShipping.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207222033374_fromShippingToShipment.cs" />
-    <Compile Include="Migrations\201207222033374_fromShippingToShipment.Designer.cs">
-      <DependentUpon>201207222033374_fromShippingToShipment.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207222115034_addedUsersInRole.cs" />
-    <Compile Include="Migrations\201207222115034_addedUsersInRole.Designer.cs">
-      <DependentUpon>201207222115034_addedUsersInRole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207222117026_addedIsLockedForUser.cs" />
-    <Compile Include="Migrations\201207222117026_addedIsLockedForUser.Designer.cs">
-      <DependentUpon>201207222117026_addedIsLockedForUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201207222212103_BunchOfChanges.cs" />
-    <Compile Include="Migrations\201207222212103_BunchOfChanges.Designer.cs">
-      <DependentUpon>201207222212103_BunchOfChanges.cs</DependentUpon>
+    <Compile Include="Migrations\201207281226065_fix.cs" />
+    <Compile Include="Migrations\201207281226065_fix.Designer.cs">
+      <DependentUpon>201207281226065_fix.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
