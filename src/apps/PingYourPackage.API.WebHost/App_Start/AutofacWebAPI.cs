@@ -35,6 +35,8 @@ namespace PingYourPackage.API.WebHost {
                 .As<IEntityRepository<Role>>().InstancePerApiRequest();
 
             //services
+            builder.RegisterType<CryptoService>()
+                .As<ICryptoService>().InstancePerApiRequest();
             builder.RegisterType<MembershipService>()
                 .As<IMembershipService>().InstancePerApiRequest();
 
