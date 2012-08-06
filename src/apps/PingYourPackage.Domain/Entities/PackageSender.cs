@@ -11,6 +11,7 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public Guid Key { get; set; }
+        public Guid UserKey { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -23,6 +24,8 @@ namespace PingYourPackage.Domain.Entities {
         [Required]
         [StringLength(50)]
         public string Address { get; set; }
+
+        public User User { get; set; }
 
         public virtual ICollection<Shipment> Shipments { get; set; }
 

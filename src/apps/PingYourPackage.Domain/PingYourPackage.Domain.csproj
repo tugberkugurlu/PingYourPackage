@@ -51,10 +51,9 @@
     <Compile Include="Entities\Core\IEntity.cs" />
     <Compile Include="Entities\Core\IEntityRepository.cs" />
     <Compile Include="Entities\PackagePrice.cs" />
-    <Compile Include="Entities\PackageReceiver.cs" />
     <Compile Include="Entities\PackageSender.cs" />
     <Compile Include="Entities\PackageType.cs" />
-    <Compile Include="Entities\PaginatedList.cs" />
+    <Compile Include="Entities\Core\PaginatedList.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Shipment.cs" />
     <Compile Include="Entities\ShipmentState.cs" />
@@ -65,6 +64,10 @@
     <Compile Include="Migrations\201207281226065_fix.cs" />
     <Compile Include="Migrations\201207281226065_fix.Designer.cs">
       <DependentUpon>201207281226065_fix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201208061330456_PackageReceiverRemoved.cs" />
+    <Compile Include="Migrations\201208061330456_PackageReceiverRemoved.Designer.cs">
+      <DependentUpon>201208061330456_PackageReceiverRemoved.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

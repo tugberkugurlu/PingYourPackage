@@ -16,6 +16,9 @@ namespace PingYourPackage.Domain.Entities {
         [StringLength(50)]
         public string Name { get; set; }
 
+        [EmailAddress]
+        public string Email { get; set; }
+
         [Required]
         public string HashedPassword { get; set; }
 
@@ -28,15 +31,11 @@ namespace PingYourPackage.Domain.Entities {
 
         public virtual ICollection<UserInRole> UserInRoles { get; set; }
         public virtual ICollection<PackageSender> PackageSenders { get; set; }
-        public virtual ICollection<PackageReceiver> PackageReceivers { get; set; }
-        public virtual ICollection<Shipment> Shipments { get; set; }
 
         public User() {
 
             UserInRoles = new HashSet<UserInRole>();
             PackageSenders = new HashSet<PackageSender>();
-            PackageReceivers = new HashSet<PackageReceiver>();
-            Shipments = new HashSet<Shipment>();
         }
     }
 }
