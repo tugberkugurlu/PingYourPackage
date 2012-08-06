@@ -16,7 +16,7 @@ namespace PingYourPackage.Domain.Entities {
         IDbSet<PackagePrice> PackagePrices { get; set; }
         IDbSet<PackageSender> PackageSenders { get; set; }
         IDbSet<Shipment> Shipments { get; set; }
-        IDbSet<ShipmentState> ShipmentStatuses { get; set; }
+        IDbSet<ShipmentState> ShipmentStates { get; set; }
 
         IDbSet<User> Users { get; set; }
         IDbSet<Role> Roles { get; set; }
@@ -31,7 +31,7 @@ namespace PingYourPackage.Domain.Entities {
         public IDbSet<PackagePrice> PackagePrices { get; set; }
         public IDbSet<PackageSender> PackageSenders { get; set; }
         public IDbSet<Shipment> Shipments { get; set; }
-        public IDbSet<ShipmentState> ShipmentStatuses { get; set; }
+        public IDbSet<ShipmentState> ShipmentStates { get; set; }
 
         public IDbSet<User> Users { get; set; }
         public IDbSet<Role> Roles { get; set; }

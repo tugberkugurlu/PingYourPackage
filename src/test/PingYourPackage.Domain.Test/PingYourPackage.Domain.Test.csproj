@@ -50,12 +50,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\FakeDbSet.cs" />
+    <Compile Include="Infrastructure\FakeEntitiesContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\apps\PingYourPackage.Domain\PingYourPackage.Domain.csproj">
+      <Project>{07577155-9347-4c1b-a54b-0e621d293a03}</Project>
+      <Name>PingYourPackage.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
