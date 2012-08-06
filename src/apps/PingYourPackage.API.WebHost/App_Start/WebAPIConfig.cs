@@ -16,6 +16,9 @@ namespace PingYourPackage.API.WebHost {
 
             //Formatters
 
+            //Filters
+            config.Filters.Add(new AuthorizeAttribute());
+
             //Default Services
         }
     }
