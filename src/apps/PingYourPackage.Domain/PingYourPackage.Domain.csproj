@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\EntityRepository.cs" />
-    <Compile Include="Entities\EntitiesContext.cs" />
-    <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\IEntityRepository.cs" />
+    <Compile Include="Entities\Core\EntityRepository.cs" />
+    <Compile Include="Entities\Core\EntitiesContext.cs" />
+    <Compile Include="Entities\Extensions\RoleRepositoryExtensions.cs" />
+    <Compile Include="Entities\Extensions\UserInRoleRepositoryExtensions.cs" />
+    <Compile Include="Entities\Core\IEntity.cs" />
+    <Compile Include="Entities\Core\IEntityRepository.cs" />
     <Compile Include="Entities\PackagePrice.cs" />
     <Compile Include="Entities\PackageReceiver.cs" />
     <Compile Include="Entities\PackageSender.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="Entities\ShipmentStatus.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserInRole.cs" />
+    <Compile Include="Entities\Extensions\UserRepositoryExtensions.cs" />
     <Compile Include="Migrations\201207281226065_fix.cs" />
     <Compile Include="Migrations\201207281226065_fix.Designer.cs">
       <DependentUpon>201207281226065_fix.cs</DependentUpon>
@@ -67,6 +70,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CryptoService.cs" />
     <Compile Include="Services\ICryptoService.cs" />
+    <Compile Include="Services\IMembershipService.cs" />
+    <Compile Include="Services\MembershipService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

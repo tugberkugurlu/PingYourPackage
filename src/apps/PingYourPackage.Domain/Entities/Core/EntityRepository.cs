@@ -41,9 +41,9 @@ namespace PingYourPackage.Domain.Entities {
             return query;
         }
 
-        public virtual T Find(params object[] keyValues) {
+        public T GetSingle(Guid key) {
 
-            return _entities.Set<T>().Find(keyValues);
+            return GetAll().FirstOrDefault(x => x.Key == key);
         }
 
         public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) {

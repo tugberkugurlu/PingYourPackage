@@ -11,8 +11,8 @@ namespace PingYourPackage.Domain.Entities {
 
         IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
         IQueryable<T> All { get; }
-        T Find(params object[] keyValues);
         IQueryable<T> GetAll();
+        T GetSingle(Guid key);
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
         PaginatedList<T> Paginate(int pageIndex, int pageSize);
         PaginatedList<T> Paginate(Expression<Func<T, bool>> predicate, int pageIndex, int pageSize);
