@@ -34,7 +34,7 @@ namespace PingYourPackage.API.MessageHandlers {
 
                         //BasicAuth credentials has been extracted.
                         //Authenticate the user now
-                        principal = AuthenticateUser(username, password);
+                        principal = AuthenticateUser(request, username, password, cancellationToken);
                     }
                     catch (Exception e) {
 

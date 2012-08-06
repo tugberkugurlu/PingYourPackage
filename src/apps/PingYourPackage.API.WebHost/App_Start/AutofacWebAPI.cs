@@ -7,6 +7,7 @@ using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
 using PingYourPackage.Domain.Entities;
+using PingYourPackage.Domain.Services;
 
 namespace PingYourPackage.API.WebHost {
 
@@ -32,6 +33,10 @@ namespace PingYourPackage.API.WebHost {
                 .As<IEntityRepository<User>>().InstancePerApiRequest();
             builder.RegisterType<EntityRepository<Role>>()
                 .As<IEntityRepository<Role>>().InstancePerApiRequest();
+
+            //services
+            builder.RegisterType<MembershipService>()
+                .As<IMembershipService>().InstancePerApiRequest();
 
             return builder.Build();
         }
