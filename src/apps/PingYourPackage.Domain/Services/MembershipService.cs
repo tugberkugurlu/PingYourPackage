@@ -32,7 +32,7 @@ namespace PingYourPackage.Domain.Services {
 
             var user = _userRepository.GetSingleByUsername(username);
 
-            if (user != null && isPasswordValid(user, password)) {
+            if (user != null && isUserValid(user, password)) {
                 
                 var identity = new GenericIdentity(user.Name);
                 var userInRoles = _userInRoleRepository.FindBy(x => x.UserKey == user.Key);
@@ -63,7 +63,6 @@ namespace PingYourPackage.Domain.Services {
             CreateUser(username, password, email, roles: new[] { role });
         }
 
-        //TODO: User doesn't contain E-mail column. Add one.
         public void CreateUser(
             string username, string email, string password, string[] roles) {
 
@@ -72,6 +71,8 @@ namespace PingYourPackage.Domain.Services {
             var user = new User() { 
                 Name = username,
                 Salt = passwordSalt,
+                Email = email,
+                IsLocked = false,
                 HashedPassword = _cryptoService.EncryptPassword(password, passwordSalt),
                 CreatedOn = DateTime.Now
             };
@@ -168,6 +169,16 @@ namespace PingYourPackage.Domain.Services {
             return string.Equals(
                     _cryptoService.EncryptPassword(
                         password, user.Salt), user.HashedPassword);
+        }
+
+        private bool isUserValid(User user, string password) {
+
+            if (isPasswordValid(user, password)) {
+
+                return !user.IsLocked;
+            }
+
+            return false;
         }
     }
 }
