@@ -4,6 +4,7 @@ namespace PingYourPackage.Domain.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using PingYourPackage.Domain.Entities;
 
     public sealed class Configuration : DbMigrationsConfiguration<PingYourPackage.Domain.Entities.EntitiesContext>
     {
@@ -26,6 +27,12 @@ namespace PingYourPackage.Domain.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            context.Roles.AddOrUpdate(role => role.Name,
+                new Role { Key = Guid.NewGuid(), Name = "Admin" },
+                new Role { Key = Guid.NewGuid(), Name = "Employee" },
+                new Role { Key = Guid.NewGuid(), Name = "Affiliate" }
+            );
         }
     }
 }
