@@ -103,7 +103,7 @@ namespace PingYourPackage.API.Test.MessageHandlers {
 
         private static string EncodeToBase64(string value) {
 
-            byte[] toEncodeAsBytes = ASCIIEncoding.ASCII.GetBytes(value);
+            byte[] toEncodeAsBytes = Encoding.UTF8.GetBytes(value);
             return Convert.ToBase64String(toEncodeAsBytes);
         }
 
