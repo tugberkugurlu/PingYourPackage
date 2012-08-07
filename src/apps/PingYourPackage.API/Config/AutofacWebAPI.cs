@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -26,13 +27,17 @@ namespace PingYourPackage.API.Config {
 
             //EF DbContext
             builder.RegisterType<EntitiesContext>()
-                .As<IEntitiesContext>().InstancePerApiRequest();
+                .As<DbContext>().InstancePerApiRequest();
 
             //Repositories
             builder.RegisterType<EntityRepository<User>>()
                 .As<IEntityRepository<User>>().InstancePerApiRequest();
             builder.RegisterType<EntityRepository<Role>>()
                 .As<IEntityRepository<Role>>().InstancePerApiRequest();
+            builder.RegisterType<EntityRepository<UserInRole>>()
+                .As<IEntityRepository<UserInRole>>().InstancePerApiRequest();
+            builder.RegisterType<EntityRepository<PackageSender>>()
+                .As<IEntityRepository<PackageSender>>().InstancePerApiRequest();
 
             //services
             builder.RegisterType<CryptoService>()

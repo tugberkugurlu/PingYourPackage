@@ -62,31 +62,13 @@ namespace PingYourPackage.API.MessageHandlers {
             username = null;
             password = null;
 
-            if (String.IsNullOrEmpty(authorizationHeader)) {
+            if (string.IsNullOrEmpty(authorizationHeader)) {
 
                 return false;
             }
-
-            string verifiedAuthorizationHeader = authorizationHeader.Trim();
-            if (verifiedAuthorizationHeader.IndexOf(_httpBasicSchemeName) != 0) {
-
-                return false;
-            }
-
-            verifiedAuthorizationHeader = verifiedAuthorizationHeader.Substring(
-                _httpBasicSchemeName.Length, verifiedAuthorizationHeader.Length - _httpBasicSchemeName.Length
-            ).Trim();
-
-            return TryParseBasicAuthCredentialsFromHeaderParameter(verifiedAuthorizationHeader, out username, out password);
-        }
-
-        private static bool TryParseBasicAuthCredentialsFromHeaderParameter(string verifiedAuthorizationHeader, out string username, out string password) {
-
-            username = null;
-            password = null;
 
             // Decode the base 64 encoded credential payload 
-            byte[] credentialBase64DecodedArray = Convert.FromBase64String(verifiedAuthorizationHeader);
+            byte[] credentialBase64DecodedArray = Convert.FromBase64String(authorizationHeader);
 
             string decodedAuthorizationHeader = Encoding.UTF8.GetString(credentialBase64DecodedArray, 0, credentialBase64DecodedArray.Length);
 
@@ -100,7 +82,7 @@ namespace PingYourPackage.API.MessageHandlers {
             username = decodedAuthorizationHeader.Substring(0, separatorPosition).Trim();
             password = decodedAuthorizationHeader.Substring(separatorPosition + 1).Trim();
 
-            if (String.IsNullOrEmpty(username)) {
+            if (string.IsNullOrEmpty(username)) {
 
                 return false;
             }
