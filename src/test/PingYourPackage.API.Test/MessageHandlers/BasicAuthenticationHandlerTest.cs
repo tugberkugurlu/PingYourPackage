@@ -87,8 +87,6 @@ namespace PingYourPackage.API.Test.MessageHandlers {
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", EncodeToBase64(usernameAndPassword));
             var basicAuthHandler = new CustomBasicAuthHandler();
 
-            var principal = Thread.CurrentPrincipal;
-
             //Act
             return TestHelper.InvokeMessageHandler(request, basicAuthHandler)
 
