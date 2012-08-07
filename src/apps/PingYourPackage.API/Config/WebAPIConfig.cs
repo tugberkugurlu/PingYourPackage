@@ -13,12 +13,11 @@ namespace PingYourPackage.API.Config {
         public static void Configure(HttpConfiguration config) { 
 
             //Message Handlers
-            config.MessageHandlers.Add(new PingYourPackageAuthHandler());
+            //config.MessageHandlers.Add(new PingYourPackageAuthHandler());
 
             //Formatters
 
             //Filters
-            config.Filters.Add(new AuthorizeAttribute());
 
             //Default Services
 
