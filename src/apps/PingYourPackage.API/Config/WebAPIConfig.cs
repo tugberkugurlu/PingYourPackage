@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Http;
 using PingYourPackage.API.MessageHandlers;
 
-namespace PingYourPackage.API.WebHost {
+namespace PingYourPackage.API.Config {
 
     public class WebAPIConfig {
 

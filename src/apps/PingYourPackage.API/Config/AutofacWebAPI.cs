@@ -9,7 +9,7 @@ using Autofac.Integration.WebApi;
 using PingYourPackage.Domain.Entities;
 using PingYourPackage.Domain.Services;
 
-namespace PingYourPackage.API.WebHost {
+namespace PingYourPackage.API.Config {
 
     public class AutofacWebAPI {
 

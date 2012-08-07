@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
-namespace PingYourPackage.API.WebHost {
+namespace PingYourPackage.API.Config {
 
     public class RouteConfig {
 
