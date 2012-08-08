@@ -16,14 +16,14 @@ namespace PingYourPackage.Domain.Entities {
         [StringLength(50)]
         public string Name { get; set; }
 
+        public decimal Price { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
-        public virtual ICollection<PackagePrice> PackagePrices { get; set; }
         public virtual ICollection<Shipment> Shipments { get; set; }
 
         public PackageType() {
 
-            PackagePrices = new HashSet<PackagePrice>();
             Shipments = new HashSet<Shipment>();
         }
     }

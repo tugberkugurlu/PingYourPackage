@@ -51,7 +51,6 @@
     <Compile Include="Entities\Extensions\UserInRoleRepositoryExtensions.cs" />
     <Compile Include="Entities\Core\IEntity.cs" />
     <Compile Include="Entities\Core\IEntityRepository.cs" />
-    <Compile Include="Entities\PackagePrice.cs" />
     <Compile Include="Entities\Affiliate.cs" />
     <Compile Include="Entities\PackageType.cs" />
     <Compile Include="Entities\Core\PaginatedList.cs" />
@@ -69,6 +68,10 @@
     <Compile Include="Migrations\201208080948560_ShipmentsTableCreatedOnColumn.cs" />
     <Compile Include="Migrations\201208080948560_ShipmentsTableCreatedOnColumn.Designer.cs">
       <DependentUpon>201208080948560_ShipmentsTableCreatedOnColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201208081001243_PackagePriceTableDroped.cs" />
+    <Compile Include="Migrations\201208081001243_PackagePriceTableDroped.Designer.cs">
+      <DependentUpon>201208081001243_PackagePriceTableDroped.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
