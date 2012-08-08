@@ -12,7 +12,7 @@ namespace PingYourPackage.Domain.Entities {
 
         int SaveChanges();
 
-        IDbSet<PackageType> PackageTypes { get; set; }
+        IDbSet<ShipmentType> PackageTypes { get; set; }
         IDbSet<Affiliate> PackageSenders { get; set; }
         IDbSet<Shipment> Shipments { get; set; }
         IDbSet<ShipmentState> ShipmentStates { get; set; }
@@ -26,7 +26,7 @@ namespace PingYourPackage.Domain.Entities {
 
         public EntitiesContext() : base("PingYourPackage") { }
 
-        public IDbSet<PackageType> PackageTypes { get; set; }
+        public IDbSet<ShipmentType> PackageTypes { get; set; }
         public IDbSet<Affiliate> PackageSenders { get; set; }
         public IDbSet<Shipment> Shipments { get; set; }
         public IDbSet<ShipmentState> ShipmentStates { get; set; }

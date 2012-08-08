@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public class PackageType : IEntity {
+    public class ShipmentType : IEntity {
 
         [Key]
         public Guid Key { get; set; }
@@ -22,7 +22,7 @@ namespace PingYourPackage.Domain.Entities {
 
         public virtual ICollection<Shipment> Shipments { get; set; }
 
-        public PackageType() {
+        public ShipmentType() {
 
             Shipments = new HashSet<Shipment>();
         }

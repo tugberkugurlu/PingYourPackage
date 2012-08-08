@@ -12,7 +12,7 @@ namespace PingYourPackage.Domain.Entities {
         [Key]
         public Guid Key { get; set; }
         public Guid AffiliateKey { get; set; }
-        public Guid PackageTypeKey { get; set; }
+        public Guid ShipmentTypeKey { get; set; }
 
         public decimal Price { get; set; }
 
@@ -52,7 +52,7 @@ namespace PingYourPackage.Domain.Entities {
         public DateTime CreatedOn { get; set; }
 
         public Affiliate Affiliate { get; set; }
-        public PackageType PackageType { get; set; }
+        public ShipmentType ShipmentType { get; set; }
         public virtual ICollection<ShipmentState> ShipmentStates { get; set; }
 
         public Shipment() {

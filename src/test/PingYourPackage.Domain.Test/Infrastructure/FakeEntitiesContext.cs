@@ -12,7 +12,7 @@ namespace PingYourPackage.Domain.Test.Infrastructure {
 
         public FakeEntitiesContext() {
 
-            PackageTypes = new FakeDbSet<PackageType>();
+            PackageTypes = new FakeDbSet<ShipmentType>();
             PackageSenders = new FakeDbSet<Affiliate>();
             Shipments = new FakeDbSet<Shipment>();
             ShipmentStates = new FakeDbSet<ShipmentState>();
@@ -22,7 +22,7 @@ namespace PingYourPackage.Domain.Test.Infrastructure {
             UserInRoles = new FakeDbSet<UserInRole>();
         }
 
-        public IDbSet<PackageType> PackageTypes { get; set; }
+        public IDbSet<ShipmentType> PackageTypes { get; set; }
         public IDbSet<Affiliate> PackageSenders { get; set; }
         public IDbSet<Shipment> Shipments { get; set; }
         public IDbSet<ShipmentState> ShipmentStates { get; set; }
