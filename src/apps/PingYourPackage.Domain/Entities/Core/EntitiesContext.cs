@@ -8,21 +8,7 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public interface IEntitiesContext : IDisposable {
-
-        int SaveChanges();
-
-        IDbSet<ShipmentType> PackageTypes { get; set; }
-        IDbSet<Affiliate> PackageSenders { get; set; }
-        IDbSet<Shipment> Shipments { get; set; }
-        IDbSet<ShipmentState> ShipmentStates { get; set; }
-
-        IDbSet<User> Users { get; set; }
-        IDbSet<Role> Roles { get; set; }
-        IDbSet<UserInRole> UserInRoles { get; set; }
-    }
-
-    public class EntitiesContext : DbContext, IEntitiesContext {
+    public class EntitiesContext : DbContext {
 
         public EntitiesContext() : base("PingYourPackage") { }
 
