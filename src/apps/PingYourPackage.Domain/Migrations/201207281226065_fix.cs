@@ -56,10 +56,10 @@ namespace PingYourPackage.Domain.Migrations
                 c => new
                     {
                         Key = c.Guid(nullable: false),
+                        User_Key = c.Guid(),
                         Name = c.String(nullable: false, maxLength: 50),
                         Surname = c.String(nullable: false, maxLength: 50),
-                        Address = c.String(nullable: false, maxLength: 50),
-                        User_Key = c.Guid(),
+                        Address = c.String(nullable: false, maxLength: 50)
                     })
                 .PrimaryKey(t => t.Key)
                 .ForeignKey("dbo.Users", t => t.User_Key)
