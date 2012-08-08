@@ -30,12 +30,13 @@ namespace PingYourPackage.Domain.Entities {
         public DateTime? LastUpdatedOn { get; set; }
 
         public virtual ICollection<UserInRole> UserInRoles { get; set; }
-        public virtual ICollection<PackageSender> PackageSenders { get; set; }
+        
+        public virtual Affiliate Affiliate { get; set; }
 
         public User() {
 
             UserInRoles = new HashSet<UserInRole>();
-            PackageSenders = new HashSet<PackageSender>();
+            Affiliate = new Affiliate();
         }
     }
 }

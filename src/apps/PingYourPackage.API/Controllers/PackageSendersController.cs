@@ -10,9 +10,9 @@ namespace PingYourPackage.API.Controllers {
 
     public class PackageSendersController : ApiController {
 
-        private readonly IEntityRepository<PackageSender> _packageSenderRepository;
+        private readonly IEntityRepository<Affiliate> _packageSenderRepository;
 
-        public PackageSendersController(IEntityRepository<PackageSender> packageSenderRepository) {
+        public PackageSendersController(IEntityRepository<Affiliate> packageSenderRepository) {
 
             _packageSenderRepository = packageSenderRepository;
         }

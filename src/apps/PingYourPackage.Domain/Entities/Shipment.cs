@@ -11,7 +11,7 @@ namespace PingYourPackage.Domain.Entities {
 
         [Key]
         public Guid Key { get; set; }
-        public Guid PackageSenderKey { get; set; }
+        public Guid AffiliateKey { get; set; }
         public Guid PackageTypeKey { get; set; }
 
         public decimal Price { get; set; }
@@ -30,7 +30,7 @@ namespace PingYourPackage.Domain.Entities {
 
         [Required]
         [StringLength(50)]
-        public string ReceiverPostCode { get; set; }
+        public string ReceiverZipCode { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -49,7 +49,9 @@ namespace PingYourPackage.Domain.Entities {
         [StringLength(320)]
         public string ReceiverEmail { get; set; }
 
-        public PackageSender PackageSender { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+        public Affiliate Affiliate { get; set; }
         public PackageType PackageType { get; set; }
         public virtual ICollection<ShipmentState> ShipmentStates { get; set; }
 

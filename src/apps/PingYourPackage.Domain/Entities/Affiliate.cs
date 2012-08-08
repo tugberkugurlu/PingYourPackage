@@ -7,29 +7,31 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public class PackageSender : IEntity {
+    public class Affiliate : IEntity {
 
         [Key]
         public Guid Key { get; set; }
-        public Guid UserKey { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string Name { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Surname { get; set; }
+        public string CompanyName { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Address { get; set; }
 
+        [StringLength(50)]
+        public string TelephoneNumber { get; set; }
+
+        [Required]
+        public DateTime CreatedOn { get; set; }
+
+        [Required]
         public User User { get; set; }
 
         public virtual ICollection<Shipment> Shipments { get; set; }
 
-        public PackageSender() {
+        public Affiliate() {
 
             Shipments = new HashSet<Shipment>();
         }

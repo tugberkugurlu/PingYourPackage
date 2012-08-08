@@ -3,7 +3,7 @@ namespace PingYourPackage.Domain.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class fix : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -37,55 +37,36 @@ namespace PingYourPackage.Domain.Migrations
                 c => new
                     {
                         Key = c.Guid(nullable: false),
-                        PackageSenderKey = c.Guid(nullable: false),
-                        PackageReceiverKey = c.Guid(nullable: false),
+                        AffiliateKey = c.Guid(nullable: false),
                         PackageTypeKey = c.Guid(nullable: false),
-                        UserKey = c.Guid(nullable: false),
                         Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        ReceiverName = c.String(nullable: false, maxLength: 50),
+                        ReceiverSurname = c.String(nullable: false, maxLength: 50),
+                        ReceiverAddress = c.String(nullable: false, maxLength: 50),
+                        ReceiverZipCode = c.String(nullable: false, maxLength: 50),
+                        ReceiverCity = c.String(nullable: false, maxLength: 50),
+                        ReceiverCountry = c.String(nullable: false, maxLength: 50),
+                        ReceiverTelephone = c.String(nullable: false, maxLength: 50),
+                        ReceiverEmail = c.String(nullable: false, maxLength: 320),
                     })
                 .PrimaryKey(t => t.Key)
-                .ForeignKey("dbo.PackageSenders", t => t.PackageSenderKey, cascadeDelete: true)
-                .ForeignKey("dbo.Users", t => t.UserKey, cascadeDelete: true)
+                .ForeignKey("dbo.Affiliates", t => t.AffiliateKey, cascadeDelete: true)
                 .ForeignKey("dbo.PackageTypes", t => t.PackageTypeKey, cascadeDelete: true)
-                .Index(t => t.PackageSenderKey)
-                .Index(t => t.UserKey)
+                .Index(t => t.AffiliateKey)
                 .Index(t => t.PackageTypeKey);
             
             CreateTable(
-                "dbo.PackageSenders",
+                "dbo.Affiliates",
                 c => new
                     {
                         Key = c.Guid(nullable: false),
-                        User_Key = c.Guid(),
-                        Name = c.String(nullable: false, maxLength: 50),
-                        Surname = c.String(nullable: false, maxLength: 50),
-                        Address = c.String(nullable: false, maxLength: 50)
-                    })
-                .PrimaryKey(t => t.Key)
-                .ForeignKey("dbo.Users", t => t.User_Key)
-                .Index(t => t.User_Key);
-            
-            CreateTable(
-                "dbo.PackageReceivers",
-                c => new
-                    {
-                        Key = c.Guid(nullable: false),
-                        UserKey = c.Guid(nullable: false),
-                        Name = c.String(nullable: false, maxLength: 50),
-                        Surname = c.String(nullable: false, maxLength: 50),
+                        CompanyName = c.String(nullable: false, maxLength: 50),
                         Address = c.String(nullable: false, maxLength: 50),
-                        PostCode = c.String(nullable: false, maxLength: 50),
-                        City = c.String(nullable: false, maxLength: 50),
-                        Country = c.String(nullable: false, maxLength: 50),
-                        Telephone = c.String(nullable: false, maxLength: 50),
-                        Email = c.String(nullable: false, maxLength: 320),
+                        TelephoneNumber = c.String(maxLength: 50),
                         CreatedOn = c.DateTime(nullable: false),
-                        LastUpdatedOn = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Key)
-                .ForeignKey("dbo.Users", t => t.UserKey, cascadeDelete: true)
-                .ForeignKey("dbo.Shipments", t => t.Key)
-                .Index(t => t.UserKey)
+                .ForeignKey("dbo.Users", t => t.Key)
                 .Index(t => t.Key);
             
             CreateTable(
@@ -94,6 +75,7 @@ namespace PingYourPackage.Domain.Migrations
                     {
                         Key = c.Guid(nullable: false),
                         Name = c.String(nullable: false, maxLength: 50),
+                        Email = c.String(),
                         HashedPassword = c.String(nullable: false),
                         Salt = c.String(nullable: false),
                         IsLocked = c.Boolean(nullable: false),
@@ -145,29 +127,22 @@ namespace PingYourPackage.Domain.Migrations
             DropIndex("dbo.ShipmentStates", new[] { "ShipmentKey" });
             DropIndex("dbo.UserInRoles", new[] { "RoleKey" });
             DropIndex("dbo.UserInRoles", new[] { "UserKey" });
-            DropIndex("dbo.PackageReceivers", new[] { "Key" });
-            DropIndex("dbo.PackageReceivers", new[] { "UserKey" });
-            DropIndex("dbo.PackageSenders", new[] { "User_Key" });
+            DropIndex("dbo.Affiliates", new[] { "Key" });
             DropIndex("dbo.Shipments", new[] { "PackageTypeKey" });
-            DropIndex("dbo.Shipments", new[] { "UserKey" });
-            DropIndex("dbo.Shipments", new[] { "PackageSenderKey" });
+            DropIndex("dbo.Shipments", new[] { "AffiliateKey" });
             DropIndex("dbo.PackagePrices", new[] { "PackageTypeKey" });
             DropForeignKey("dbo.ShipmentStates", "ShipmentKey", "dbo.Shipments");
             DropForeignKey("dbo.UserInRoles", "RoleKey", "dbo.Roles");
             DropForeignKey("dbo.UserInRoles", "UserKey", "dbo.Users");
-            DropForeignKey("dbo.PackageReceivers", "Key", "dbo.Shipments");
-            DropForeignKey("dbo.PackageReceivers", "UserKey", "dbo.Users");
-            DropForeignKey("dbo.PackageSenders", "User_Key", "dbo.Users");
+            DropForeignKey("dbo.Affiliates", "Key", "dbo.Users");
             DropForeignKey("dbo.Shipments", "PackageTypeKey", "dbo.PackageTypes");
-            DropForeignKey("dbo.Shipments", "UserKey", "dbo.Users");
-            DropForeignKey("dbo.Shipments", "PackageSenderKey", "dbo.PackageSenders");
+            DropForeignKey("dbo.Shipments", "AffiliateKey", "dbo.Affiliates");
             DropForeignKey("dbo.PackagePrices", "PackageTypeKey", "dbo.PackageTypes");
             DropTable("dbo.ShipmentStates");
             DropTable("dbo.Roles");
             DropTable("dbo.UserInRoles");
             DropTable("dbo.Users");
-            DropTable("dbo.PackageReceivers");
-            DropTable("dbo.PackageSenders");
+            DropTable("dbo.Affiliates");
             DropTable("dbo.Shipments");
             DropTable("dbo.PackagePrices");
             DropTable("dbo.PackageTypes");
