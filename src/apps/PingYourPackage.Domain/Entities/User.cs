@@ -16,6 +16,8 @@ namespace PingYourPackage.Domain.Entities {
         [StringLength(50)]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(320)]
         public string Email { get; set; }
 
         [Required]

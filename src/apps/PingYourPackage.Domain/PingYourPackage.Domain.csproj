@@ -77,6 +77,10 @@
     <Compile Include="Migrations\201208081008408_FromPackageTypeToShipmentType.Designer.cs">
       <DependentUpon>201208081008408_FromPackageTypeToShipmentType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201208130838421_ValidationAttributesChange.cs" />
+    <Compile Include="Migrations\201208130838421_ValidationAttributesChange.Designer.cs">
+      <DependentUpon>201208130838421_ValidationAttributesChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CryptoService.cs" />
