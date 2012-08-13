@@ -30,7 +30,8 @@ namespace PingYourPackage.Domain.Entities {
             }
         }
 
-        public virtual IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties) {
+        public virtual IQueryable<T> AllIncluding(
+            params Expression<Func<T, object>>[] includeProperties) {
 
             IQueryable<T> query = _entities.Set<T>();
             foreach (var includeProperty in includeProperties) {
@@ -56,7 +57,8 @@ namespace PingYourPackage.Domain.Entities {
             return Paginate(null, pageIndex, pageSize);
         }
 
-        public virtual PaginatedList<T> Paginate(Expression<Func<T, bool>> predicate, int pageIndex, int pageSize) {
+        public virtual PaginatedList<T> Paginate(
+            Expression<Func<T, bool>> predicate, int pageIndex, int pageSize) {
 
             IQueryable<T> query = (predicate == null) ?
                 _entities.Set<T>().AsQueryable() :
