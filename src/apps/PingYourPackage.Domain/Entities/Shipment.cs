@@ -45,7 +45,6 @@ namespace PingYourPackage.Domain.Entities {
         public string ReceiverTelephone { get; set; }
 
         [Required]
-        [EmailAddress]
         [StringLength(320)]
         public string ReceiverEmail { get; set; }
 
