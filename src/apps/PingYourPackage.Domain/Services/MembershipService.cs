@@ -147,6 +147,23 @@ namespace PingYourPackage.Domain.Services {
             return false;
         }
 
+        private bool isUserValid(User user, string password) {
+
+            if (isPasswordValid(user, password)) {
+
+                return !user.IsLocked;
+            }
+
+            return false;
+        }
+
+        private bool isPasswordValid(User user, string password) {
+
+            return string.Equals(
+                    _cryptoService.EncryptPassword(
+                        password, user.Salt), user.HashedPassword);
+        }
+
         private void addUserToRole(User user, string roleName) {
 
             var role = _roleRepository.GetSingleByRoleName(roleName);
@@ -168,23 +185,6 @@ namespace PingYourPackage.Domain.Services {
 
             _userInRoleRepository.Add(userInRole);
             _userInRoleRepository.Save();
-        }
-
-        private bool isUserValid(User user, string password) {
-
-            if (isPasswordValid(user, password)) {
-
-                return !user.IsLocked;
-            }
-
-            return false;
-        }
-
-        private bool isPasswordValid(User user, string password) {
-
-            return string.Equals(
-                    _cryptoService.EncryptPassword(
-                        password, user.Salt), user.HashedPassword);
         }
     }
 }
