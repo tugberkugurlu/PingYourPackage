@@ -52,19 +52,24 @@ namespace PingYourPackage.Domain.Services {
             return null;
         }
 
-        public void CreateUser(string username, string email, string password) {
+        public bool CreateUser(string username, string email, string password) {
 
-            CreateUser(username, password, email, roles: null);
+            return CreateUser(username, password, email, roles: null);
         }
 
-        public void CreateUser(
-            string username, string email, string password, string role) {
+        public bool CreateUser(string username, string email, string password, string role) {
 
-            CreateUser(username, password, email, roles: new[] { role });
+            return CreateUser(username, password, email, roles: new[] { role });
         }
 
-        public void CreateUser(
-            string username, string email, string password, string[] roles) {
+        public bool CreateUser(string username, string email, string password, string[] roles) {
+
+            var existingUser = _userRepository.GetAll().Any(
+                x => x.Name == username);
+
+            if (existingUser != null) {
+                return false;
+            }
 
             var passwordSalt = _cryptoService.GenerateSalt();
 
@@ -87,10 +92,11 @@ namespace PingYourPackage.Domain.Services {
                     addUserToRole(user, roleName);
 	            }
             }
+
+            return true;
         }
 
-        public bool ChangePassword(
-            string username, string oldPassword, string newPassword) {
+        public bool ChangePassword(string username, string oldPassword, string newPassword) {
 
             var user = _userRepository.GetSingleByUsername(username);
 
@@ -164,13 +170,6 @@ namespace PingYourPackage.Domain.Services {
             _userInRoleRepository.Save();
         }
 
-        private bool isPasswordValid(User user, string password) {
-
-            return string.Equals(
-                    _cryptoService.EncryptPassword(
-                        password, user.Salt), user.HashedPassword);
-        }
-
         private bool isUserValid(User user, string password) {
 
             if (isPasswordValid(user, password)) {
@@ -179,6 +178,13 @@ namespace PingYourPackage.Domain.Services {
             }
 
             return false;
+        }
+
+        private bool isPasswordValid(User user, string password) {
+
+            return string.Equals(
+                    _cryptoService.EncryptPassword(
+                        password, user.Salt), user.HashedPassword);
         }
     }
 }
