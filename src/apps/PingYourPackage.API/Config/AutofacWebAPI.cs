@@ -38,6 +38,12 @@ namespace PingYourPackage.API.Config {
                 .As<IEntityRepository<UserInRole>>().InstancePerApiRequest();
             builder.RegisterType<EntityRepository<Affiliate>>()
                 .As<IEntityRepository<Affiliate>>().InstancePerApiRequest();
+            builder.RegisterType<EntityRepository<Shipment>>()
+                .As<IEntityRepository<Shipment>>().InstancePerApiRequest();
+            builder.RegisterType<EntityRepository<ShipmentType>>()
+                .As<IEntityRepository<ShipmentType>>().InstancePerApiRequest();
+            builder.RegisterType<EntityRepository<ShipmentState>>()
+                .As<IEntityRepository<ShipmentState>>().InstancePerApiRequest();
 
             //services
             builder.RegisterType<CryptoService>()
