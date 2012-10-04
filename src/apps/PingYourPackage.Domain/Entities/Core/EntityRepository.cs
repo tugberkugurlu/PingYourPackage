@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -11,16 +13,21 @@ namespace PingYourPackage.Domain.Entities {
     public class EntityRepository<T> : IEntityRepository<T>
         where T : class, IEntity, new() {
 
-        readonly DbContext _entities;
+        readonly DbContext _entitiesContext;
 
-        public EntityRepository(DbContext entities) {
+        public EntityRepository(DbContext entitiesContext) {
 
-            _entities = entities;
+            if (entitiesContext == null) {
+
+                throw new ArgumentNullException("entitiesContext");
+            }
+
+            _entitiesContext = entitiesContext;
         }
 
         public virtual IQueryable<T> GetAll() {
 
-            return _entities.Set<T>();
+            return _entitiesContext.Set<T>();
         }
 
         public virtual IQueryable<T> All {
@@ -33,7 +40,7 @@ namespace PingYourPackage.Domain.Entities {
         public virtual IQueryable<T> AllIncluding(
             params Expression<Func<T, object>>[] includeProperties) {
 
-            IQueryable<T> query = _entities.Set<T>();
+            IQueryable<T> query = _entitiesContext.Set<T>();
             foreach (var includeProperty in includeProperties) {
 
                 query = query.Include(includeProperty);
@@ -49,7 +56,7 @@ namespace PingYourPackage.Domain.Entities {
 
         public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) {
 
-            return _entities.Set<T>().Where(predicate);
+            return _entitiesContext.Set<T>().Where(predicate);
         }
 
         public virtual PaginatedList<T> Paginate(int pageIndex, int pageSize) {
@@ -61,30 +68,54 @@ namespace PingYourPackage.Domain.Entities {
             Expression<Func<T, bool>> predicate, int pageIndex, int pageSize) {
 
             IQueryable<T> query = (predicate == null) ?
-                _entities.Set<T>().AsQueryable() :
-                _entities.Set<T>().Where(predicate).AsQueryable();
+                _entitiesContext.Set<T>().AsQueryable() :
+                _entitiesContext.Set<T>().Where(predicate).AsQueryable();
 
             return new PaginatedList<T>(query, pageIndex, pageSize);
         }
 
         public virtual void Add(T entity) {
 
-            _entities.Set<T>().Add(entity);
-        }
+            DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
+            if (dbEntityEntry.State != EntityState.Detached) {
 
-        public virtual void Delete(T entity) {
+                dbEntityEntry.State = EntityState.Added;
+            }
+            else {
 
-            _entities.Set<T>().Remove(entity);
+                _entitiesContext.Set<T>().Add(entity);
+            }
         }
 
         public virtual void Edit(T entity) {
 
-            _entities.Entry(entity).State = System.Data.EntityState.Modified;
+            DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
+            if (dbEntityEntry.State == EntityState.Deleted) {
+
+                _entitiesContext.Set<T>().Attach(entity);
+            }
+
+            dbEntityEntry.State = EntityState.Modified;
+        }
+
+        public virtual void Delete(T entity) {
+
+            DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
+            if (dbEntityEntry.State != EntityState.Detached) {
+
+                dbEntityEntry.State = EntityState.Deleted;
+            }
+            else {
+
+                DbSet dbSet = _entitiesContext.Set<T>();
+                dbSet.Attach(entity);
+                dbSet.Remove(entity);
+            }
         }
 
         public virtual void Save() {
 
-            _entities.SaveChanges();
+            _entitiesContext.SaveChanges();
         }
     }
 }
