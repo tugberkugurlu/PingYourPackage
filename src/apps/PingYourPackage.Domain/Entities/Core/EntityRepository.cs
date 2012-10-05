@@ -59,19 +59,32 @@ namespace PingYourPackage.Domain.Entities {
             return _entitiesContext.Set<T>().Where(predicate);
         }
 
-        public virtual PaginatedList<T> Paginate(int pageIndex, int pageSize) {
+        public virtual PaginatedList<T> Paginate<TKey>(
+                    int pageIndex, int pageSize,
+                    Expression<Func<T, TKey>> keySelector) {
 
-            return Paginate(null, pageIndex, pageSize);
+            return Paginate(pageIndex, pageSize, keySelector, null);
         }
 
-        public virtual PaginatedList<T> Paginate(
-            Expression<Func<T, bool>> predicate, int pageIndex, int pageSize) {
+        public virtual PaginatedList<T> Paginate<TKey>(
+            int pageIndex, int pageSize,
+            Expression<Func<T, TKey>> keySelector,
+            Expression<Func<T, bool>> predicate,
+            params Expression<Func<T, object>>[] includeProperties) {
 
-            IQueryable<T> query = (predicate == null) ?
-                _entitiesContext.Set<T>().AsQueryable() :
-                _entitiesContext.Set<T>().Where(predicate).AsQueryable();
+            IQueryable<T> query = 
+                AllIncluding(includeProperties).OrderBy(keySelector);
 
-            return new PaginatedList<T>(query, pageIndex, pageSize);
+            query = (predicate == null) 
+                ? query 
+                : query.Where(predicate);
+
+            return query.ToPaginatedList(pageIndex, pageSize);
+        }
+
+        public virtual void AddGraph(T entity) {
+
+            _entitiesContext.Set<T>().Add(entity);
         }
 
         public virtual void Add(T entity) {
@@ -90,7 +103,7 @@ namespace PingYourPackage.Domain.Entities {
         public virtual void Edit(T entity) {
 
             DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
-            if (dbEntityEntry.State == EntityState.Deleted) {
+            if (dbEntityEntry.State == EntityState.Detached) {
 
                 _entitiesContext.Set<T>().Attach(entity);
             }

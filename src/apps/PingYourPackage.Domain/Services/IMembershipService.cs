@@ -11,11 +11,19 @@ namespace PingYourPackage.Domain.Services {
 
         IPrincipal ValidateUser(string username, string password);
 
-        bool CreateUser(string username, string email, string password);
-        bool CreateUser(string username, string email, string password, string role);
-        bool CreateUser(string username, string email, string password, string[] roles);
+        bool CreateUser(
+            string username, string email, string password);
 
-        bool ChangePassword(string username, string oldPassword, string newPassword);
+        bool CreateUser(
+            string username, string email, 
+            string password, string role);
+
+        bool CreateUser(
+            string username, string email, 
+            string password, string[] roles);
+
+        bool ChangePassword(
+            string username, string oldPassword, string newPassword);
 
         bool AddToRole(string username, string role);
         bool RemoveFromRole(string username, string role);

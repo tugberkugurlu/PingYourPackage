@@ -6,36 +6,37 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public class PaginatedList<T> : List<T> {
+    public class PaginatedList<T> : List<T> where T : IEntity {
 
         public int PageIndex { get; private set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
-        public int TotalPages { get; private set; }
+        public int TotalPageCount { get; private set; }
 
-        public PaginatedList(IEnumerable<T> source, int pageIndex, int pageSize) {
+        public PaginatedList(
+            int pageIndex, int pageSize, 
+            int totalCount, IQueryable<T> source) {
 
-            //goes to the database to get the total count
-            TotalCount = source.Count(); 
+            AddRange(source);
 
             PageIndex = pageIndex;
             PageSize = pageSize;
-            TotalPages = (int)Math.Ceiling(TotalCount / (double)pageSize);
-
-            this.AddRange(source.Skip(pageIndex * pageSize).Take(pageSize).ToList());
+            TotalCount = totalCount;
+            TotalPageCount = 
+                (int)Math.Ceiling(totalCount / (double)pageSize);
         }
 
         public bool HasPreviousPage {
 
             get {
-                return (PageIndex > 0);
+                return (PageIndex > 1);
             }
         }
 
         public bool HasNextPage {
 
             get {
-                return (PageIndex + 1 < TotalPages);
+                return (PageIndex < TotalPageCount);
             }
         }
     }
