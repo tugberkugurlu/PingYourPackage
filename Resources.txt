@@ -17,7 +17,7 @@
   POST /api/users/{key}/roles
   DELETE /api/users/{key}/roles?roleName={roleName}
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,Employee")]
 [api/shipmenttypes/{key}] => DefaultHttpRoute => ShipmentTypesController
   GET /api/shipmenttypes [collection]
   GET /api/shipmenttypes/{key} [single]
@@ -25,7 +25,7 @@
   POST /api/shipmenttypes
   PUT /api/shipmenttypes/{key}
 
-[Authorize(Roles = "Admin,Affiliate")]
+[Authorize(Roles = "Admin,Employee,Affiliate")]
 [api/affiliates/{key}] => DefaultHttpRoute => AffiliatesController
   GET /api/affiliates [collection]
   GET /api/affiliates/{key} [single]
@@ -33,7 +33,7 @@
   PUT /api/affiliates
   DELETE /api/affiliates/{key}
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin,Employee")]
 [api/shipments/{key}] => DefaultHttpRoute => ShipmentsController
   GET /api/shipments [collection]
   GET /api/shipments/{key} [single]
@@ -48,8 +48,8 @@
   PUT api/affiliates/{key}/shipments/{shipmentKey}
   DELETE api/affiliates/{key}/shipments/{shipmentKey}
 
-[Authorize(Roles = "Admin")] => ShipmentStatesHttpRoute => ShipmentStatesController
-[api/shipments/{key}/shipmentstates]
+[Authorize(Roles = "Admin,Employee")]
+[api/shipments/{key}/shipmentstates] => ShipmentStatesHttpRoute => ShipmentStatesController
   GET /api/shipments/{key}/shipmentstates [collection]
   POST /api/shipments/{key}/shipmentstates
 

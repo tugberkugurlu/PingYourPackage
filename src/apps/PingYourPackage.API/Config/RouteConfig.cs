@@ -15,19 +15,27 @@ namespace PingYourPackage.API.Config {
             routes.MapHttpRoute(
                 "UserRolesHttpRoute",
                 "api/users/{key}/roles",
-                new { controller = "userroles" });
+                new { controller = "UserRoles" });
+
+            routes.MapHttpRoute(
+                "AffiliateShipmentsHttpRoute",
+                "api/affiliates/{key}/shipments",
+                new { controller = "AffiliateShipments" });
+
+            routes.MapHttpRoute(
+                "ShipmentStatesHttpRoute",
+                "api/shipments/{key}/shipmentstates",
+                new { controller = "ShipmentStates" });
+
+            routes.MapHttpRoute(
+                "AffiliateShipmentShipmentStatesHttpRoute",
+                "api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates",
+                new { controller = "AffiliateShipmentShipmentStates" });
 
             routes.MapHttpRoute(
                 "DefaultHttpRoute",
                 "api/{controller}/{key}",
                 new { key = RouteParameter.Optional });
-
-            //routes.MapHttpRoute(
-            //    "UsersPatchHttpRoute",
-            //    "api/users/{id}/{action}",
-            //    defaults: new { controller = "useroperations" },
-            //    constraints: new { httpMethod = new HttpMethodConstraint(new HttpMethod("PATCH")) }
-            //);
         }
     }
 }
