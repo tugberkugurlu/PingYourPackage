@@ -1,46 +1,58 @@
-[[Admin]]
-[api/roles]
-  GET /api/roles
-  GET /api/roles?name={name}
+[Authorize(Roles = "Admin")]
+[api/roles] => DefaultHttpRoute => RolesController
+  GET /api/roles [collection]
+  GET /api/roles/{key} [single]
+  GET /api/roles?roleName={roleName} [single]
 
-[[Admin]]
-[api/users/{key}]
+[Authorize(Roles = "Admin")]
+[api/users/{key}] => DefaultHttpRoute => UsersController
   GET /api/users [collection]
   GET /api/users/{key} [single]
   POST /api/users
   PUT /api/users/{key}
 
-[[Admin]]
-[api/users/{key}/roles]
+[Authorize(Roles = "Admin")]
+[api/users/{key}/roles] => UserRolesHttpRoute => UserRolesController
   GET /api/users/{key}/roles [collection]
   POST /api/users/{key}/roles
   DELETE /api/users/{key}/roles?roleName={roleName}
 
-[[Admin]]
-[api/shipmenttypes/{key}]
+[Authorize(Roles = "Admin")]
+[api/shipmenttypes/{key}] => DefaultHttpRoute => ShipmentTypesController
   GET /api/shipmenttypes [collection]
   GET /api/shipmenttypes/{key} [single]
   GET /api/shipmenttypes?name={name} [single]
   POST /api/shipmenttypes
   PUT /api/shipmenttypes/{key}
 
-[api/{affiliates}/{key}]
-AffiliatesController
+[Authorize(Roles = "Admin,Affiliate")]
+[api/affiliates/{key}] => DefaultHttpRoute => AffiliatesController
   GET /api/affiliates [collection]
   GET /api/affiliates/{key} [single]
   POST /api/affiliates
   PUT /api/affiliates
   DELETE /api/affiliates/{key}
 
-[api/{controller}/{key}]
-ShipmentsController
+[Authorize(Roles = "Admin")]
+[api/shipments/{key}] => DefaultHttpRoute => ShipmentsController
   GET /api/shipments [collection]
   GET /api/shipments/{key} [single]
-  GET /api/shipments?AffiliateKey={AffiliateKey} [collection]
   POST /api/shipments
-  PUT /api/shipments
-  DELETE /api/shipments/{key}
+  PUT /api/shipments/{key}
 
+[Authorize(Roles = "Affiliate")]
+[api/affiliates/{key}/shipments] => AffiliateShipmentsHttpRoute => AffiliateShipmentsController
+  GET api/affiliates/{key}/shipments [collection]
+  GET api/affiliates/{key}/shipments/{shipmentKey} [single]
+  POST api/affiliates/{key}
+  PUT api/affiliates/{key}/shipments/{shipmentKey}
+  DELETE api/affiliates/{key}/shipments/{shipmentKey}
+
+[Authorize(Roles = "Admin")] => ShipmentStatesHttpRoute => ShipmentStatesController
 [api/shipments/{key}/shipmentstates]
   GET /api/shipments/{key}/shipmentstates [collection]
   POST /api/shipments/{key}/shipmentstates
+
+[Authorize(Roles = "Affiliate")]
+[api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates] => AffiliateShipmentShipmentStatesHttpRoute => AffiliateShipmentShipmentStatesController
+  GET api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates [collection]

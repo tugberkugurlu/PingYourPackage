@@ -13,30 +13,21 @@ namespace PingYourPackage.API.Config {
         public static void RegisterRoutes(HttpRouteCollection routes) {
 
             routes.MapHttpRoute(
-                "UsersPatchHttpRoute",
-                "api/users/{id}/{action}",
-                defaults: new { controller = "useroperations" },
-                constraints: new { httpMethod = new HttpMethodConstraint(new HttpMethod("PATCH")) }
-            );
+                "UserRolesHttpRoute",
+                "api/users/{key}/roles",
+                new { controller = "userroles" });
 
             routes.MapHttpRoute(
                 "DefaultHttpRoute",
-                "api/{controller}/{id}",
-                new { id = RouteParameter.Optional }
-            );
-        }
-    }
+                "api/{controller}/{key}",
+                new { key = RouteParameter.Optional });
 
-    public class UserOperationsController : ApiController {
-
-        public HttpResponseMessage Status(StatusRequestCommand cmd) {
-
-            throw new NotImplementedException();
-        }
-
-        public HttpResponseMessage Roles(RolesRequestCommand cmd) {
-
-            throw new NotImplementedException();
+            //routes.MapHttpRoute(
+            //    "UsersPatchHttpRoute",
+            //    "api/users/{id}/{action}",
+            //    defaults: new { controller = "useroperations" },
+            //    constraints: new { httpMethod = new HttpMethodConstraint(new HttpMethod("PATCH")) }
+            //);
         }
     }
 }
