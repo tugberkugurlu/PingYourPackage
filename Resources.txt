@@ -1,0 +1,46 @@
+[[Admin]]
+[api/roles]
+  GET /api/roles
+  GET /api/roles?name={name}
+
+[[Admin]]
+[api/users/{key}]
+  GET /api/users [collection]
+  GET /api/users/{key} [single]
+  POST /api/users
+  PUT /api/users/{key}
+
+[[Admin]]
+[api/users/{key}/roles]
+  GET /api/users/{key}/roles [collection]
+  POST /api/users/{key}/roles
+  DELETE /api/users/{key}/roles?roleName={roleName}
+
+[[Admin]]
+[api/shipmenttypes/{key}]
+  GET /api/shipmenttypes [collection]
+  GET /api/shipmenttypes/{key} [single]
+  GET /api/shipmenttypes?name={name} [single]
+  POST /api/shipmenttypes
+  PUT /api/shipmenttypes/{key}
+
+[api/{affiliates}/{key}]
+AffiliatesController
+  GET /api/affiliates [collection]
+  GET /api/affiliates/{key} [single]
+  POST /api/affiliates
+  PUT /api/affiliates
+  DELETE /api/affiliates/{key}
+
+[api/{controller}/{key}]
+ShipmentsController
+  GET /api/shipments [collection]
+  GET /api/shipments/{key} [single]
+  GET /api/shipments?AffiliateKey={AffiliateKey} [collection]
+  POST /api/shipments
+  PUT /api/shipments
+  DELETE /api/shipments/{key}
+
+[api/shipments/{key}/shipmentstates]
+  GET /api/shipments/{key}/shipmentstates [collection]
+  POST /api/shipments/{key}/shipmentstates
