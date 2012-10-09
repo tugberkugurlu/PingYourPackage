@@ -54,12 +54,12 @@ namespace PingYourPackage.API.Test.MessageHandlers {
             var request = new HttpRequestMessage();
 
             var membershipServiceMock = new Mock<IMembershipService>();
-            membershipServiceMock.Setup(ms => ms.ValidateUser(username, password))
-                .Returns(principal);
+            membershipServiceMock.Setup(ms => 
+                ms.ValidateUser(username, password)).Returns(principal);
 
             var dependencyScopeMock = new Mock<IDependencyScope>();
-            dependencyScopeMock.Setup(ds => ds.GetService(
-                typeof(IMembershipService))
+            dependencyScopeMock.Setup(
+                ds => ds.GetService(typeof(IMembershipService))
             ).Returns(membershipServiceMock.Object);
 
             request.Properties[HttpPropertyKeys.DependencyScope] =
