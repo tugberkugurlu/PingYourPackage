@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MessageHandlers\PingYourPackageAuthHandlerTest.cs" />
+    <Compile Include="MessageHandlers\RequireHttpsMessageHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers\TestHelper.cs" />
     <Compile Include="xUnit\PreserveSyncContextAttribute.cs" />
