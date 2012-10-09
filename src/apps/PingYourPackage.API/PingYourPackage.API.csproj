@@ -46,7 +46,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -65,13 +65,24 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebAPIDoodle">
+      <HintPath>..\..\..\packages\WebAPIDoodle.1.2.2\lib\net40\WebAPIDoodle.dll</HintPath>
+    </Reference>
+    <Reference Include="WebAPIDoodle.Formatting">
+      <HintPath>..\..\..\packages\WebAPIDoodle.Formatting.1.2.2\lib\net40\WebAPIDoodle.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="WebAPIDoodle.Http">
+      <HintPath>..\..\..\packages\WebAPIDoodle.Http.1.2.2\lib\net40\WebAPIDoodle.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="WebAPIDoodle.Meta">
+      <HintPath>..\..\..\packages\WebAPIDoodle.Meta.1.2.2\lib\net40\WebAPIDoodle.Meta.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\TaskHelpers.cs" />
     <Compile Include="Config\AutofacWebAPI.cs" />
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Config\WebAPIConfig.cs" />
-    <Compile Include="MessageHandlers\BasicAuthenticationHandler.cs" />
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,11 +96,7 @@
       <Name>PingYourPackage.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Dtos\" />
-    <Folder Include="Filters\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
