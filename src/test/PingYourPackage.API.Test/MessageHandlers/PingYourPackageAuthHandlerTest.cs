@@ -1,12 +1,4 @@
 ﻿using PingYourPackage.API.MessageHandlers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq.Protected;
-using Moq;
-using WebAPIDoodle.Http;
 using System.Security.Principal;
 using System.Net.Http;
 using System.Threading;
@@ -14,6 +6,7 @@ using System.Web.Http.Dependencies;
 using System.Web.Http.Hosting;
 using PingYourPackage.Domain.Services;
 using Xunit;
+using Moq;
 
 namespace PingYourPackage.API.Test.MessageHandlers {
     
