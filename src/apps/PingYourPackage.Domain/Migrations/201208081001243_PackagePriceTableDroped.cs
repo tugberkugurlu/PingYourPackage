@@ -22,8 +22,8 @@ namespace PingYourPackage.Domain.Migrations
                         Key = c.Guid(nullable: false),
                         PackageTypeKey = c.Guid(nullable: false),
                         Price = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        ValidFrom = c.DateTime(nullable: false, storeType: "date"),
-                        ValidTill = c.DateTime(nullable: false, storeType: "date"),
+                        ValidFrom = c.DateTime(nullable: false),
+                        ValidTill = c.DateTime(nullable: false),
                         CreatedOn = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Key);

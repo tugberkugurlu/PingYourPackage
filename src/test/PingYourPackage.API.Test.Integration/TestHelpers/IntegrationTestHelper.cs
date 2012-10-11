@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace PingYourPackage.API.Test.Integration.TestHelpers {
+namespace PingYourPackage.API.Test.Integration {
     
     internal static class IntegrationTestHelper {
 

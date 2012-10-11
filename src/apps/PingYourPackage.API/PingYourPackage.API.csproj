@@ -87,6 +87,7 @@
     <Compile Include="Config\AutofacWebAPI.cs" />
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Config\WebAPIConfig.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

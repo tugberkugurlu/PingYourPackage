@@ -1,46 +1,67 @@
-﻿using PingYourPackage.Domain.Entities;
+﻿using Autofac;
+using PingYourPackage.API.Config;
+using PingYourPackage.Domain.Services;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Autofac.Integration.WebApi;
+using System.Web.Http;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
+using System.Threading;
 
 namespace PingYourPackage.API.Test.Integration.Controllers {
     
     public class RolesControllerIntegrationTest : IDisposable {
 
+        private readonly HttpServer _httpServer;
+
         public RolesControllerIntegrationTest() {
+
+            var config = IntegrationTestHelper.GetInitialIntegrationTestConfig(RegisterServices());
+            _httpServer = new HttpServer(config);
         }
 
-        [Fact]
-        public void Foo() {
+        [Fact, NullCurrentPrincipal]
+        public async Task Returns_Unauthorized_Response_If_Request_Is_Not_Authorized() {
 
-            var efMigrationSettings = new PingYourPackage.Domain.Migrations.Configuration();
-            var efMigrator = new DbMigrator(efMigrationSettings);
+            // Arrange
+            var client = new HttpClient(_httpServer);
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/api/roles");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            efMigrator.Update();
+            //Act
+            var response = await client.SendAsync(request);
 
-            using (EntitiesContext ctx = new EntitiesContext()) {
+            //Assert
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
 
-                //ctx.Users.Add(new User { 
-                //    Key = Guid.NewGuid(),
-                //    Name = "tugberk",
-                //    Salt = "foo",
-                //    HashedPassword = "foobar",
-                //    Email = "tugberk@foo.com",
-                //    IsLocked = false,
-                //    CreatedOn = DateTime.Now
-                //});
+        private static IContainer RegisterServices() {
 
-                //ctx.SaveChanges();
+            var builder = new ContainerBuilder();
 
-                Assert.True(ctx.Users.FirstOrDefault().Name == "tugberk");
-            }
+            builder.RegisterAssemblyTypes(
+                Assembly.GetAssembly(typeof(WebAPIConfig))).PropertiesAutowired();
+
+            //Repositories
+
+            //services
+            builder.RegisterType<CryptoService>()
+                .As<ICryptoService>()
+                .InstancePerApiRequest();
+
+            return builder.Build();
         }
 
         public void Dispose() {
+
+            _httpServer.Dispose();
         }
     }
 }
