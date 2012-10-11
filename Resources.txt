@@ -1,3 +1,7 @@
+[Authorize()]
+[api/auth] => AuthHttpRoute => AuthController
+  GET /api/auth [single] => Returns the authanticated user data and his/her roles.
+
 [Authorize(Roles = "Admin")]
 [api/roles] => DefaultHttpRoute => RolesController
   GET /api/roles [collection]

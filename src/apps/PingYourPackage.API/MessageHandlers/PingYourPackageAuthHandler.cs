@@ -6,7 +6,8 @@ using System.Threading;
 
 namespace PingYourPackage.API.MessageHandlers {
 
-    public class PingYourPackageAuthHandler : BasicAuthenticationHandler {
+    public class PingYourPackageAuthHandler : 
+        BasicAuthenticationHandler {
 
         protected override IPrincipal AuthenticateUser(
             HttpRequestMessage request, 
@@ -14,11 +15,12 @@ namespace PingYourPackage.API.MessageHandlers {
             string password, 
             CancellationToken cancellationToken) {
 
-            IMembershipService membershipService = (IMembershipService)request
+            var membershipService = (IMembershipService)request
                 .GetDependencyScope()
                 .GetService(typeof(IMembershipService));
 
-            return membershipService.ValidateUser(username, password);
+            return membershipService.ValidateUser(
+                username, password);
         }
     }
 }

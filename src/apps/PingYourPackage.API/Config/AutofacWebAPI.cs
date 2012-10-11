@@ -16,14 +16,16 @@ namespace PingYourPackage.API.Config {
 
         public static void Initialize(HttpConfiguration config) {
 
-            config.DependencyResolver = new AutofacWebApiDependencyResolver(
-                RegisterServices(new ContainerBuilder())
-            );
+            config.DependencyResolver = 
+                new AutofacWebApiDependencyResolver(
+                    RegisterServices(new ContainerBuilder()));
         }
 
-        private static IContainer RegisterServices(ContainerBuilder builder) {
+        private static IContainer RegisterServices(
+            ContainerBuilder builder) {
 
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).PropertiesAutowired();
+            builder.RegisterAssemblyTypes(
+                Assembly.GetExecutingAssembly()).PropertiesAutowired();
 
             //EF DbContext
             builder.RegisterType<EntitiesContext>()
@@ -31,25 +33,41 @@ namespace PingYourPackage.API.Config {
 
             //Repositories
             builder.RegisterType<EntityRepository<User>>()
-                .As<IEntityRepository<User>>().InstancePerApiRequest();
+                .As<IEntityRepository<User>>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<EntityRepository<Role>>()
-                .As<IEntityRepository<Role>>().InstancePerApiRequest();
+                .As<IEntityRepository<Role>>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<EntityRepository<UserInRole>>()
-                .As<IEntityRepository<UserInRole>>().InstancePerApiRequest();
+                .As<IEntityRepository<UserInRole>>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<EntityRepository<Affiliate>>()
-                .As<IEntityRepository<Affiliate>>().InstancePerApiRequest();
+                .As<IEntityRepository<Affiliate>>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<EntityRepository<Shipment>>()
-                .As<IEntityRepository<Shipment>>().InstancePerApiRequest();
+                .As<IEntityRepository<Shipment>>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<EntityRepository<ShipmentType>>()
-                .As<IEntityRepository<ShipmentType>>().InstancePerApiRequest();
+                .As<IEntityRepository<ShipmentType>>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<EntityRepository<ShipmentState>>()
-                .As<IEntityRepository<ShipmentState>>().InstancePerApiRequest();
+                .As<IEntityRepository<ShipmentState>>()
+                .InstancePerApiRequest();
 
             //services
             builder.RegisterType<CryptoService>()
-                .As<ICryptoService>().InstancePerApiRequest();
+                .As<ICryptoService>()
+                .InstancePerApiRequest();
+
             builder.RegisterType<MembershipService>()
-                .As<IMembershipService>().InstancePerApiRequest();
+                .As<IMembershipService>()
+                .InstancePerApiRequest();
 
             return builder.Build();
         }
