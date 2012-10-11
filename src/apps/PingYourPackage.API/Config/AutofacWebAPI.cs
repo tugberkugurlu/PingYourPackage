@@ -16,14 +16,19 @@ namespace PingYourPackage.API.Config {
 
         public static void Initialize(HttpConfiguration config) {
 
-            config.DependencyResolver = 
-                new AutofacWebApiDependencyResolver(
-                    RegisterServices(new ContainerBuilder()));
+            Initialize(config, 
+                RegisterServices(new ContainerBuilder()));
+        }
+
+        public static void Initialize(HttpConfiguration config, IContainer container) {
+
+            config.DependencyResolver =
+                new AutofacWebApiDependencyResolver(container);
         }
 
         private static IContainer RegisterServices(
             ContainerBuilder builder) {
-
+            
             builder.RegisterAssemblyTypes(
                 Assembly.GetExecutingAssembly()).PropertiesAutowired();
 
