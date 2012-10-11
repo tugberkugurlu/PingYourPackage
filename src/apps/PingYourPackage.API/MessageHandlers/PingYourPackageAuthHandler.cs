@@ -9,6 +9,9 @@ namespace PingYourPackage.API.MessageHandlers {
     public class PingYourPackageAuthHandler : 
         BasicAuthenticationHandler {
 
+        public PingYourPackageAuthHandler() 
+            : base(suppressIfAlreadyAuthenticated: true) { }
+
         protected override IPrincipal AuthenticateUser(
             HttpRequestMessage request, 
             string username, 
@@ -21,6 +24,12 @@ namespace PingYourPackage.API.MessageHandlers {
 
             return membershipService.ValidateUser(
                 username, password);
+        }
+
+        protected override void HandleUnauthenticatedRequest(UnauthenticatedRequestContext context) {
+            
+            // Do nothing here. The Autharization 
+            // will be handled by the AuthorizeAttribute.
         }
     }
 }

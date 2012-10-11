@@ -58,20 +58,17 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebAPIDoodle, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebAPIDoodle.1.2.2\lib\net40\WebAPIDoodle.dll</HintPath>
+    <Reference Include="WebAPIDoodle">
+      <HintPath>..\..\..\packages\WebAPIDoodle.1.2.3\lib\net40\WebAPIDoodle.dll</HintPath>
     </Reference>
     <Reference Include="WebAPIDoodle.Formatting">
-      <HintPath>..\..\..\packages\WebAPIDoodle.Formatting.1.2.2\lib\net40\WebAPIDoodle.Formatting.dll</HintPath>
+      <HintPath>..\..\..\packages\WebAPIDoodle.Formatting.1.2.3\lib\net40\WebAPIDoodle.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="WebAPIDoodle.Http, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebAPIDoodle.Http.1.2.2\lib\net40\WebAPIDoodle.Http.dll</HintPath>
+    <Reference Include="WebAPIDoodle.Http">
+      <HintPath>..\..\..\packages\WebAPIDoodle.Http.1.2.3\lib\net40\WebAPIDoodle.Http.dll</HintPath>
     </Reference>
-    <Reference Include="WebAPIDoodle.Meta, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebAPIDoodle.Meta.1.2.2\lib\net40\WebAPIDoodle.Meta.dll</HintPath>
+    <Reference Include="WebAPIDoodle.Meta">
+      <HintPath>..\..\..\packages\WebAPIDoodle.Meta.1.2.3\lib\net40\WebAPIDoodle.Meta.dll</HintPath>
     </Reference>
     <Reference Include="xunit">
       <HintPath>..\..\..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
