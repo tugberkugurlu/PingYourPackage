@@ -16,7 +16,7 @@ namespace PingYourPackage.API.Test.Integration.TestHelpers {
             var config = new HttpConfiguration();
             RouteConfig.RegisterRoutes(config.Routes);
             WebAPIConfig.Configure(config);
-
+            
             return config;
         }
 
