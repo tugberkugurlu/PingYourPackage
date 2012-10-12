@@ -4,6 +4,7 @@ using PingYourPackage.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -29,12 +30,24 @@ namespace PingYourPackage.API.Controllers {
 
         public RoleDto GetRole(Guid key) {
 
-            return _membershipService.GetRole(key).ToRoleDto();
+            var role = _membershipService.GetRole(key);
+            if (role == null) {
+
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return role.ToRoleDto();
         }
 
         public RoleDto GetRole(string roleName) {
 
-            return _membershipService.GetRole(roleName).ToRoleDto();
+            var role = _membershipService.GetRole(roleName);
+            if (role == null) {
+
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return role.ToRoleDto();
         }
     }
 }
