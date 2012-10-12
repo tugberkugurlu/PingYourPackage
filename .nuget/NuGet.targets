@@ -2,7 +2,8 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">$(MSBuildProjectDirectory)\..\</SolutionDir>
-        
+        <ModifiedSolutionDir>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)\..\))</ModifiedSolutionDir>
+      
         <!-- Enable the restore command to run before builds -->
         <RestorePackages Condition="  '$(RestorePackages)' == '' ">false</RestorePackages>
 
@@ -48,7 +49,7 @@
         
         <RequireConsentSwitch Condition=" $(RequireRestoreConsent) == 'true' ">-RequireConsent</RequireConsentSwitch>
         <!-- Commands -->
-        <RestoreCommand>$(NuGetCommand) install "$(PackagesConfig)" -source "$(PackageSources)"  $(RequireConsentSwitch) -solutionDir "$(SolutionDir) "</RestoreCommand>
+        <RestoreCommand>$(NuGetCommand) install "$(PackagesConfig)" -source "$(PackageSources)"  $(RequireConsentSwitch) -solutionDir "$(ModifiedSolutionDir.Trim('\\'))"</RestoreCommand>
         <BuildCommand>$(NuGetCommand) pack "$(ProjectPath)" -p Configuration=$(Configuration) -o "$(PackageOutputDir)" -symbols</BuildCommand>
 
         <!-- We need to ensure packages are restored prior to assembly resolve -->
@@ -81,6 +82,9 @@
     </Target>
 
     <Target Name="RestorePackages" DependsOnTargets="CheckPrerequisites">
+
+        <Message Text="$(ModifiedSolutionDir)" Importance="high" />
+      
         <Exec Command="$(RestoreCommand)"
               Condition="'$(OS)' != 'Windows_NT' And Exists('$(PackagesConfig)')" />
               

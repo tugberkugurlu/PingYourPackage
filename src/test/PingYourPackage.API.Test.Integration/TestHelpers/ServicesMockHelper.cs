@@ -11,17 +11,36 @@ namespace PingYourPackage.API.Test.Integration {
     
     internal static class ServicesMockHelper {
 
-        internal static Mock<IMembershipService> GetMembershipService(
-            string validUserName, string validPassword, string[] userRoles) {
-
-            var principal = new GenericPrincipal(
-                new GenericIdentity(validUserName),
-                userRoles);
+        internal static Mock<IMembershipService> GetInitialMembershipService() {
 
             var membershipServiceMock = new Mock<IMembershipService>();
-            membershipServiceMock.Setup(ms =>
-                    ms.ValidateUser(validUserName, validPassword))
-                .Returns(principal);
+
+            var adminPrincipal = new GenericPrincipal(
+                new GenericIdentity(Constants.ValidAdminUserName),
+                new[] { "Admin" });
+
+            membershipServiceMock.Setup(ms => ms.ValidateUser(
+                Constants.ValidAdminUserName,
+                Constants.ValidAdminPassword))
+                .Returns(adminPrincipal);
+
+            var employeePrincipal = new GenericPrincipal(
+                new GenericIdentity(Constants.ValidEmployeeUserName),
+                new[] { "Employee" });
+
+            membershipServiceMock.Setup(ms => ms.ValidateUser(
+                Constants.ValidEmployeeUserName,
+                Constants.ValidEmployeePassword))
+                .Returns(employeePrincipal);
+
+            var affiliatePrincipal = new GenericPrincipal(
+                new GenericIdentity(Constants.ValidAffiliateUserName),
+                new[] { "Affiliate" });
+
+            membershipServiceMock.Setup(ms => ms.ValidateUser(
+                Constants.ValidAffiliateUserName,
+                Constants.ValidEmployeePassword))
+                .Returns(affiliatePrincipal);
 
             return membershipServiceMock;
         }

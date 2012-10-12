@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingYourPackage.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -27,5 +28,9 @@ namespace PingYourPackage.Domain.Services {
 
         bool AddToRole(string username, string role);
         bool RemoveFromRole(string username, string role);
+
+        IEnumerable<Role> GetRoles();
+        Role GetRole(Guid key);
+        Role GetRole(string name);
     }
 }

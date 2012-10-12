@@ -67,7 +67,7 @@ namespace PingYourPackage.Domain.Services {
             var existingUser = _userRepository.GetAll().Any(
                 x => x.Name == username);
 
-            if (existingUser != null) {
+            if (existingUser) {
                 return false;
             }
 
@@ -185,6 +185,21 @@ namespace PingYourPackage.Domain.Services {
 
             _userInRoleRepository.Add(userInRole);
             _userInRoleRepository.Save();
+        }
+
+        public IEnumerable<Role> GetRoles() {
+
+            return _roleRepository.All;
+        }
+
+        public Role GetRole(Guid key) {
+
+            return _roleRepository.GetSingle(key);
+        }
+
+        public Role GetRole(string name) {
+
+            return _roleRepository.GetSingleByRoleName(name);
         }
     }
 }

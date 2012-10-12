@@ -26,7 +26,7 @@ namespace PingYourPackage.API.Test.Integration {
             return config;
         }
 
-        internal static ContainerBuilder GetInitialContainerBuilder() {
+        internal static ContainerBuilder GetEmptyContainerBuilder() {
 
             var builder = new ContainerBuilder();
 
@@ -36,14 +36,12 @@ namespace PingYourPackage.API.Test.Integration {
             return builder;
         }
 
-        internal static ContainerBuilder GetInitialContainerBuilder(
-            string validUserName,string validPassword, string[] userRoles) {
+        internal static ContainerBuilder GetInitialContainerBuilder() {
 
-            var builder = GetInitialContainerBuilder();
+            var builder = GetEmptyContainerBuilder();
 
             builder.Register(c => 
-                ServicesMockHelper.GetMembershipService(
-                    validUserName, validPassword, userRoles).Object)
+                ServicesMockHelper.GetInitialMembershipService().Object)
                 .As<IMembershipService>()
                 .InstancePerApiRequest();
 

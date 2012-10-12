@@ -1,4 +1,6 @@
-﻿using PingYourPackage.Domain.Services;
+﻿using PingYourPackage.API.Model;
+using PingYourPackage.API.Model.Dtos;
+using PingYourPackage.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,27 +20,21 @@ namespace PingYourPackage.API.Controllers {
             _membershipService = membershipService;
         }
 
-        public string[] GetRoles() {
+        public IEnumerable<RoleDto> GetRoles() {
 
-            return new[] { 
-                "Admin",
-                "Employee",
-                "Affiliate"
-            };
+            return _membershipService
+                   .GetRoles()
+                   .Select(role => role.ToRoleDto());
         }
 
-        public string[] GetRole(Guid key) {
+        public RoleDto GetRole(Guid key) {
 
-            return new[] { 
-                "Admin",
-                "Employee",
-                "Affiliate"
-            };
+            return _membershipService.GetRole(key).ToRoleDto();
         }
 
-        public string GetRole(string roleName) {
+        public RoleDto GetRole(string roleName) {
 
-            return roleName;
+            return _membershipService.GetRole(roleName).ToRoleDto();
         }
     }
 }

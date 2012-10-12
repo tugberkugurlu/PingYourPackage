@@ -90,10 +90,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\ICollectionExtensions.cs" />
     <Compile Include="Common\IEnumerableExtensions.cs" />
     <Compile Include="Controllers\RolesControllerIntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHelpers\IntegrationAuthTestHelper.cs" />
     <Compile Include="TestHelpers\HttpRequestMessageHelper.cs" />
     <Compile Include="TestHelpers\HttpServerExtensions.cs" />
     <Compile Include="TestHelpers\IntegrationTestHelper.cs" />
