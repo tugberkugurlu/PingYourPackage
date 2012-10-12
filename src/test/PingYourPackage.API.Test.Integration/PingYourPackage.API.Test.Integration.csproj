@@ -103,6 +103,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\apps\PingYourPackage.API.Model\PingYourPackage.API.Model.csproj">
+      <Project>{4a4247b1-c3d1-44da-826f-e5569eac955f}</Project>
+      <Name>PingYourPackage.API.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\apps\PingYourPackage.API\PingYourPackage.API.csproj">
       <Project>{56c0608b-2a3c-40e8-b0e9-cc27e5181bfb}</Project>
       <Name>PingYourPackage.API</Name>
