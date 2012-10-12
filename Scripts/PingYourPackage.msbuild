@@ -1,0 +1,37 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+         ToolsVersion="4.0"
+         DefaultTargets="Default">
+
+  <Import Project="$(MSBuildThisFileDirectory)\PingYourPackage.properties"/>
+  
+  <ItemGroup>
+    <AppProjFiles Include="$(SolutionDir)\src\apps\**\*.csproj" />
+    <TestProjFiles Include="$(SolutionDir)\src\test\**\*.csproj" />
+  </ItemGroup>
+  
+  <Target Name="Default" DependsOnTargets="UnitTest" />
+  
+  <Target Name="Clean">
+    <RemoveDir Directories="$(BuildArtifactsDir)" />
+  </Target>
+  <Target Name="Init" DependsOnTargets="Clean">
+    <MakeDir Directories="$(BuildArtifactsDir);$(NuGetPackageOutputDir)" />
+  </Target>
+  <Target Name="Compile" DependsOnTargets="Init">
+    <MSBuild Projects="@(AppProjFiles)" Targets="Rebuild" Properties="OutDir=$(BuildArtifactsDir);Configuration=$(Configuration)" />
+    <MSBuild Projects="@(TestProjFiles)" Targets="Rebuild" Properties="OutDir=$(BuildTestArtifactsDir);Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="UnitTest" DependsOnTargets="Compile">
+    <ItemGroup>
+      <TestDLLsXunit Include="$(BuildTestArtifactsDir)\*.Test.*.dll;$(BuildTestArtifactsDir)\*.Test.dll">
+        <ResultsDirectory>$(TestResultsDirectory)</ResultsDirectory>
+      </TestDLLsXunit>
+      <XunitProject Include="$(ScriptToolsDir)\PingYourPackage.xunit.targets">
+        <Properties>TestAssembly=%(TestDLLsXunit.FullPath);XmlPath=%(TestDLLsXunit.ResultsDirectory)%(TestDLLsXunit.FileName)-XunitResults.xml</Properties>
+      </XunitProject>
+    </ItemGroup>
+    <MakeDir Directories="%(TestDLLsXunit.ResultsDirectory)" />
+    <MSBuild Projects="@(XunitProject)" Targets="Xunit" />
+  </Target>
+</Project>

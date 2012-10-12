@@ -1,5 +1,5 @@
 param(
-    $buildFile   = (join-path (Split-Path -parent (Split-Path -parent $MyInvocation.MyCommand.Definition)) "PingYourPackage.msbuild"),
+    $buildFile   = (join-path (Split-Path -parent $MyInvocation.MyCommand.Definition) "PingYourPackage.msbuild"),
     $buildParams = "/p:Configuration=Release",
     $buildTarget = "/t:Default"
 )

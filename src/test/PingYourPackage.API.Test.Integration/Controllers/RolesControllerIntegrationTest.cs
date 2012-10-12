@@ -1,67 +1,122 @@
 ﻿using Autofac;
-using PingYourPackage.API.Config;
-using PingYourPackage.Domain.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using Xunit;
-using Autofac.Integration.WebApi;
 using System.Web.Http;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net;
-using System.Threading;
+using Xunit;
 
 namespace PingYourPackage.API.Test.Integration.Controllers {
     
-    public class RolesControllerIntegrationTest : IDisposable {
+    public class RolesControllerIntegrationTest {
 
-        private readonly HttpServer _httpServer;
+        private const string ValidUserName = "tugberk";
+        private const string ValidPassword = "12345678";
+        private const string InvalidUserName = "tgbrk";
+        private const string InvalidPassword = "87654321";
 
-        public RolesControllerIntegrationTest() {
+        [Fact, NullCurrentPrincipal]
+        public async Task 
+            Returns_Unauthorized_Response_If_Request_Is_Not_Authorized() {
 
-            var config = IntegrationTestHelper.GetInitialIntegrationTestConfig(RegisterServices());
-            _httpServer = new HttpServer(config);
+            // Arrange
+            var config = IntegrationTestHelper
+                .GetInitialIntegrationTestConfig(
+                    GetInitialServices(
+                        ValidUserName, ValidPassword, new[] { "Admin" }));
+
+            using (var httpServer = new HttpServer(config))
+            using (var client = httpServer.ToHttpClient()) {
+
+                var request = HttpRequestMessageHelper.ConstructRequest(
+                    httpMethod: HttpMethod.Get,
+                    uri: "https://localhost/api/roles",
+                    mediaType: "application/json",
+                    username: InvalidUserName,
+                    password: InvalidPassword);
+
+                //Act
+                var response = await client.SendAsync(request);
+
+                //Assert
+                Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            }
         }
 
         [Fact, NullCurrentPrincipal]
-        public async Task Returns_Unauthorized_Response_If_Request_Is_Not_Authorized() {
+        public async Task 
+            Returns_Unauthorized_Response_If_Request_Is_Not_By_Admin() {
 
             // Arrange
-            var client = new HttpClient(_httpServer);
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://localhost/api/roles");
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var config = IntegrationTestHelper
+                .GetInitialIntegrationTestConfig(
+                    GetInitialServices(
+                        ValidUserName, ValidPassword, new[] { "Employee" }));
 
-            //Act
-            var response = await client.SendAsync(request);
+            using (var httpServer = new HttpServer(config))
+            using (var client = httpServer.ToHttpClient()) {
 
-            //Assert
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+                var request = HttpRequestMessageHelper.ConstructRequest(
+                    httpMethod: HttpMethod.Get,
+                    uri: "https://localhost/api/roles",
+                    mediaType: "application/json",
+                    username: ValidUserName,
+                    password: ValidPassword);
+
+                //Act
+                var response = await client.SendAsync(request);
+
+                //Assert
+                Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            }
         }
 
-        private static IContainer RegisterServices() {
+        [Fact, NullCurrentPrincipal]
+        public async Task 
+            Does_Not_Returns_Unauthorized_Response_If_Request_Authorized() {
+            
+            // Arrange
+            var config = IntegrationTestHelper
+                .GetInitialIntegrationTestConfig(
+                    GetInitialServices(
+                        ValidUserName, ValidPassword, new[] { "Admin" }));
 
-            var builder = new ContainerBuilder();
+            using (var httpServer = new HttpServer(config))
+            using (var client = httpServer.ToHttpClient()) {
 
-            builder.RegisterAssemblyTypes(
-                Assembly.GetAssembly(typeof(WebAPIConfig))).PropertiesAutowired();
+                var request = HttpRequestMessageHelper.ConstructRequest(
+                    httpMethod: HttpMethod.Get,
+                    uri: "https://localhost/api/roles",
+                    mediaType: "application/json",
+                    username: ValidUserName,
+                    password: ValidPassword);
 
-            //Repositories
+                //Act
+                var response = await client.SendAsync(request);
 
-            //services
-            builder.RegisterType<CryptoService>()
-                .As<ICryptoService>()
-                .InstancePerApiRequest();
+                //Assert
+                Assert.NotEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+            }
+        }
+
+        public class GetRolesActionTest { 
+        }
+
+        public class GetRoleActionTest {
+        }
+
+        public class PostRoleActionTest {
+        }
+
+        private static IContainer GetInitialServices(
+            string validUserName,
+            string validPassword,
+            string[] userRoles) {
+
+            var builder = IntegrationTestHelper.GetInitialContainerBuilder(
+                validUserName, validPassword, userRoles);
 
             return builder.Build();
-        }
-
-        public void Dispose() {
-
-            _httpServer.Dispose();
         }
     }
 }

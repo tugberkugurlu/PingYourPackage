@@ -1,11 +1,9 @@
 ﻿using Autofac;
+using Autofac.Integration.WebApi;
 using PingYourPackage.API.Config;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
+using System.Reflection;
+using PingYourPackage.Domain.Services;
 
 namespace PingYourPackage.API.Test.Integration {
     
@@ -26,6 +24,30 @@ namespace PingYourPackage.API.Test.Integration {
             AutofacWebAPI.Initialize(config, container);
 
             return config;
+        }
+
+        internal static ContainerBuilder GetInitialContainerBuilder() {
+
+            var builder = new ContainerBuilder();
+
+            builder.RegisterAssemblyTypes(
+                Assembly.GetAssembly(typeof(WebAPIConfig))).PropertiesAutowired();
+
+            return builder;
+        }
+
+        internal static ContainerBuilder GetInitialContainerBuilder(
+            string validUserName,string validPassword, string[] userRoles) {
+
+            var builder = GetInitialContainerBuilder();
+
+            builder.Register(c => 
+                ServicesMockHelper.GetMembershipService(
+                    validUserName, validPassword, userRoles).Object)
+                .As<IMembershipService>()
+                .InstancePerApiRequest();
+
+            return builder;
         }
     }
 }

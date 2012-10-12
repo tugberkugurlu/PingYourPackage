@@ -1,0 +1,11 @@
+<Project ToolsVersion="4.0" DefaultTargets="Xunit" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildThisFileDirectory)\PingYourPackage.properties"/>
+    <ItemGroup>
+        <XunitMsBuildRunner Include="$(SolutionDir)\packages\**\xunit.runner.msbuild.dll"/>
+    </ItemGroup>
+    <UsingTask TaskName="Xunit.Runner.MSBuild.xunit" AssemblyFile="@(XunitMsBuildRunner)"/>
+
+    <Target Name="Xunit">
+        <xunit Assembly="$(TestAssembly)" Xml="$(XmlPath)"/>
+    </Target>
+</Project>
