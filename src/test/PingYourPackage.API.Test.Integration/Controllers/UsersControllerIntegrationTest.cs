@@ -230,11 +230,9 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
                     // Act
                     var response = await client.SendAsync(request);
-                    var userDto = await response.Content.ReadAsAsync<UserDto>();
 
                     // Assert
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Assert.Equal(keys[1], userDto.Key);
+                    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
                 }
             }
 
