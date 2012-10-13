@@ -54,8 +54,15 @@ namespace PingYourPackage.API.Test.MessageHandlers {
             var request = new HttpRequestMessage();
 
             var membershipServiceMock = new Mock<IMembershipService>();
-            membershipServiceMock.Setup(ms => 
-                ms.ValidateUser(username, password)).Returns(principal);
+            membershipServiceMock.Setup(ms =>
+                ms.ValidateUser(It.IsAny<string>(), It.IsAny<string>())
+            ).Returns<string, string>((u, p) => 
+                (u == username && p == password) ?
+                new ValidUserContext { 
+                    Principal = principal
+                }
+                : new ValidUserContext()
+            );
 
             var dependencyScopeMock = new Mock<IDependencyScope>();
             dependencyScopeMock.Setup(

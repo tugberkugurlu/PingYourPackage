@@ -22,7 +22,9 @@ namespace PingYourPackage.API.Test.Integration {
             membershipServiceMock.Setup(ms => ms.ValidateUser(
                 Constants.ValidAdminUserName,
                 Constants.ValidAdminPassword))
-                .Returns(adminPrincipal);
+                .Returns(new ValidUserContext {
+                    Principal = adminPrincipal
+                });
 
             var employeePrincipal = new GenericPrincipal(
                 new GenericIdentity(Constants.ValidEmployeeUserName),
@@ -31,7 +33,9 @@ namespace PingYourPackage.API.Test.Integration {
             membershipServiceMock.Setup(ms => ms.ValidateUser(
                 Constants.ValidEmployeeUserName,
                 Constants.ValidEmployeePassword))
-                .Returns(employeePrincipal);
+                .Returns(new ValidUserContext {
+                    Principal = employeePrincipal
+                });
 
             var affiliatePrincipal = new GenericPrincipal(
                 new GenericIdentity(Constants.ValidAffiliateUserName),
@@ -39,8 +43,16 @@ namespace PingYourPackage.API.Test.Integration {
 
             membershipServiceMock.Setup(ms => ms.ValidateUser(
                 Constants.ValidAffiliateUserName,
-                Constants.ValidEmployeePassword))
-                .Returns(affiliatePrincipal);
+                Constants.ValidAffiliatePassword))
+                .Returns(new ValidUserContext {
+                    Principal = affiliatePrincipal
+                });
+
+            // For invalid user
+            membershipServiceMock.Setup(ms => ms.ValidateUser(
+                Constants.InvalidUserName,
+                Constants.InvalidPassword))
+                .Returns(new ValidUserContext());
 
             return membershipServiceMock;
         }

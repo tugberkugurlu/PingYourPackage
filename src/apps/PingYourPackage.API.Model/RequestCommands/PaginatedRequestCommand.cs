@@ -13,6 +13,7 @@ namespace PingYourPackage.API.Model.RequestCommands {
         public int Page { get; set; }
 
         [Minimum(1)]
+        [Maximum(50)]
         public int Take { get; set; }
     }
 }

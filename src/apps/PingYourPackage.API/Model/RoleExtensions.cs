@@ -12,8 +12,10 @@ namespace PingYourPackage.API.Model {
 
         internal static RoleDto ToRoleDto(this Role role) {
 
-            if (role == null)
+            if (role == null) {
+
                 throw new ArgumentNullException("role");
+            }
 
             return new RoleDto { 
                 Key = role.Key,

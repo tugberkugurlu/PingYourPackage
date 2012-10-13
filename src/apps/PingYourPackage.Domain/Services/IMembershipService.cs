@@ -10,7 +10,7 @@ namespace PingYourPackage.Domain.Services {
 
     public interface IMembershipService {
 
-        IPrincipal ValidateUser(string username, string password);
+        ValidUserContext ValidateUser(string username, string password);
 
         bool CreateUser(
             string username, string email, string password);
@@ -32,5 +32,9 @@ namespace PingYourPackage.Domain.Services {
         IEnumerable<Role> GetRoles();
         Role GetRole(Guid key);
         Role GetRole(string name);
+
+        PaginatedList<UserWithRoles> GetUsers(int pageIndex, int pageSize);
+        UserWithRoles GetUser(Guid key);
+        UserWithRoles GetUser(string name);
     }
 }

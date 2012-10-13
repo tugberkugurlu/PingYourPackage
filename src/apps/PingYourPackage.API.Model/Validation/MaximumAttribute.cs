@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PingYourPackage.API.Model.Validation {
-
+    
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class MinimumAttribute : ValidationAttribute {
+    public class MaximumAttribute : ValidationAttribute {
 
-        private readonly int _minimumValue;
+        private readonly int _maximumValue;
 
-        public MinimumAttribute(int minimum) : 
-            base(errorMessage: "The {0} field value must be minimum {1}.") {
+        public MaximumAttribute(int maximum) : 
+            base(errorMessage: "The {0} field value must be maximum {1}.") {
 
-            _minimumValue = minimum;
+            _maximumValue = maximum;
         }
 
         public override string FormatErrorMessage(string name) {
@@ -25,7 +21,7 @@ namespace PingYourPackage.API.Model.Validation {
                 CultureInfo.CurrentCulture,
                 base.ErrorMessageString,
                 name,
-                _minimumValue);
+                _maximumValue);
         }
 
         public override bool IsValid(object value) {
@@ -33,7 +29,7 @@ namespace PingYourPackage.API.Model.Validation {
             int intValue;
             if (value != null && int.TryParse(value.ToString(), out intValue)) {
 
-                return (intValue >= _minimumValue);
+                return (intValue <= _maximumValue);
             }
 
             return false;

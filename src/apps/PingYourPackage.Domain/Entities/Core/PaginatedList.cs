@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Entities {
 
-    public class PaginatedList<T> : List<T> where T : IEntity {
+    public class PaginatedList<T> : List<T> {
 
         public int PageIndex { get; private set; }
         public int PageSize { get; private set; }

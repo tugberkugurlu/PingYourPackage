@@ -93,7 +93,9 @@
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\ICollectionExtensions.cs" />
     <Compile Include="Common\IEnumerableExtensions.cs" />
+    <Compile Include="Controllers\AuthControllerIntegrationTest.cs" />
     <Compile Include="Controllers\RolesControllerIntegrationTest.cs" />
+    <Compile Include="Controllers\UsersControllerIntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers\IntegrationAuthTestHelper.cs" />
     <Compile Include="TestHelpers\HttpRequestMessageHelper.cs" />

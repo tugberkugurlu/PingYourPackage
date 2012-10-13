@@ -92,6 +92,8 @@
     <Compile Include="Services\IMembershipService.cs" />
     <Compile Include="Services\IShipmentService.cs" />
     <Compile Include="Services\MembershipService.cs" />
+    <Compile Include="Services\UserWithRoles.cs" />
+    <Compile Include="Services\ValidUserContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -16,14 +16,16 @@ namespace PingYourPackage.API.MessageHandlers {
             HttpRequestMessage request, 
             string username, 
             string password, 
-            CancellationToken cancellationToken) {
+            CancellationToken cancellationToken) { 
 
             var membershipService = (IMembershipService)request
                 .GetDependencyScope()
                 .GetService(typeof(IMembershipService));
 
-            return membershipService.ValidateUser(
-                username, password);
+            var validUserCtx = membershipService
+                .ValidateUser(username, password);
+
+            return validUserCtx.Principal;
         }
 
         protected override void HandleUnauthenticatedRequest(UnauthenticatedRequestContext context) {

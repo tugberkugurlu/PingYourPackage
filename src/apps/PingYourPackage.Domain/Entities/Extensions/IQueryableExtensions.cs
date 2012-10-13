@@ -11,7 +11,7 @@ namespace PingYourPackage.Domain.Entities {
         public static PaginatedList<T> ToPaginatedList<T>(
             this IQueryable<T> query, 
             int pageIndex, 
-            int pageSize) where T : IEntity {
+            int pageSize) {
 
             var baseQuery = query;
             query = query.Skip(

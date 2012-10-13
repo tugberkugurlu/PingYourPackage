@@ -28,28 +28,24 @@ namespace PingYourPackage.Domain.Services {
 
         }
 
-        public IPrincipal ValidateUser(string username, string password) {
+        public ValidUserContext ValidateUser(string username, string password) {
 
+            var userCtx = new ValidUserContext();
             var user = _userRepository.GetSingleByUsername(username);
-
             if (user != null && isUserValid(user, password)) {
-                
+
+                var userRoles = GetUserRoles(user.Key);
+                userCtx.User = new UserWithRoles() {
+                    User = user, Roles = userRoles
+                };
+
                 var identity = new GenericIdentity(user.Name);
-                var userInRoles = _userInRoleRepository.FindBy(x => x.UserKey == user.Key);
-
-                var userRoleNames = new string[] { };
-                if (userInRoles != null) {
-
-                    var userRoleKeys = userInRoles.Select(x => x.RoleKey).ToArray();
-                    userRoleNames = _roleRepository
-                        .FindBy(x => userRoleKeys.Contains(x.Key))
-                            .Select(x => x.Name).ToArray();
-                }
-
-                return new GenericPrincipal(identity, userRoleNames);
+                userCtx.Principal = new GenericPrincipal(
+                    identity,
+                    userRoles.Select(x => x.Name).ToArray());
             }
 
-            return null;
+            return userCtx;
         }
 
         public bool CreateUser(string username, string email, string password) {
@@ -147,6 +143,68 @@ namespace PingYourPackage.Domain.Services {
             return false;
         }
 
+        public IEnumerable<Role> GetRoles() {
+
+            return _roleRepository.All;
+        }
+
+        public Role GetRole(Guid key) {
+
+            return _roleRepository.GetSingle(key);
+        }
+
+        public Role GetRole(string name) {
+
+            return _roleRepository.GetSingleByRoleName(name);
+        }
+
+        public PaginatedList<UserWithRoles> GetUsers(int pageIndex, int pageSize) {
+
+            var users = _userRepository.GetAll()
+                .ToPaginatedList(pageIndex, pageSize);
+
+            return new PaginatedList<UserWithRoles>(
+                users.PageIndex,
+                users.PageSize,
+                users.TotalCount,
+                users.Select(user => new UserWithRoles() { 
+                    User = user,
+                    Roles = GetUserRoles(user.Key)
+                }).AsQueryable());
+        }
+
+        public UserWithRoles GetUser(Guid key) {
+
+            var user = _userRepository.GetSingle(key);
+            if (user != null) {
+
+                var userRoles = GetUserRoles(user.Key);
+                return new UserWithRoles() {
+                    User = user,
+                    Roles = userRoles
+                };
+            }
+
+            return null;
+        }
+
+        public UserWithRoles GetUser(string name) {
+
+            var user = _userRepository.GetSingleByUsername(name);
+            if (user != null) {
+
+                var userRoles = GetUserRoles(user.Key);
+                return new UserWithRoles() {
+                    User = user,
+                    Roles = userRoles
+                };
+            }
+
+            return null;
+        }
+
+        // Private helpers
+
         private bool isUserValid(User user, string password) {
 
             if (isPasswordValid(user, password)) {
@@ -187,19 +245,23 @@ namespace PingYourPackage.Domain.Services {
             _userInRoleRepository.Save();
         }
 
-        public IEnumerable<Role> GetRoles() {
+        private IEnumerable<Role> GetUserRoles(Guid userKey) {
 
-            return _roleRepository.All;
-        }
+            var userInRoles = _userInRoleRepository
+                .FindBy(x => x.UserKey == userKey).ToList();
 
-        public Role GetRole(Guid key) {
+            if (userInRoles != null && userInRoles.Count > 0) {
 
-            return _roleRepository.GetSingle(key);
-        }
+                var userRoleKeys = userInRoles.Select(
+                    x => x.RoleKey).ToArray();
 
-        public Role GetRole(string name) {
+                var userRoles = _roleRepository
+                    .FindBy(x => userRoleKeys.Contains(x.Key));
 
-            return _roleRepository.GetSingleByRoleName(name);
+                return userRoles;
+            }
+
+            return Enumerable.Empty<Role>();
         }
     }
 }

@@ -9,13 +9,16 @@ using System.Web.Http.Validation;
 using System.Web.Http.Validation.Providers;
 using PingYourPackage.API.Formatting;
 using System.Web.Http.ModelBinding;
+using System.Security.Principal;
+using PingYourPackage.API.ModelBinding;
+using PingYourPackage.API.Model.RequestCommands;
 using WebAPIDoodle.Filters;
 
 namespace PingYourPackage.API.Config {
 
     public class WebAPIConfig {
 
-        public static void Configure(HttpConfiguration config) { 
+        public static void Configure(HttpConfiguration config) {
 
             //Message Handlers
             config.MessageHandlers.Add(new RequireHttpsMessageHandler());
@@ -52,10 +55,24 @@ namespace PingYourPackage.API.Config {
                 new DefaultContentNegotiator(
                     excludeMatchOnTypeOnly: true));
 
+            // Remove all the validation providers 
+            // except for DataAnnotationsModelValidatorProvider
             config.Services.RemoveAll(
                 typeof(ModelValidatorProvider),
                 validator => !(validator 
                     is DataAnnotationsModelValidatorProvider));
+
+            // If the parameter type is IPrincipal,
+            // use PrincipalParameterBinding
+            config.ParameterBindingRules.Add(
+                typeof(IPrincipal), descriptor =>
+                new PrincipalParameterBinding(descriptor));
+
+            // any complex type parameter which is Assignable From 
+            // IRequestCommand will be bound from the URI
+            config.ParameterBindingRules.Insert(0,
+                descriptor => typeof(IRequestCommand).IsAssignableFrom(descriptor.ParameterType)
+                    ? new FromUriAttribute().GetBinding(descriptor) : null);
         }
     }
 }

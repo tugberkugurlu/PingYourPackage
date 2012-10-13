@@ -16,7 +16,8 @@ namespace PingYourPackage.API.Controllers {
 
         private readonly IMembershipService _membershipService;
 
-        public RolesController(IMembershipService membershipService) {
+        public RolesController(
+            IMembershipService membershipService) {
 
             _membershipService = membershipService;
         }

@@ -88,10 +88,15 @@
     <Compile Include="Config\AutofacWebAPI.cs" />
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Config\WebAPIConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
+    <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
+    <Compile Include="Model\PaginatedListExtensions.cs" />
     <Compile Include="Model\RoleExtensions.cs" />
+    <Compile Include="Model\UserWithRolesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Formatting\SuppressedRequiredMemberSelector.cs" />
   </ItemGroup>
