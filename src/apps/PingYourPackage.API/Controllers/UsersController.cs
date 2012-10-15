@@ -1,11 +1,13 @@
 ﻿using PingYourPackage.API.Model;
 using PingYourPackage.API.Model.Dtos;
 using PingYourPackage.API.Model.RequestCommands;
+using PingYourPackage.API.Model.RequestModels;
 using PingYourPackage.Domain.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -22,11 +24,9 @@ namespace PingYourPackage.API.Controllers {
             _membershipService = membershipService;
         }
 
-        public PaginatedDto<UserDto> GetUsers(
-            PaginatedRequestCommand cmd) {
+        public PaginatedDto<UserDto> GetUsers(PaginatedRequestCommand cmd) {
 
-            var users = _membershipService
-                .GetUsers(cmd.Page, cmd.Take);
+            var users = _membershipService.GetUsers(cmd.Page, cmd.Take);
 
             return users.ToPaginatedDto(
                 users.Select(user => user.ToUserDto()));
@@ -41,6 +41,40 @@ namespace PingYourPackage.API.Controllers {
             }
 
             return user.ToUserDto();
+        }
+
+        public HttpResponseMessage PostUser(UserRequestModel requestModel) {
+
+            var createdUserResult = 
+                _membershipService.CreateUser(
+                    requestModel.Name, requestModel.Email, requestModel.Password);
+
+            if (!createdUserResult.IsSuccess) {
+
+                return new HttpResponseMessage(HttpStatusCode.Conflict);
+            }
+
+            var response = Request.CreateResponse(HttpStatusCode.Created,
+                createdUserResult.User.ToUserDto());
+
+            response.Headers.Location = new Uri(Url.Link("DefaultHttpRoute",
+                    new { key = createdUserResult.User.User.Key }));
+
+            return response;
+        }
+
+        public UserDto PutUser(Guid key, UserUpdateRequestModel requestModel) {
+
+            var user = _membershipService.GetUser(key);
+            if (user == null) {
+
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var userWithRoles = _membershipService.UpdateUser(
+                user.User, requestModel.Name, requestModel.Email);
+
+            return userWithRoles.ToUserDto();
         }
     }
 }

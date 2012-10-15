@@ -19,7 +19,6 @@
 [api/shipmenttypes/{key}] => DefaultHttpRoute => ShipmentTypesController
   GET /api/shipmenttypes [collection]
   GET /api/shipmenttypes/{key} [single]
-  GET /api/shipmenttypes?name={name} [single]
   POST /api/shipmenttypes
   PUT /api/shipmenttypes/{key}
 
@@ -29,7 +28,6 @@
   GET /api/affiliates/{key} [single]
   POST /api/affiliates
   PUT /api/affiliates
-  DELETE /api/affiliates/{key}
 
 [Authorize(Roles = "Admin,Employee")]
 [api/shipments/{key}] => DefaultHttpRoute => ShipmentsController

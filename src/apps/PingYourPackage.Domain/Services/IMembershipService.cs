@@ -12,16 +12,19 @@ namespace PingYourPackage.Domain.Services {
 
         ValidUserContext ValidateUser(string username, string password);
 
-        bool CreateUser(
+        CreatedUserResult CreateUser(
             string username, string email, string password);
 
-        bool CreateUser(
+        CreatedUserResult CreateUser(
             string username, string email, 
             string password, string role);
 
-        bool CreateUser(
+        CreatedUserResult CreateUser(
             string username, string email, 
             string password, string[] roles);
+
+        UserWithRoles UpdateUser(
+            User user, string username, string email);
 
         bool ChangePassword(
             string username, string oldPassword, string newPassword);

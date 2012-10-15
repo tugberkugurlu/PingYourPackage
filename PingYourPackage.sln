@@ -1,11 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{74157E37-B532-4924-A66B-95D2B3F04E64}"
-	ProjectSection(SolutionItems) = preProject
-		PingYourPackage.msbuild = PingYourPackage.msbuild
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A9BC3B11-7731-43F1-BD7F-0B6403261B17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.Domain", "src\apps\PingYourPackage.Domain\PingYourPackage.Domain.csproj", "{07577155-9347-4C1B-A54B-0E621D293A03}"
@@ -28,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{80BAFD
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{5EBE89E7-382E-46FC-BB7F-BFAF804B1527}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,5 +64,8 @@ Global
 		{162CD486-332F-4D83-B945-5318F89FF3BB} = {A9BC3B11-7731-43F1-BD7F-0B6403261B17}
 		{3F401B5C-F5A3-4D92-AEA0-C8C4C0B603F7} = {A9BC3B11-7731-43F1-BD7F-0B6403261B17}
 		{D3AD5114-FB84-45A4-9AF9-53963651FB12} = {845A6952-29B1-47B0-99C1-07A65737AE8D}
+		{56C0608B-2A3C-40E8-B0E9-CC27E5181BFB} = {5EBE89E7-382E-46FC-BB7F-BFAF804B1527}
+		{4A4247B1-C3D1-44DA-826F-E5569EAC955F} = {5EBE89E7-382E-46FC-BB7F-BFAF804B1527}
+		{07577155-9347-4C1B-A54B-0E621D293A03} = {5EBE89E7-382E-46FC-BB7F-BFAF804B1527}
 	EndGlobalSection
 EndGlobal

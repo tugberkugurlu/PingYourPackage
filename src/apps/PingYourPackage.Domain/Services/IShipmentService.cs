@@ -9,7 +9,12 @@ namespace PingYourPackage.Domain.Services {
     
     public interface IShipmentService {
 
-        void AddShipment(Affiliate affiliate, Shipment shipment);
-        void ChangeShipmentState(Guid shipmentKey, ShipmentStatus shipmentStatus);
+        Shipment AddShipment(Guid affiliateKey, Shipment shipment);
+        Shipment ChangeShipmentState(Guid shipmentKey, ShipmentStatus shipmentStatus);
+
+        PaginatedList<ShipmentType> GetShipmentTypes(int pageIndex, int pageSize);
+        ShipmentType GetShipmentType(Guid key);
+        CreatedShipmentTypeResult AddShipmentType(ShipmentType shipmentType);
+        ShipmentType UpdateShipmentType(ShipmentType shipmentType);
     }
 }

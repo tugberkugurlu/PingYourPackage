@@ -48,23 +48,24 @@ namespace PingYourPackage.Domain.Services {
             return userCtx;
         }
 
-        public bool CreateUser(string username, string email, string password) {
+        public CreatedUserResult CreateUser(string username, string email, string password) {
 
             return CreateUser(username, password, email, roles: null);
         }
 
-        public bool CreateUser(string username, string email, string password, string role) {
+        public CreatedUserResult CreateUser(string username, string email, string password, string role) {
 
             return CreateUser(username, password, email, roles: new[] { role });
         }
 
-        public bool CreateUser(string username, string email, string password, string[] roles) {
+        public CreatedUserResult CreateUser(string username, string email, string password, string[] roles) {
 
             var existingUser = _userRepository.GetAll().Any(
                 x => x.Name == username);
 
             if (existingUser) {
-                return false;
+
+                return new CreatedUserResult(false);
             }
 
             var passwordSalt = _cryptoService.GenerateSalt();
@@ -89,7 +90,29 @@ namespace PingYourPackage.Domain.Services {
 	            }
             }
 
-            return true;
+            return new CreatedUserResult(true) { 
+                User = GetUserWithRoles(user)
+            };
+        }
+
+        public UserWithRoles UpdateUser(
+            User user,
+            string username,
+            string email) {
+
+            if (user == null) {
+
+                throw new ArgumentNullException("user");
+            }
+
+            user.Name = username;
+            user.Email = email;
+            user.LastUpdatedOn = DateTime.Now;
+
+            _userRepository.Edit(user);
+            _userRepository.Save();
+
+            return GetUserWithRoles(user);
         }
 
         public bool ChangePassword(string username, string oldPassword, string newPassword) {
@@ -176,31 +199,13 @@ namespace PingYourPackage.Domain.Services {
         public UserWithRoles GetUser(Guid key) {
 
             var user = _userRepository.GetSingle(key);
-            if (user != null) {
-
-                var userRoles = GetUserRoles(user.Key);
-                return new UserWithRoles() {
-                    User = user,
-                    Roles = userRoles
-                };
-            }
-
-            return null;
+            return GetUserWithRoles(user);
         }
 
         public UserWithRoles GetUser(string name) {
 
             var user = _userRepository.GetSingleByUsername(name);
-            if (user != null) {
-
-                var userRoles = GetUserRoles(user.Key);
-                return new UserWithRoles() {
-                    User = user,
-                    Roles = userRoles
-                };
-            }
-
-            return null;
+            return GetUserWithRoles(user);
         }
 
         // Private helpers
@@ -262,6 +267,20 @@ namespace PingYourPackage.Domain.Services {
             }
 
             return Enumerable.Empty<Role>();
+        }
+
+        private UserWithRoles GetUserWithRoles(User user) {
+
+            if (user != null) {
+
+                var userRoles = GetUserRoles(user.Key);
+                return new UserWithRoles() {
+                    User = user,
+                    Roles = userRoles
+                };
+            }
+
+            return null;
         }
     }
 }

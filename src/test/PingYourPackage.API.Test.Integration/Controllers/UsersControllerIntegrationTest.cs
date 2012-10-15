@@ -19,7 +19,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
     
     public class UsersControllerIntegrationTest {
 
-        public class GetUsersActionTest {
+        public class GetUsers {
 
             [Fact, NullCurrentPrincipal]
             public async Task
@@ -62,7 +62,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_500_If_Request_Authorized_But_PageIndex_Parameter_Is_Not_Correct() {
+                Returns_400_If_Request_Authorized_But_PageIndex_Parameter_Is_Not_Correct() {
 
                 // Arrange
                 var pageIndexParam = 0;
@@ -103,7 +103,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_500_If_Request_Authorized_But_PageSize_Parameter_Is_Not_Correct() {
+                Returns_400_If_Request_Authorized_But_PageSize_Parameter_Is_Not_Correct() {
 
                 // Arrange
                 var pageIndexParam = 1;
@@ -162,7 +162,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
         }
 
-        public class GetUserActionTest {
+        public class GetUser {
 
             [Fact, NullCurrentPrincipal]
             public async Task
@@ -254,6 +254,54 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 );
 
                 return mockMemSrv;
+            }
+        }
+
+        public class PostUser {
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_201_And_User_If_Request_Authorized_And_Success() {
+
+                throw new NotImplementedException();
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_409_If_Request_Authorized_But_Conflicted() {
+
+                throw new NotImplementedException();
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_400_If_Request_Authorized_But_Invalid() {
+
+                throw new NotImplementedException();
+            }
+        }
+
+        public class PutUser {
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_404_If_Request_Authorized_But_User_Does_Not_Exist() {
+
+                throw new NotImplementedException();
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_400_If_Request_Authorized_But_Invalid() {
+
+                throw new NotImplementedException();
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_200_And_User_If_Request_Authorized_But_Request_Is_Valid() {
+
+                throw new NotImplementedException();
             }
         }
 

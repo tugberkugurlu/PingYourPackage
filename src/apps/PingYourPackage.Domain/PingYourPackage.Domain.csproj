@@ -87,6 +87,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CreatedShipmentTypeResult.cs" />
+    <Compile Include="Services\CreatedUserResult.cs" />
     <Compile Include="Services\CryptoService.cs" />
     <Compile Include="Services\ICryptoService.cs" />
     <Compile Include="Services\IMembershipService.cs" />
