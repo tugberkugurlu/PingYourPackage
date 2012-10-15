@@ -52,6 +52,7 @@
     <Compile Include="Entities\Extensions\IQueryableExtensions.cs" />
     <Compile Include="Entities\Extensions\RoleRepositoryExtensions.cs" />
     <Compile Include="Entities\Extensions\ShipmentRepositoryExtensions.cs" />
+    <Compile Include="Entities\Extensions\ShipmentTypeRepositoryExtensions.cs" />
     <Compile Include="Entities\Extensions\UserInRoleRepositoryExtensions.cs" />
     <Compile Include="Entities\Core\IEntity.cs" />
     <Compile Include="Entities\Core\IEntityRepository.cs" />
@@ -87,6 +88,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CreatedResult.cs" />
     <Compile Include="Services\CreatedShipmentTypeResult.cs" />
     <Compile Include="Services\CreatedUserResult.cs" />
     <Compile Include="Services\CryptoService.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Services\IMembershipService.cs" />
     <Compile Include="Services\IShipmentService.cs" />
     <Compile Include="Services\MembershipService.cs" />
+    <Compile Include="Services\ShipmentService.cs" />
     <Compile Include="Services\UserWithRoles.cs" />
     <Compile Include="Services\ValidUserContext.cs" />
   </ItemGroup>

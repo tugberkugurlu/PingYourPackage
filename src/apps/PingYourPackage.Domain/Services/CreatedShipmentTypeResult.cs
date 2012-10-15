@@ -6,15 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Services {
-    
-    public class CreatedShipmentTypeResult {
 
-        public CreatedShipmentTypeResult(bool isSuccess) {
+    public class CreatedShipmentTypeResult : CreatedResult {
 
-            IsSuccess = isSuccess;
+        public CreatedShipmentTypeResult(bool isSuccess) 
+            : base(isSuccess) { 
         }
 
-        public bool IsSuccess { get; private set; }
         public ShipmentType ShipmentType { get; set; }
     }
 }

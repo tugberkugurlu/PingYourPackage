@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Services {
     
-    public class CreatedUserResult : CreatedResult {
+    public abstract class CreatedResult {
 
-        public CreatedUserResult(bool isSuccess) 
-            : base(isSuccess) { 
+        public CreatedResult(bool isSuccess) {
+            IsSuccess = isSuccess;
         }
 
-        public UserWithRoles User { get; set; }
+        public bool IsSuccess { get; private set; }
     }
 }
