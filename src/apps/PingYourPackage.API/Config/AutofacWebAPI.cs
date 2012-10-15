@@ -74,6 +74,10 @@ namespace PingYourPackage.API.Config {
                 .As<IMembershipService>()
                 .InstancePerApiRequest();
 
+            builder.RegisterType<ShipmentService>()
+                .As<IShipmentService>()
+                .InstancePerApiRequest();
+
             return builder.Build();
         }
     }
