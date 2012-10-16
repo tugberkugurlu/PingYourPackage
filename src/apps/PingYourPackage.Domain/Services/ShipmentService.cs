@@ -10,11 +10,17 @@ namespace PingYourPackage.Domain.Services {
     public class ShipmentService : IShipmentService {
 
         private readonly IEntityRepository<ShipmentType> _shipmentTypeRepository;
+        private readonly IEntityRepository<Affiliate> _affiliateRepository;
+        private readonly IMembershipService _membershipService;
 
         public ShipmentService(
-            IEntityRepository<ShipmentType> shipmentTypeRepository) {
+            IEntityRepository<ShipmentType> shipmentTypeRepository,
+            IEntityRepository<Affiliate> affiliateRepository,
+            IMembershipService membershipService) {
 
             _shipmentTypeRepository = shipmentTypeRepository;
+            _affiliateRepository = affiliateRepository;
+            _membershipService = membershipService;
         }
 
         public Shipment AddShipment(Guid affiliateKey, Shipment shipment) {
@@ -41,13 +47,13 @@ namespace PingYourPackage.Domain.Services {
             return shipmentType;
         }
 
-        public CreatedShipmentTypeResult AddShipmentType(ShipmentType shipmentType) {
+        public CreatedResult<ShipmentType> AddShipmentType(ShipmentType shipmentType) {
 
             // If there is already one which has the same name,
             // return unseccessful result back
             if (_shipmentTypeRepository.GetSingleByName(shipmentType.Name) != null) {
 
-                return new CreatedShipmentTypeResult(false);
+                return new CreatedResult<ShipmentType>(false);
             }
 
             shipmentType.Key = Guid.NewGuid();
@@ -56,8 +62,8 @@ namespace PingYourPackage.Domain.Services {
             _shipmentTypeRepository.Add(shipmentType);
             _shipmentTypeRepository.Save();
 
-            return new CreatedShipmentTypeResult(true) { 
-                ShipmentType = shipmentType
+            return new CreatedResult<ShipmentType>(true) { 
+                Entity = shipmentType
             };
         }
 
@@ -67,6 +73,58 @@ namespace PingYourPackage.Domain.Services {
             _shipmentTypeRepository.Save();
 
             return shipmentType;
+        }
+
+        // Affiliate
+
+        public PaginatedList<Affiliate> GetAffiliates(int pageIndex, int pageSize) {
+
+            var affiliates = _affiliateRepository
+                .AllIncluding(x => x.User).ToPaginatedList(pageIndex, pageSize);
+
+            return affiliates;
+        }
+
+        public Affiliate GetAffiliate(Guid key) {
+
+            var affiliate = _affiliateRepository
+                .AllIncluding(x => x.User)
+                .FirstOrDefault(x => x.Key == key);
+
+            return affiliate;
+        }
+
+        public CreatedResult<Affiliate> AddAffiliate(
+            Guid userKey, Affiliate affiliate) {
+
+            var userResult = _membershipService.GetUser(userKey);
+            if (userResult == null ||
+                !userResult.Roles.Any(
+                    role => role.Name.Equals(
+                        "affiliate", StringComparison.OrdinalIgnoreCase)) ||
+                _affiliateRepository.GetSingle(userKey) != null) {
+
+                return new CreatedResult<Affiliate>(false);
+            }
+
+            affiliate.Key = userKey;
+            affiliate.CreatedOn = DateTime.Now;
+
+            _affiliateRepository.Add(affiliate);
+            _affiliateRepository.Save();
+
+            affiliate.User = userResult.User;
+            return new CreatedResult<Affiliate>(true) {
+                Entity = affiliate
+            };
+        }
+
+        public Affiliate UpdateAffiliate(Affiliate affiliate) {
+
+            _affiliateRepository.Edit(affiliate);
+            _affiliateRepository.Save();
+
+            return affiliate;
         }
     }
 }

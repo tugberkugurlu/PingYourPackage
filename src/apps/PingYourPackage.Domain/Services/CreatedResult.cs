@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.Domain.Services {
     
-    public abstract class CreatedResult {
+    public class CreatedResult<TEntity> {
 
         public CreatedResult(bool isSuccess) {
             IsSuccess = isSuccess;
         }
 
         public bool IsSuccess { get; private set; }
+        public TEntity Entity { get; set; }
     }
 }

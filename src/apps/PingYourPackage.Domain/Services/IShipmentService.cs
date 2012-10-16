@@ -14,7 +14,12 @@ namespace PingYourPackage.Domain.Services {
 
         PaginatedList<ShipmentType> GetShipmentTypes(int pageIndex, int pageSize);
         ShipmentType GetShipmentType(Guid key);
-        CreatedShipmentTypeResult AddShipmentType(ShipmentType shipmentType);
+        CreatedResult<ShipmentType> AddShipmentType(ShipmentType shipmentType);
         ShipmentType UpdateShipmentType(ShipmentType shipmentType);
+
+        PaginatedList<Affiliate> GetAffiliates(int pageIndex, int pageSize);
+        Affiliate GetAffiliate(Guid key);
+        CreatedResult<Affiliate> AddAffiliate(Guid userKey, Affiliate affiliate);
+        Affiliate UpdateAffiliate(Affiliate affiliate);
     }
 }

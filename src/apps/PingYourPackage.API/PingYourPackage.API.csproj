@@ -88,6 +88,7 @@
     <Compile Include="Config\AutofacWebAPI.cs" />
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Config\WebAPIConfig.cs" />
+    <Compile Include="Controllers\AffiliatesController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ShipmentTypesController.cs" />
@@ -95,6 +96,9 @@
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
+    <Compile Include="Model\AffiliateExtensions.cs" />
+    <Compile Include="Model\AffiliateRequestModelExtensions.cs" />
+    <Compile Include="Model\AffiliateUpdateRequestModelExtensions.cs" />
     <Compile Include="Model\PaginatedListExtensions.cs" />
     <Compile Include="Model\RoleExtensions.cs" />
     <Compile Include="Model\ShipmentTypeExtensions.cs" />

@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dtos\AffiliateDto.cs" />
+    <Compile Include="Dtos\AffiliateMemberInfoDto.cs" />
     <Compile Include="Dtos\IDto.cs" />
     <Compile Include="Dtos\IPaginatedDto.cs" />
     <Compile Include="Dtos\PaginatedDto.cs" />
@@ -49,6 +51,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestCommands\IRequestCommand.cs" />
     <Compile Include="RequestCommands\PaginatedRequestCommand.cs" />
+    <Compile Include="RequestModels\AffiliateBaseRequestModel.cs" />
+    <Compile Include="RequestModels\AffiliateRequestModel.cs" />
+    <Compile Include="RequestModels\AffiliateUpdateRequestModel.cs" />
     <Compile Include="RequestModels\ShipmentTypeRequestModel.cs" />
     <Compile Include="RequestModels\UserBaseRequestModel.cs" />
     <Compile Include="RequestModels\UserRequestModel.cs" />

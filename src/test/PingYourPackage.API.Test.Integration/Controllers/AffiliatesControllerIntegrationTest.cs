@@ -7,40 +7,40 @@ using Xunit;
 
 namespace PingYourPackage.API.Test.Integration.Controllers {
     
-    public class ShipmentTypesControllerIntegrationTest {
+    public class AffiliatesControllerIntegrationTest {
 
-        public class GetShipmentTypes {
+        public class GetAffiliates {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_200_And_ShipmentTypes_If_Request_Authorized() {
+                Returns_200_And_Affiliates_If_Request_Authorized() {
 
                 throw new NotImplementedException();
             }
         }
 
-        public class GetShipmentType {
+        public class GetAffiliate {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_200_And_ShipmentType_If_Request_Authorized_And_ShipmentType_Exists() {
+                Returns_200_And_Affiliate_If_Request_Authorized_And_Affiliate_Exists() {
 
                 throw new NotImplementedException();
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_404_If_Request_Authorized_But_ShipmentType_Does_Not_Exist() { 
+                Returns_404_If_Request_Authorized_But_Affiliate_Does_Not_Exist() {
 
                 throw new NotImplementedException();
             }
         }
 
-        public class PostShipmentType {
+        public class PostAffiliate {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_201_And_ShipmentType_If_Request_Authorized_And_Success() {
+                Returns_201_And_Affiliate_If_Request_Authorized_And_Success() {
 
                 throw new NotImplementedException();
             }
@@ -60,11 +60,11 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
         }
 
-        public class PutShipmentType {
+        public class PutAffiliate {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_404_If_Request_Authorized_But_ShipmentType_Does_Not_Exist() {
+                Returns_404_If_Request_Authorized_But_Affiliate_Does_Not_Exist() {
 
                 throw new NotImplementedException();
             }
@@ -78,7 +78,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_200_And_Updated_ShipmentType_If_Request_Authorized_But_Request_Is_Valid() {
+                Returns_200_And_Updated_Affiliate_If_Request_Authorized_But_Request_Is_Valid() {
 
                 throw new NotImplementedException();
             }

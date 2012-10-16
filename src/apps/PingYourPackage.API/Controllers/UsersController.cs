@@ -55,10 +55,10 @@ namespace PingYourPackage.API.Controllers {
             }
 
             var response = Request.CreateResponse(HttpStatusCode.Created,
-                createdUserResult.User.ToUserDto());
+                createdUserResult.Entity.ToUserDto());
 
             response.Headers.Location = new Uri(Url.Link("DefaultHttpRoute",
-                    new { key = createdUserResult.User.User.Key }));
+                    new { key = createdUserResult.Entity.User.Key }));
 
             return response;
         }

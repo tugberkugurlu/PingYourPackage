@@ -12,14 +12,14 @@ namespace PingYourPackage.Domain.Services {
 
         ValidUserContext ValidateUser(string username, string password);
 
-        CreatedUserResult CreateUser(
+        CreatedResult<UserWithRoles> CreateUser(
             string username, string email, string password);
 
-        CreatedUserResult CreateUser(
+        CreatedResult<UserWithRoles> CreateUser(
             string username, string email, 
             string password, string role);
 
-        CreatedUserResult CreateUser(
+        CreatedResult<UserWithRoles> CreateUser(
             string username, string email, 
             string password, string[] roles);
 
