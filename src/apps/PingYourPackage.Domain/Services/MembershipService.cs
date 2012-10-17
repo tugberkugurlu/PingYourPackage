@@ -145,6 +145,18 @@ namespace PingYourPackage.Domain.Services {
             return false;
         }
 
+        public bool AddToRole(Guid userKey, string role) {
+
+            var user = _userRepository.GetSingle(userKey);
+            if (user != null) {
+
+                addUserToRole(user, role);
+                return true;
+            }
+
+            return false;
+        }
+
         public bool RemoveFromRole(string username, string role) {
 
             var user = _userRepository.GetSingleByUsername(username);

@@ -29,6 +29,7 @@ namespace PingYourPackage.Domain.Services {
         bool ChangePassword(
             string username, string oldPassword, string newPassword);
 
+        bool AddToRole(Guid userKey, string role);
         bool AddToRole(string username, string role);
         bool RemoveFromRole(string username, string role);
 

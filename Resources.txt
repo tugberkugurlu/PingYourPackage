@@ -15,11 +15,6 @@
   POST /api/users
   PUT /api/users/{key}
 
-[Authorize(Roles = "Admin")]
-[api/users/{key}/roles] => UserRolesHttpRoute => UserRolesController
-  POST /api/users/{key}/roles
-  DELETE /api/users/{key}/roles?roleName={roleName}
-
 [Authorize(Roles = "Admin,Employee")]
 [api/shipmenttypes/{key}] => DefaultHttpRoute => ShipmentTypesController
   GET /api/shipmenttypes [collection]
@@ -57,3 +52,14 @@
 [Authorize(Roles = "Affiliate")]
 [api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates] => AffiliateShipmentShipmentStatesHttpRoute => AffiliateShipmentShipmentStatesController
   GET api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates [collection]
+  
+#######################################################################################  
+## WON'T BE APPLIED
+#######################################################################################  
+[Authorize(Roles = "Admin")]
+[api/users/{key}/roles] => UserRolesHttpRoute => UserRolesController
+  POST /api/users/{key}/roles
+  DELETE /api/users/{key}/roles?roleName={roleName}
+#######################################################################################
+## WON'T BE APPLIED  
+#######################################################################################

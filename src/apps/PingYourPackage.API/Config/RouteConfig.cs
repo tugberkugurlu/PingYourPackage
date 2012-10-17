@@ -13,11 +13,6 @@ namespace PingYourPackage.API.Config {
         public static void RegisterRoutes(HttpRouteCollection routes) {
 
             routes.MapHttpRoute(
-                "UserRolesHttpRoute",
-                "api/users/{key}/roles",
-                new { controller = "UserRoles" });
-
-            routes.MapHttpRoute(
                 "AffiliateShipmentsHttpRoute",
                 "api/affiliates/{key}/shipments",
                 new { controller = "AffiliateShipments" });
