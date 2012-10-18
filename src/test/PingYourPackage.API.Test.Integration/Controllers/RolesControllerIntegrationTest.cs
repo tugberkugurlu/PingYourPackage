@@ -74,113 +74,86 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
 
             [Fact, NullCurrentPrincipal]
-            public async Task Returns_Expected_Roles() {
-
-                // Arrange
-                var mockMemSrv = ServicesMockHelper.GetInitialMembershipService();
-                mockMemSrv.Setup(ms => ms.GetRoles()).Returns(() => {
-
-                    return new[] { 
-                        new Role { Key = Guid.NewGuid(), Name = "Admin" },
-                        new Role { Key = Guid.NewGuid(), Name = "Employee" },
-                        new Role { Key = Guid.NewGuid(), Name = "Affiliate" },
-                        new Role { Key = Guid.NewGuid(), Name = "Guest" }
-                    };
-                });
-
-                var config = IntegrationTestHelper
-                    .GetInitialIntegrationTestConfig(GetInitialServices(mockMemSrv.Object));
-
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
-
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}", 
-                                "api/roles"),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
-
-                    // Act
-                    var response = await client.SendAsync(request);
-                    var roles = await response.Content.ReadAsAsync<IEnumerable<RoleDto>>();
-
-                    // Assert
-                    Assert.Equal(4, roles.Count());
-                    Assert.True(roles.Any(r => r.Name == "Admin"));
-                    Assert.True(roles.Any(r => r.Name == "Employee"));
-                    Assert.True(roles.Any(r => r.Name == "Affiliate"));
-                    Assert.True(roles.Any(r => r.Name == "Guest"));
-                }
-            }
-
-            private static IContainer GetInitialServices(
-                IMembershipService memSrv) {
-
-                var builder = IntegrationTestHelper
-                    .GetEmptyContainerBuilder();
-
-                builder.Register(c => memSrv)
-                    .As<IMembershipService>()
-                    .InstancePerApiRequest();
-
-                return builder.Build();
-            }
-        }
-
-        public class GetRole {
-
-            [Fact, NullCurrentPrincipal]
             public async Task 
-                Returns_Expected_Role_With_Key() {
+                Returns_200_And_Expected_Roles_If_Request_Authorized() {
 
                 // Arrange
-                Guid key1 = Guid.NewGuid(),
-                     key2 = Guid.NewGuid(),
-                     key3 = Guid.NewGuid(),
-                     key4 = Guid.NewGuid();
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService()));
 
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            "api/roles"),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var roles = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<IEnumerable<UserDto>>(
+                        config, request, HttpStatusCode.OK);
+
+                // Assert
+                Assert.Equal(4, roles.Count());
+                Assert.True(roles.Any(r => r.Name == "Admin"));
+                Assert.True(roles.Any(r => r.Name == "Employee"));
+                Assert.True(roles.Any(r => r.Name == "Affiliate"));
+                Assert.True(roles.Any(r => r.Name == "Guest"));
+            }
+
+            private IMembershipService GetMembershipService() {
+
+                var roles = GetDummyRoles(new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                });
                 var mockMemSrv = ServicesMockHelper
                     .GetInitialMembershipService();
 
-                mockMemSrv.Setup(ms => ms.GetRole(
-                        It.Is<Guid>(k =>
-                            k == key1 || k == key2 || 
-                            k == key3 || k == key4
-                        )
-                    )
-                ).Returns<Guid>(key => new Role { 
-                    Key = key, Name = "FooBar"
-                });
+                mockMemSrv.Setup(ms => ms.GetRoles()).Returns(roles);
+
+                return mockMemSrv.Object;
+            }
+        }
+
+        public class GetRole_Key {
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_200_And_Expected_Role_If_Request_Authorized() {
+
+                // Arrange
+                Guid[] keys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+
+                var requestKey = keys[1];
 
                 var config = IntegrationTestHelper
-                    .GetInitialIntegrationTestConfig(GetInitialServices(mockMemSrv.Object));
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService(keys)));
 
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/roles",
+                            requestKey.ToString()),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
 
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}/{1}", 
-                                "api/roles", 
-                                key2.ToString()),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
+                // Act
+                var role = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<RoleDto>(
+                        config, request, HttpStatusCode.OK);
 
-                    // Act
-                    var response = await client.SendAsync(request);
-                    var role = await response.Content.ReadAsAsync<RoleDto>();
-
-                    // Assert
-                    Assert.Equal(key2, role.Key);
-                    Assert.Equal("FooBar", role.Name);
-                }
+                // Assert
+                Assert.Equal(requestKey, role.Key);
             }
 
             [Fact, NullCurrentPrincipal]
@@ -188,177 +161,164 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 Returns_404_NotFound_If_Not_Exist_With_Key() {
 
                 // Arrange
-                Guid key1 = Guid.NewGuid(),
-                     key2 = Guid.NewGuid(),
-                     key3 = Guid.NewGuid(),
-                     key4 = Guid.NewGuid();
+                Guid[] keys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
 
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService(keys)));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/roles",
+                            Guid.NewGuid().ToString()),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+
+            private IMembershipService GetMembershipService(Guid[] keys) {
+
+                var roles = GetDummyRoles(keys);
                 var mockMemSrv = ServicesMockHelper
                     .GetInitialMembershipService();
 
                 mockMemSrv.Setup(ms => ms.GetRole(
-                        It.Is<Guid>(k =>
-                            k == key1 || k == key2 ||
-                            k == key3 || k == key4
+                        It.Is<Guid>(key =>
+                            keys.Contains(key)
                         )
                     )
-                ).Returns<Guid>(key => new Role {
-                    Key = key,
-                    Name = "FooBar"
-                });
+                ).Returns<Guid>(key => 
+                    roles.FirstOrDefault(
+                        role => role.Key == key
+                    )
+                );
 
-                var config = IntegrationTestHelper
-                    .GetInitialIntegrationTestConfig(GetInitialServices(mockMemSrv.Object));
-
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
-
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}/{1}",
-                                "api/roles",
-                                Guid.NewGuid().ToString()),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
-
-                    // Act
-                    var response = await client.SendAsync(request);
-
-                    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-                }
-            }
-
-            private static IContainer GetInitialServices(
-                IMembershipService memSrv) {
-
-                var builder = IntegrationTestHelper
-                    .GetEmptyContainerBuilder();
-
-                builder.Register(c => memSrv)
-                    .As<IMembershipService>()
-                    .InstancePerApiRequest();
-
-                return builder.Build();
+                return mockMemSrv.Object;
             }
         }
 
-        public class PostRole {
+        public class GetRole_RoleName {
 
             [Fact, NullCurrentPrincipal]
-            public async Task 
-                Returns_Expected_Role_With_RoleName() {
+            public async Task
+                Returns_200_And_Expected_Role_If_Request_Authorized() {
 
-                var key = Guid.NewGuid();
-                var roleNames = new[] { 
-                    "Admin", "Employee", "Guest"
-                };
+                var requestRoleName = "Admin";
 
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService()));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}?roleName={1}",
+                            "api/roles",
+                            requestRoleName.ToLower()),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                var role = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<RoleDto>(
+                        config, request, HttpStatusCode.OK);
+
+                // Assert
+                Assert.Equal(requestRoleName, role.Name, StringComparer.OrdinalIgnoreCase);
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_404_If_Request_Authorized_But_Role_Does_Not_Exist() {
+
+                var requestRoleName = "FooBar";
+
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService()));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}?roleName={1}",
+                            "api/roles",
+                            requestRoleName.ToLower()),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+
+            private IMembershipService GetMembershipService() {
+
+                var roles = GetDummyRoles(new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                });
                 var mockMemSrv = ServicesMockHelper
                     .GetInitialMembershipService();
 
                 mockMemSrv.Setup(ms => ms.GetRole(
                         It.Is<string>(name =>
-                            roleNames.Contains(
-                                name, StringComparer.OrdinalIgnoreCase)
+                            roles.Any(
+                                role => role.Name.Equals(
+                                    name, StringComparison.OrdinalIgnoreCase
+                                )
+                            )
                         )
                     )
-                ).Returns<string>(name => new Role {
-                    Key = key,
-                    Name = name
-                });
-
-                var config = IntegrationTestHelper
-                    .GetInitialIntegrationTestConfig(GetInitialServices(mockMemSrv.Object));
-
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
-
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}?roleName={1}",
-                                "api/roles",
-                                roleNames[2].ToLower()),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
-
-                    // Act
-                    var response = await client.SendAsync(request);
-                    var role = await response.Content.ReadAsAsync<RoleDto>();
-
-                    // Assert
-                    Assert.Equal(key, role.Key);
-                    Assert.Equal(roleNames[2], role.Name, StringComparer.OrdinalIgnoreCase);
-                }
-            }
-
-            [Fact, NullCurrentPrincipal]
-            public async Task 
-                Returns_404_NotFound_If_Not_Exist_With_RoleName() {
-
-                var key = Guid.NewGuid();
-                var roleNames = new[] { 
-                    "Admin", "Employee", "Guest"
-                };
-
-                var invalidRoleName = "FooBar";
-
-                var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
-
-                mockMemSrv.Setup(ms => ms.GetRole(
-                        It.Is<string>(name =>
-                            roleNames.Contains(
-                                name, StringComparer.OrdinalIgnoreCase)
+                ).Returns<string>(name =>
+                    roles.FirstOrDefault(
+                        role => role.Name.Equals(
+                            name, StringComparison.OrdinalIgnoreCase
                         )
                     )
-                ).Returns<string>(name => new Role {
-                    Key = key,
-                    Name = name
-                });
+                );
 
-                var config = IntegrationTestHelper
-                    .GetInitialIntegrationTestConfig(GetInitialServices(mockMemSrv.Object));
-
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
-
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}?roleName={1}",
-                                "api/roles",
-                                invalidRoleName),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
-
-                    // Act
-                    var response = await client.SendAsync(request);
-
-                    // Assert
-                    Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-                }
+                return mockMemSrv.Object;
             }
+        }
 
-            private static IContainer GetInitialServices(
-                IMembershipService memSrv) {
+        private static IContainer GetInitialServices(IMembershipService memSrv) {
 
-                var builder = IntegrationTestHelper
-                    .GetEmptyContainerBuilder();
+            var builder = IntegrationTestHelper
+                .GetEmptyContainerBuilder();
 
-                builder.Register(c => memSrv)
-                    .As<IMembershipService>()
-                    .InstancePerApiRequest();
+            builder.Register(c => memSrv)
+                .As<IMembershipService>()
+                .InstancePerApiRequest();
 
-                return builder.Build();
-            }
+            return builder.Build();
+        }
+
+        private static IEnumerable<Role> GetDummyRoles(Guid[] keys) {
+
+            List<Role> roles = new List<Role> {
+                new Role { Key = keys[0], Name = "Admin" },
+                new Role { Key = keys[1], Name = "Employee" },
+                new Role { Key = keys[2], Name = "Affiliate" },
+                new Role { Key = keys[3], Name = "Guest" }
+            };
+
+            return roles;
         }
     }
 }

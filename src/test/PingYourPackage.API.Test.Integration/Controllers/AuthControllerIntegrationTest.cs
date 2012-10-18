@@ -20,7 +20,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
         [Fact, NullCurrentPrincipal]
         public async Task 
-            Returns_Expected_User_For_The_Authed_User() {
+            Returns_200_And_Expected_User_For_The_Authed_User() {
 
             // Arrange
             var mockMemSrv = ServicesMockHelper

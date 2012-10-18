@@ -24,42 +24,34 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
         public class GetUsers {
 
             [Fact, NullCurrentPrincipal]
-            public async Task
-                Returns_Expected_Users_If_Request_Authorized() {
+            public Task
+                Returns_200_And_Expected_Users_If_Request_Authorized() {
 
                 // Arrange
-                var mockMemSrv = GetInitialMemSrvMockForUsers();
-
                 var config = IntegrationTestHelper
                     .GetInitialIntegrationTestConfig(
-                        GetInitialServices(mockMemSrv.Object));
+                        GetInitialServices(GetMembershipService()));
 
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}?page={1}&take={2}",
+                            "api/users", 1, 2),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
 
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}?page={1}&take={2}", 
-                                "api/users", 1, 2),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
-
-                    // Act
-                    var response = await client.SendAsync(request);
-                    var userPaginatedDto = await response.Content.ReadAsAsync<PaginatedDto<UserDto>>();
-
-                    // Assert
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Assert.Equal(1, userPaginatedDto.PageIndex);
-                    Assert.Equal(2, userPaginatedDto.TotalPageCount);
-                    Assert.Equal(2, userPaginatedDto.Items.Count());
-                    Assert.Equal(3, userPaginatedDto.TotalCount);
-                    Assert.True(userPaginatedDto.HasNextPage);
-                    Assert.False(userPaginatedDto.HasPreviousPage);
-                }
+                return IntegrationTestHelper
+                    .TestForPaginatedDto<UserDto>(
+                        config,
+                        request,
+                        expectedPageIndex: 1,
+                        expectedTotalPageCount: 2,
+                        expectedCurrentItemsCount: 2,
+                        expectedTotalItemsCount: 3,
+                        expectedHasNextPageResult: true,
+                        expectedHasPreviousPageResult: false);
             }
 
             [Fact, NullCurrentPrincipal]
@@ -67,40 +59,34 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 Returns_400_If_Request_Authorized_But_PageIndex_Parameter_Is_Not_Correct() {
 
                 // Arrange
-                var pageIndexParam = 0;
-                var pageSizeParam = 20;
-                var mockMemSrv = GetInitialMemSrvMockForUsers();
-
+                int pageIndexParam = 0,
+                    pageSizeParam = 20;
+                
                 var config = IntegrationTestHelper
                     .GetInitialIntegrationTestConfig(
-                        GetInitialServices(mockMemSrv.Object));
+                        GetInitialServices(GetMembershipService()));
 
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}?page={1}&take={2}",
+                            "api/users",
+                            pageIndexParam,
+                            pageSizeParam),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
 
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}?page={1}&take={2}",
-                                "api/users", 
-                                pageIndexParam, 
-                                pageSizeParam),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
 
-                    // Act
-                    var response = await client.SendAsync(request);
-                    var httpError = await response.Content.ReadAsAsync<HttpError>();
-                    var modelState = (HttpError)httpError["ModelState"];
+                var modelState = (HttpError)httpError["ModelState"];
+                var pageParamError = modelState["Page"] as string[];
 
-                    var pageParamError = modelState["Page"] as string[];
-
-                    // Assert
-                    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-                    Assert.NotNull(pageParamError);
-                }
+                // Assert
+                Assert.NotNull(pageParamError);
             }
 
             [Fact, NullCurrentPrincipal]
@@ -110,41 +96,35 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 // Arrange
                 var pageIndexParam = 1;
                 var pageSizeParam = 51;
-                var mockMemSrv = GetInitialMemSrvMockForUsers();
-
+                
                 var config = IntegrationTestHelper
                     .GetInitialIntegrationTestConfig(
-                        GetInitialServices(mockMemSrv.Object));
+                        GetInitialServices(GetMembershipService()));
 
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}?page={1}&take={2}",
+                            "api/users",
+                            pageIndexParam,
+                            pageSizeParam),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
 
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Get,
-                            uri: string.Format(
-                                "https://localhost/{0}?page={1}&take={2}",
-                                "api/users",
-                                pageIndexParam,
-                                pageSizeParam),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
 
-                    // Act
-                    var response = await client.SendAsync(request);
-                    var httpError = await response.Content.ReadAsAsync<HttpError>();
-                    var modelState = (HttpError)httpError["ModelState"];
+                var modelState = (HttpError)httpError["ModelState"];
+                var takeParamError = modelState["Take"] as string[];
 
-                    var takeParamError = modelState["Take"] as string[];
-
-                    // Assert
-                    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-                    Assert.NotNull(takeParamError);
-                }
+                // Assert
+                Assert.NotNull(takeParamError);
             }
 
-            private static Mock<IMembershipService> GetInitialMemSrvMockForUsers() {
+            private static IMembershipService GetMembershipService() {
 
                 var users = GetDummyUsers(new[] { 
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
@@ -160,7 +140,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                               .ToPaginatedList(page, take)
                 );
 
-                return mockMemSrv;
+                return mockMemSrv.Object;
             }
         }
 
@@ -168,17 +148,16 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_Expected_User_If_Request_Authorized_And_User_Exists() {
+                Returns_200_And_Expected_User_If_Request_Authorized_And_User_Exists() {
 
                 // Arrange
                 Guid[] keys = new[] { 
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 };
-                var mockMemSrv = GetInitialMemSrvMockForUsers(keys);
 
                 var config = IntegrationTestHelper
                     .GetInitialIntegrationTestConfig(
-                        GetInitialServices(mockMemSrv.Object));
+                        GetInitialServices(GetMembershipService(keys)));
 
                 using (var httpServer = new HttpServer(config))
                 using (var client = httpServer.ToHttpClient()) {
@@ -211,11 +190,10 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 Guid[] keys = new[] { 
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 };
-                var mockMemSrv = GetInitialMemSrvMockForUsers(keys);
 
                 var config = IntegrationTestHelper
                     .GetInitialIntegrationTestConfig(
-                        GetInitialServices(mockMemSrv.Object));
+                        GetInitialServices(GetMembershipService(keys)));
 
                 using (var httpServer = new HttpServer(config))
                 using (var client = httpServer.ToHttpClient()) {
@@ -238,7 +216,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 }
             }
 
-            private static Mock<IMembershipService> GetInitialMemSrvMockForUsers(Guid[] keys) {
+            private static IMembershipService GetMembershipService(Guid[] keys) {
 
                 var users = GetDummyUsers(keys);
                 var mockMemSrv = ServicesMockHelper
@@ -255,7 +233,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     )
                 );
 
-                return mockMemSrv;
+                return mockMemSrv.Object;
             }
         }
 
@@ -608,9 +586,6 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             private static Mock<IMembershipService> GetInitialMemSrvMockForUsers(Guid[] keys) {
 
-                CryptoService cryptoService = new CryptoService();
-                var salt = cryptoService.GenerateSalt();
-
                 var users = GetDummyUsers(keys);
                 var mockMemSrv = ServicesMockHelper
                     .GetInitialMembershipService();
@@ -662,7 +637,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             return builder.Build();
         }
 
-        private static List<UserWithRoles> GetDummyUsers(Guid[] keys) {
+        private static IEnumerable<UserWithRoles> GetDummyUsers(Guid[] keys) {
 
             #region Dummy User List
             List<UserWithRoles> users = new List<UserWithRoles> { 
