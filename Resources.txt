@@ -19,14 +19,14 @@
 [api/shipmenttypes/{key}] => DefaultHttpRoute => ShipmentTypesController
   GET /api/shipmenttypes [collection]
   GET /api/shipmenttypes/{key} [single]
-  POST /api/shipmenttypes
+  POST /api/shipmenttypes [single]
   PUT /api/shipmenttypes/{key}
 
 [Authorize(Roles = "Admin,Employee")]
 [api/affiliates/{key}] => DefaultHttpRoute => AffiliatesController
   GET /api/affiliates [collection]
   GET /api/affiliates/{key} [single]
-  POST /api/affiliates
+  POST /api/affiliates [single]
   PUT /api/affiliates
 
 [Authorize(Roles = "Admin,Employee")]

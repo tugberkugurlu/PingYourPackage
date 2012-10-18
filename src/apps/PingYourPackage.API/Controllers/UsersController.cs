@@ -47,7 +47,8 @@ namespace PingYourPackage.API.Controllers {
 
             var createdUserResult = 
                 _membershipService.CreateUser(
-                    requestModel.Name, requestModel.Email, requestModel.Password);
+                    requestModel.Name, requestModel.Email, 
+                    requestModel.Password, requestModel.Roles);
 
             if (!createdUserResult.IsSuccess) {
 
