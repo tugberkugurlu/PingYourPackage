@@ -19,7 +19,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
     public class RolesControllerIntegrationTest {
 
         // GetRoles action method
-        public class GetRolesActionTest {
+        public class GetRoles {
 
             [Fact, NullCurrentPrincipal]
             public Task
@@ -131,7 +131,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
         }
 
-        public class GetRoleActionTest {
+        public class GetRole {
 
             [Fact, NullCurrentPrincipal]
             public async Task 
@@ -245,7 +245,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
         }
 
-        public class PostRoleActionTest {
+        public class PostRole {
 
             [Fact, NullCurrentPrincipal]
             public async Task 
