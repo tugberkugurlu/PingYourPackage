@@ -11,6 +11,7 @@ using PingYourPackage.Domain.Services;
 using System.Net;
 using System.Net.Http;
 using PingYourPackage.API.Model.RequestModels;
+using PingYourPackage.API.Filters;
 
 namespace PingYourPackage.API.Controllers {
 

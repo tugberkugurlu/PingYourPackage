@@ -44,6 +44,7 @@ namespace PingYourPackage.API.Controllers {
             return shipmetType.ToShipmentTypeDto();
         }
 
+        [EmptyParameterFilter("requestModel")]
         public HttpResponseMessage PostShipmentType(
             ShipmentTypeRequestModel requestModel) {
 
@@ -64,6 +65,7 @@ namespace PingYourPackage.API.Controllers {
             return response;
         }
 
+        [EmptyParameterFilter("requestModel")]
         public ShipmentTypeDto PutShipmentType(
             Guid key,
             ShipmentTypeRequestModel requestModel) {

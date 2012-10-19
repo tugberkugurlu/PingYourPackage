@@ -1,4 +1,5 @@
-﻿using PingYourPackage.API.Model;
+﻿using PingYourPackage.API.Filters;
+using PingYourPackage.API.Model;
 using PingYourPackage.API.Model.Dtos;
 using PingYourPackage.API.Model.RequestCommands;
 using PingYourPackage.API.Model.RequestModels;
@@ -43,6 +44,7 @@ namespace PingYourPackage.API.Controllers {
             return user.ToUserDto();
         }
 
+        [EmptyParameterFilter("requestModel")]
         public HttpResponseMessage PostUser(UserRequestModel requestModel) {
 
             var createdUserResult = 
@@ -64,6 +66,7 @@ namespace PingYourPackage.API.Controllers {
             return response;
         }
 
+        [EmptyParameterFilter("requestModel")]
         public UserDto PutUser(Guid key, UserUpdateRequestModel requestModel) {
 
             var user = _membershipService.GetUser(key);

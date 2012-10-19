@@ -353,6 +353,36 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 Assert.NotNull(emailError);
             }
 
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_400_If_Request_Authorized_But_Message_Body_Is_Empty() {
+
+                // Arrange
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService()));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            "api/users"),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
+
+                var modelState = (HttpError)httpError["ModelState"];
+                var requestModelError = modelState["requestModel"] as string[];
+
+                // Assert
+                Assert.NotNull(requestModelError);
+            }
+
             private static IMembershipService GetMembershipService() {
 
                 CryptoService cryptoService = new CryptoService();
@@ -545,6 +575,42 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     Assert.Equal(userRequestModel.Name, userDto.Name);
                     Assert.Equal(userRequestModel.Email, userDto.Email);
                 }
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_400_If_Request_Authorized_But_Message_Body_Is_Empty() {
+
+                // Arrange
+                Guid[] keys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetInitialServices(GetMembershipService(keys)));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Put,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/users",
+                            keys[1]),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
+
+                var modelState = (HttpError)httpError["ModelState"];
+                var requestModelError = modelState["requestModel"] as string[];
+
+                // Assert
+                Assert.NotNull(requestModelError);
             }
 
             private static IMembershipService GetMembershipService(Guid[] keys) {
