@@ -93,6 +93,7 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ShipmentTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Filters\EmptyParameterFilterAttribute.cs" />
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />

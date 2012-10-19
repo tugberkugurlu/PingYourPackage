@@ -2,6 +2,7 @@
 using Autofac.Integration.WebApi;
 using Moq;
 using PingYourPackage.API.Model.Dtos;
+using PingYourPackage.API.Model.RequestModels;
 using PingYourPackage.Domain.Entities;
 using PingYourPackage.Domain.Services;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -27,7 +29,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 // Arrange
                 var config = IntegrationTestHelper
                     .GetInitialIntegrationTestConfig(
-                        GetContainerForGetShipmentTypesAction());
+                        GetContainer());
 
                 var request = HttpRequestMessageHelper
                     .ConstructRequest(
@@ -51,14 +53,14 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         expectedHasPreviousPageResult: false);
             }
 
-            private static IContainer GetContainerForGetShipmentTypesAction() {
+            private static IContainer GetContainer() {
 
                 Guid[] keys = new[] { 
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 };
 
                 var shipmentTypes = GetDummyShipmentTypes(keys);
-                var container = GetInitialContainerBuilder();
+                var containerBuilder = GetInitialContainerBuilder();
 
                 Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
                 shipmentSrvMock.Setup(ss =>
@@ -71,11 +73,11 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                             .ToPaginatedList(pageIndex, pageSize)
                 );
 
-                container.Register(c => shipmentSrvMock.Object)
+                containerBuilder.Register(c => shipmentSrvMock.Object)
                     .As<IShipmentService>()
                     .InstancePerApiRequest();
 
-                return container.Build();
+                return containerBuilder.Build();
             }
         }
 
@@ -85,14 +87,91 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             public async Task
                 Returns_200_And_ShipmentType_If_Request_Authorized_And_ShipmentType_Exists() {
 
-                throw new NotImplementedException();
+                // Arrange
+                Guid[] keys = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                var shipmentTypes = GetDummyShipmentTypes(keys);
+                var requestKey = keys[1];
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetContainer(keys, shipmentTypes));
+
+                var expectedShipmentType = shipmentTypes.FirstOrDefault(
+                    st => st.Key == requestKey);
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/shipmenttypes", requestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var shipmentTypeDto = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<ShipmentTypeDto>(
+                        config, request, HttpStatusCode.OK);
+
+                // Assert
+                Assert.Equal(expectedShipmentType.Key, shipmentTypeDto.Key);
+                Assert.Equal(expectedShipmentType.Name, shipmentTypeDto.Name);
+                Assert.Equal(expectedShipmentType.Price, shipmentTypeDto.Price);
+                Assert.Equal(expectedShipmentType.CreatedOn, shipmentTypeDto.CreatedOn);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_404_If_Request_Authorized_But_ShipmentType_Does_Not_Exist() { 
+                Returns_404_If_Request_Authorized_But_ShipmentType_Does_Not_Exist() {
 
-                throw new NotImplementedException();
+                // Arrange
+                Guid[] keys = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                var shipmentTypes = GetDummyShipmentTypes(keys);
+                var invalidRequestKey = Guid.NewGuid();
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetContainer(keys, shipmentTypes));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Get,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/shipmenttypes", invalidRequestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+
+            private static IContainer GetContainer(Guid[] keys, 
+                IEnumerable<ShipmentType> shipmentTypes) {
+
+                var containerBuilder = GetInitialContainerBuilder();
+
+                Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
+                shipmentSrvMock.Setup(ss => ss.GetShipmentType(
+                        It.Is<Guid>(
+                            key => keys.Contains(key)
+                        )
+                    )
+                ).Returns<Guid>(key =>
+                    shipmentTypes.FirstOrDefault(
+                        st => st.Key == key
+                    )
+                );
+
+                containerBuilder.Register(c => shipmentSrvMock.Object)
+                    .As<IShipmentService>()
+                    .InstancePerApiRequest();
+
+                return containerBuilder.Build();
             }
         }
 
@@ -102,21 +181,158 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             public async Task
                 Returns_201_And_ShipmentType_If_Request_Authorized_And_Success() {
 
-                throw new NotImplementedException();
+                // Arrange
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer());
+
+                var shipmentTypeRequestModel = new ShipmentTypeRequestModel {
+                    Name = "X-Large",
+                    Price = 40.00M
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            "api/shipmenttypes"),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentTypeRequestModel>(
+                    shipmentTypeRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var shipmentTypeDto = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<ShipmentTypeDto>(
+                        config, request, HttpStatusCode.Created);
+
+                // Assert
+                Assert.Equal(shipmentTypeRequestModel.Name, shipmentTypeDto.Name);
+                Assert.Equal(shipmentTypeRequestModel.Price, shipmentTypeDto.Price);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_409_If_Request_Authorized_But_Conflicted() {
 
-                throw new NotImplementedException();
+                // Arrange
+                var shipmentTypes = GetDummyShipmentTypes(new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() });
+                var targetShipmentType = shipmentTypes.FirstOrDefault();
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(
+                        GetContainer(shipmentTypes));
+
+                var shipmentTypeRequestModel = new ShipmentTypeRequestModel {
+                    Name = targetShipmentType.Name,
+                    Price = 40.00M
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            "api/shipmenttypes"),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentTypeRequestModel>(
+                    shipmentTypeRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_400_If_Request_Authorized_But_Invalid() {
 
-                throw new NotImplementedException();
+                // Arrange
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer());
+
+                var shipmentTypeRequestModel = new ShipmentTypeRequestModel {
+                    Name = "ANameWhichIsMoreThan50CharsANameWhichIsMoreThan50Chars",
+                    Price = 40.00M
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            "api/shipmenttypes"),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentTypeRequestModel>(
+                    shipmentTypeRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
+
+                var modelState = (HttpError)httpError["ModelState"];
+                var nameError = modelState["requestModel.Name"] as string[];
+
+                // Assert
+                Assert.NotNull(nameError);
+            }
+
+            private static IContainer GetContainer() {
+
+                return GetContainer(new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() });
+            }
+
+            private static IContainer GetContainer(Guid[] keys) {
+
+                var shipmentTypes = GetDummyShipmentTypes(keys);
+                return GetContainer(shipmentTypes);
+            }
+
+            private static IContainer GetContainer(IEnumerable<ShipmentType> shipmentTypes) {
+
+                var containerBuilder = GetInitialContainerBuilder();
+
+                Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
+                shipmentSrvMock.Setup(ss => ss.AddShipmentType(
+                        It.IsAny<ShipmentType>()
+                    )
+                ).Returns<ShipmentType>(st => {
+
+                    st.Key = Guid.NewGuid();
+                    st.CreatedOn = DateTime.Now;
+
+                    return new CreatedResult<ShipmentType>(true) { Entity = st };
+                });
+
+                shipmentSrvMock.Setup(ss => ss.AddShipmentType(
+                        It.Is<ShipmentType>(
+                            st => shipmentTypes.Any(
+                                x => x.Name.Equals(
+                                    st.Name, StringComparison.OrdinalIgnoreCase
+                                )
+                            )
+                        )
+                    )
+                ).Returns(new CreatedResult<ShipmentType>(false));
+
+                containerBuilder.Register(c => shipmentSrvMock.Object)
+                    .As<IShipmentService>()
+                    .InstancePerApiRequest();
+
+                return containerBuilder.Build();
             }
         }
 
@@ -126,21 +342,144 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             public async Task
                 Returns_404_If_Request_Authorized_But_ShipmentType_Does_Not_Exist() {
 
-                throw new NotImplementedException();
+                // Arrange
+                Guid[] keys = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                var invalidRequestKey = Guid.NewGuid();
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(keys));
+
+                var shipmentTypeRequestModel = new ShipmentTypeRequestModel { 
+                    Name = "X-Large",
+                    Price = 40.00M
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Put,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/shipmenttypes", invalidRequestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentTypeRequestModel>(
+                    shipmentTypeRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_400_If_Request_Authorized_But_Invalid() {
 
-                throw new NotImplementedException();
+                // Arrange
+                Guid[] keys = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                var requestKey = keys[1];
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(keys));
+
+                var shipmentTypeRequestModel = new ShipmentTypeRequestModel {
+                    Name = "ANameWhichIsMoreThan50CharsANameWhichIsMoreThan50Chars",
+                    Price = 40.00M
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Put,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/shipmenttypes", requestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentTypeRequestModel>(
+                    shipmentTypeRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
+
+                var modelState = (HttpError)httpError["ModelState"];
+                var nameError = modelState["requestModel.Name"] as string[];
+
+                // Assert
+                Assert.NotNull(nameError);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_200_And_Updated_ShipmentType_If_Request_Authorized_But_Request_Is_Valid() {
 
-                throw new NotImplementedException();
+                // Arrange
+                Guid[] keys = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                var requestKey = keys[1];
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(keys));
+
+                var shipmentTypeRequestModel = new ShipmentTypeRequestModel {
+                    Name = "X-Large",
+                    Price = 40.00M
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Put,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/shipmenttypes", requestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentTypeRequestModel>(
+                    shipmentTypeRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var shipmentTypeDto = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<ShipmentTypeDto>(
+                        config, request, HttpStatusCode.OK);
+
+                // Assert
+                Assert.Equal(requestKey, shipmentTypeDto.Key);
+                Assert.Equal(shipmentTypeRequestModel.Name, shipmentTypeDto.Name);
+                Assert.Equal(shipmentTypeRequestModel.Price, shipmentTypeDto.Price);
+            }
+
+            private static IContainer GetContainer(Guid[] keys) {
+
+                var shipmentTypes = GetDummyShipmentTypes(keys);
+                var containerBuilder = GetInitialContainerBuilder();
+
+                Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
+                shipmentSrvMock.Setup(ss => ss.GetShipmentType(
+                        It.Is<Guid>(
+                            key => keys.Contains(key)
+                        )
+                    )
+                ).Returns<Guid>(key =>
+                    shipmentTypes.FirstOrDefault(
+                        st => st.Key == key
+                    )
+                );
+
+                shipmentSrvMock.Setup(ss => ss.UpdateShipmentType(
+                        It.IsAny<ShipmentType>()
+                    )
+                ).Returns<ShipmentType>(st => st);
+
+                containerBuilder.Register(c => shipmentSrvMock.Object)
+                    .As<IShipmentService>()
+                    .InstancePerApiRequest();
+
+                return containerBuilder.Build();
             }
         }
 
