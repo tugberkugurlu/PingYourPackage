@@ -56,7 +56,7 @@ namespace PingYourPackage.API.Test.Integration {
 
         // Tests
 
-        internal static async Task<PaginatedDto<TDto>> TestForPaginatedDto<TDto>(
+        internal static async Task<PaginatedDto<TDto>> TestForPaginatedDtoAsync<TDto>(
             HttpConfiguration config,
             HttpRequestMessage request,
             int expectedPageIndex,

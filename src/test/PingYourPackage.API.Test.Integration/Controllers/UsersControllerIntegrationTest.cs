@@ -43,7 +43,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         password: Constants.ValidAdminPassword);
 
                 return IntegrationTestHelper
-                    .TestForPaginatedDto<UserDto>(
+                    .TestForPaginatedDtoAsync<UserDto>(
                         config,
                         request,
                         expectedPageIndex: 1,
