@@ -5,16 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PingYourPackage.Domain.Entities {
+namespace PingYourPackage.API.Model.RequestModels {
+    
+    public abstract class ShipmentBaseRequestModel {
 
-    public class Shipment : IEntity {
+        [Required]
+        public Guid? ShipmentTypeKey { get; set; }
 
-        [Key]
-        public Guid Key { get; set; }
-        public Guid AffiliateKey { get; set; }
-        public Guid ShipmentTypeKey { get; set; }
-
-        public decimal Price { get; set; }
+        [Required]
+        public decimal? Price { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -45,18 +44,8 @@ namespace PingYourPackage.Domain.Entities {
         public string ReceiverTelephone { get; set; }
 
         [Required]
+        [EmailAddress]
         [StringLength(320)]
         public string ReceiverEmail { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public Affiliate Affiliate { get; set; }
-        public ShipmentType ShipmentType { get; set; }
-        public virtual ICollection<ShipmentState> ShipmentStates { get; set; }
-
-        public Shipment() {
-
-            ShipmentStates = new HashSet<ShipmentState>();
-        }
     }
 }

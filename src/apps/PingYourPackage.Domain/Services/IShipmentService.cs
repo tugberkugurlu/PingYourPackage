@@ -21,5 +21,10 @@ namespace PingYourPackage.Domain.Services {
         Affiliate GetAffiliate(Guid key);
         CreatedResult<Affiliate> AddAffiliate(Guid userKey, Affiliate affiliate);
         Affiliate UpdateAffiliate(Affiliate affiliate);
+
+        PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize);
+        Shipment GetShipment(Guid key);
+        CreatedResult<Shipment> AddShipment(Shipment shipment);
+        Shipment UpdateShipment(Shipment shipment);
     }
 }

@@ -91,6 +91,7 @@
     <Compile Include="Controllers\AffiliatesController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\ShipmentsController.cs" />
     <Compile Include="Controllers\ShipmentTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\EmptyParameterFilterAttribute.cs" />
@@ -102,8 +103,12 @@
     <Compile Include="Model\AffiliateUpdateRequestModelExtensions.cs" />
     <Compile Include="Model\PaginatedListExtensions.cs" />
     <Compile Include="Model\RoleExtensions.cs" />
+    <Compile Include="Model\ShipmentExtensions.cs" />
+    <Compile Include="Model\ShipmentRequestModelExtensions.cs" />
+    <Compile Include="Model\ShipmentStateExtensions.cs" />
     <Compile Include="Model\ShipmentTypeExtensions.cs" />
     <Compile Include="Model\ShipmentTypeRequestModelExtensions.cs" />
+    <Compile Include="Model\ShipmentUpdateRequestModelExtensions.cs" />
     <Compile Include="Model\UserWithRolesExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Formatting\SuppressedRequiredMemberSelector.cs" />

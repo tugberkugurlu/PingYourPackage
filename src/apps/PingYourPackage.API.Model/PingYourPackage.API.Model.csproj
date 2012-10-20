@@ -46,6 +46,8 @@
     <Compile Include="Dtos\IPaginatedDto.cs" />
     <Compile Include="Dtos\PaginatedDto.cs" />
     <Compile Include="Dtos\RoleDto.cs" />
+    <Compile Include="Dtos\ShipmentDto.cs" />
+    <Compile Include="Dtos\ShipmentStateDto.cs" />
     <Compile Include="Dtos\ShipmentTypeDto.cs" />
     <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,7 +56,10 @@
     <Compile Include="RequestModels\AffiliateBaseRequestModel.cs" />
     <Compile Include="RequestModels\AffiliateRequestModel.cs" />
     <Compile Include="RequestModels\AffiliateUpdateRequestModel.cs" />
+    <Compile Include="RequestModels\ShipmentBaseRequestModel.cs" />
+    <Compile Include="RequestModels\ShipmentRequestModel.cs" />
     <Compile Include="RequestModels\ShipmentTypeRequestModel.cs" />
+    <Compile Include="RequestModels\ShipmentUpdateRequestModel.cs" />
     <Compile Include="RequestModels\UserBaseRequestModel.cs" />
     <Compile Include="RequestModels\UserRequestModel.cs" />
     <Compile Include="RequestModels\UserUpdateRequestModel.cs" />

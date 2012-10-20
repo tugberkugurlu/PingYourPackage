@@ -43,15 +43,11 @@
   POST api/affiliates/{key}
   PUT api/affiliates/{key}/shipments/{shipmentKey}
   DELETE api/affiliates/{key}/shipments/{shipmentKey}
-
+  
 [Authorize(Roles = "Admin,Employee")]
 [api/shipments/{key}/shipmentstates] => ShipmentStatesHttpRoute => ShipmentStatesController
   GET /api/shipments/{key}/shipmentstates [collection]
   POST /api/shipments/{key}/shipmentstates
-
-[Authorize(Roles = "Affiliate")]
-[api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates] => AffiliateShipmentShipmentStatesHttpRoute => AffiliateShipmentShipmentStatesController
-  GET api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates [collection]
   
 #######################################################################################  
 ## WON'T BE APPLIED
@@ -59,7 +55,17 @@
 [Authorize(Roles = "Admin")]
 [api/users/{key}/roles] => UserRolesHttpRoute => UserRolesController
   POST /api/users/{key}/roles
-  DELETE /api/users/{key}/roles?roleName={roleName}
+  DELETE /api/users/{key}/roles?roleName={roleName} 
+
+[Authorize(Roles = "Affiliate")]
+[api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates] => AffiliateShipmentShipmentStatesHttpRoute => AffiliateShipmentShipmentStatesController
+  GET api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates [collection]
+  {{{{
+  routes.MapHttpRoute(
+      "AffiliateShipmentShipmentStatesHttpRoute",
+      "api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates",
+      new { controller = "AffiliateShipmentShipmentStates" }); 
+  }}}
 #######################################################################################
 ## WON'T BE APPLIED  
 #######################################################################################

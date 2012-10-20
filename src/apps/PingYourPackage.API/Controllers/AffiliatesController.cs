@@ -25,8 +25,7 @@ namespace PingYourPackage.API.Controllers {
             _shipmentService = shipmentService;
         }
 
-        public PaginatedDto<AffiliateDto> GetAffiliates(
-            PaginatedRequestCommand cmd) {
+        public PaginatedDto<AffiliateDto> GetAffiliates(PaginatedRequestCommand cmd) {
 
             var affiliates = _shipmentService.GetAffiliates(
                 cmd.Page, cmd.Take);
@@ -46,8 +45,7 @@ namespace PingYourPackage.API.Controllers {
             return affiliate.ToAffiliateDto();
         }
 
-        public HttpResponseMessage PostAffiliate(
-            AffiliateRequestModel requestModel) {
+        public HttpResponseMessage PostAffiliate(AffiliateRequestModel requestModel) {
 
             var createdAffiliateResult = _shipmentService
                 .AddAffiliate(
@@ -63,14 +61,12 @@ namespace PingYourPackage.API.Controllers {
                 createdAffiliateResult.Entity.ToAffiliateDto());
 
             response.Headers.Location = new Uri(Url.Link("DefaultHttpRoute",
-                    new { key = createdAffiliateResult.Entity.User.Key }));
+                    new { key = createdAffiliateResult.Entity.Key }));
 
             return response;
         }
 
-        public AffiliateDto PutAffiliate(
-            Guid key,
-            AffiliateUpdateRequestModel requestModel) {
+        public AffiliateDto PutAffiliate(Guid key, AffiliateUpdateRequestModel requestModel) {
 
             var affiliate = _shipmentService.GetAffiliate(key);
             if (affiliate == null) {

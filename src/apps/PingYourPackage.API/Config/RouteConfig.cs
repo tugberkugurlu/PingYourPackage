@@ -23,11 +23,6 @@ namespace PingYourPackage.API.Config {
                 new { controller = "ShipmentStates" });
 
             routes.MapHttpRoute(
-                "AffiliateShipmentShipmentStatesHttpRoute",
-                "api/affiliates/{key}/shipments/{shipmentKey}/shipmentstates",
-                new { controller = "AffiliateShipmentShipmentStates" });
-
-            routes.MapHttpRoute(
                 "DefaultHttpRoute",
                 "api/{controller}/{key}",
                 new { key = RouteParameter.Optional });
