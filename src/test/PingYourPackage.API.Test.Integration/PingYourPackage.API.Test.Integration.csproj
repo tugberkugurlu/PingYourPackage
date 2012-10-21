@@ -96,6 +96,7 @@
     <Compile Include="Controllers\AffiliatesControllerIntegrationTest.cs" />
     <Compile Include="Controllers\AuthControllerIntegrationTest.cs" />
     <Compile Include="Controllers\RolesControllerIntegrationTest.cs" />
+    <Compile Include="Controllers\ShipmentsControllerIntegrationTest.cs" />
     <Compile Include="Controllers\ShipmentTypesControllerIntegrationTest.cs" />
     <Compile Include="Controllers\UsersControllerIntegrationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
