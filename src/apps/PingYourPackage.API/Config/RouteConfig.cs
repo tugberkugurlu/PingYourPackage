@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PingYourPackage.API.Dispatcher;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -10,12 +11,16 @@ namespace PingYourPackage.API.Config {
 
     public class RouteConfig {
 
-        public static void RegisterRoutes(HttpRouteCollection routes) {
+        public static void RegisterRoutes(HttpConfiguration config) {
+
+            var routes = config.Routes;
 
             routes.MapHttpRoute(
                 "AffiliateShipmentsHttpRoute",
                 "api/affiliates/{key}/shipments",
-                new { controller = "AffiliateShipments" });
+                new { controller = "AffiliateShipments" },
+                constraints: new { },
+                handler: new AffiliateShipmentsDispatcher(config));
 
             routes.MapHttpRoute(
                 "ShipmentStatesHttpRoute",

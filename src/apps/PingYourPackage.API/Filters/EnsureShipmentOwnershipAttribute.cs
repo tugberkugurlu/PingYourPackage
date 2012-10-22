@@ -1,0 +1,87 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
+using System.Web.Http.Routing;
+using PingYourPackage.Domain.Services;
+using System.Threading;
+using System.Security.Principal;
+using System.Net;
+using PingYourPackage.Domain.Entities;
+
+namespace PingYourPackage.API.Filters {
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    public class EnsureShipmentOwnershipAttribute : Attribute, IAuthorizationFilter {
+
+        public bool AllowMultiple { get { return false; } }
+
+        public Task<HttpResponseMessage> ExecuteAuthorizationFilterAsync(
+            HttpActionContext actionContext,
+            CancellationToken cancellationToken,
+            Func<Task<HttpResponseMessage>> continuation) {
+
+            // We are here sure that user is authanticated and request can be
+            // kept executing because AuthorizeAttribute has been run
+            // before this filter's OnActionExecuting method.
+            // Also, we are sure that affiliate is associated with
+            // the currently authanticated user as the previous action filter has
+            // checked against this.
+            IHttpRouteData routeData = actionContext.Request.GetRouteData();
+            Uri requestUri = actionContext.Request.RequestUri;
+
+            Guid affiliateKey = GetAffiliateKey(routeData);
+            Guid shipmentKey = GetShipmentKey(routeData, requestUri);
+
+            // Check if the affiliate really owns the shipment
+            // whose key came from the request. We don't need to check the 
+            // existence of the affiliate as it has been also 
+            // already done by AffiliateShipmentsDispatcher.
+            IShipmentService shipmentService = actionContext.Request.GetShipmentService();
+            Shipment shipment = shipmentService.GetShipment(shipmentKey);
+
+            // Check shipmeny ownership
+            if (shipment == null) {
+
+                return Task.FromResult(
+                    new HttpResponseMessage(HttpStatusCode.NotFound));
+            }
+
+            // Check the shipment ownership
+            if (shipment.AffiliateKey != affiliateKey) {
+
+                return Task.FromResult(
+                    new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            }
+
+            // the request is legit, continue executing.
+            return continuation();
+        }
+
+        private static Guid GetAffiliateKey(IHttpRouteData routeData) {
+
+            var affiliateKey = routeData.Values["key"].ToString();
+            return Guid.ParseExact(affiliateKey, "D");
+        }
+
+        private static Guid GetShipmentKey(IHttpRouteData routeData, Uri requestUri) {
+
+            // We are sure at this point that the shipmentKey value has been
+            // supplied (either through route or quesry string) because it 
+            // wouldn't be possible for the request to arrive here if it wasn't.
+            object shipmentKeyString;
+            if (routeData.Values.TryGetValue("shipmentKey", out shipmentKeyString)) {
+
+                return Guid.ParseExact(shipmentKeyString.ToString(), "D");
+            }
+
+            // It's now sure that query string has the shipmentKey value
+            var quesryString = requestUri.ParseQueryString();
+            return Guid.ParseExact(quesryString["shipmentKey"], "D");
+        }
+    }
+}

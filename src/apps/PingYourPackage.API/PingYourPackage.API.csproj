@@ -89,12 +89,17 @@
     <Compile Include="Config\RouteConfig.cs" />
     <Compile Include="Config\WebAPIConfig.cs" />
     <Compile Include="Controllers\AffiliatesController.cs" />
+    <Compile Include="Controllers\AffiliateShipmentsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ShipmentsController.cs" />
     <Compile Include="Controllers\ShipmentTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Filters\AffiliateShipmentsAuthorizeAttribute.cs" />
+    <Compile Include="Filters\EnsureShipmentOwnershipAttribute.cs" />
     <Compile Include="Filters\EmptyParameterFilterAttribute.cs" />
+    <Compile Include="Dispatcher\AffiliateShipmentsDispatcher.cs" />
+    <Compile Include="Http\HttpRequestMessageExtensions.cs" />
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />

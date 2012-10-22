@@ -18,7 +18,7 @@ namespace PingYourPackage.API.Test.Integration {
         internal static HttpConfiguration GetInitialIntegrationTestConfig() {
 
             var config = new HttpConfiguration();
-            RouteConfig.RegisterRoutes(config.Routes);
+            RouteConfig.RegisterRoutes(config);
             WebAPIConfig.Configure(config);
             
             return config;

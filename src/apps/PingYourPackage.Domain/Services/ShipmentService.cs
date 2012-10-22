@@ -135,6 +135,16 @@ namespace PingYourPackage.Domain.Services {
             return shipments;
         }
 
+        public PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize, Guid affiliateKey) {
+
+            var shipments = _shipmentRepository
+                .AllIncluding(x => x.ShipmentType, x => x.ShipmentStates)
+                .Where(x => x.AffiliateKey == affiliateKey)
+                .ToPaginatedList(pageIndex, pageSize);
+
+            return shipments;
+        }
+
         public Shipment GetShipment(Guid key) {
 
             var shipment = _shipmentRepository
@@ -205,6 +215,25 @@ namespace PingYourPackage.Domain.Services {
             _shipmentStateRepository.Save();
 
             return shipmentState;
+        }
+
+        // Others
+
+        public bool IsShipmentOwnedByAffiliate(Guid shipmentKey, Guid affiliateKey) {
+
+            var shipment = _shipmentRepository
+                .GetShipmentsByAffiliateKey(affiliateKey)
+                .FirstOrDefault(x => x.Key == shipmentKey);
+
+            return shipment != null;
+        }
+
+        public bool IsAffiliateRelatedToUser(Guid affiliateKey, string username) {
+
+            var affiliate = GetAffiliate(affiliateKey);
+
+            return affiliate != null && 
+                   affiliate.User.Name.Equals(username);
         }
     }
 }

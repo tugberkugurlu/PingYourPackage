@@ -40,7 +40,7 @@
 [api/affiliates/{key}/shipments] => AffiliateShipmentsHttpRoute => AffiliateShipmentsController
   GET api/affiliates/{key}/shipments [collection]
   GET api/affiliates/{key}/shipments/{shipmentKey} [single]
-  POST api/affiliates/{key}
+  POST api/affiliates/{key}/shipments
   PUT api/affiliates/{key}/shipments/{shipmentKey}
   DELETE api/affiliates/{key}/shipments/{shipmentKey}
   

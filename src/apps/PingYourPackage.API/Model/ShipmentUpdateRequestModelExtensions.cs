@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PingYourPackage.API.Model {
-    
+
     internal static class ShipmentUpdateRequestModelExtensions {
 
         internal static Shipment ToShipment(
