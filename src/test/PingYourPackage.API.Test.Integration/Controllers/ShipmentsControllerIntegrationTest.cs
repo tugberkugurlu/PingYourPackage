@@ -59,7 +59,6 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 var shipments = GetDummyShipments(new[] { 
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 });
-                var containerBuilder = GetInitialContainerBuilder();
 
                 Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
                 shipmentSrvMock.Setup(ss =>
@@ -72,11 +71,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                             .ToPaginatedList(pageIndex, pageSize)
                 );
 
-                containerBuilder.Register(c => shipmentSrvMock.Object)
-                    .As<IShipmentService>()
-                    .InstancePerApiRequest();
-
-                return containerBuilder.Build();
+                return GetContainerThroughMock(shipmentSrvMock);
             }
         }
 
@@ -150,7 +145,12 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             private static IContainer GetContainer(Guid[] keys) {
 
                 var shipments = GetDummyShipments(keys);
-                var containerBuilder = GetInitialContainerBuilder();
+                var shipmentSrvMock = GetShipmentSrvMock(shipments);
+
+                return GetContainerThroughMock(shipmentSrvMock);
+            }
+
+            private static Mock<IShipmentService> GetShipmentSrvMock(IEnumerable<Shipment> shipments) {
 
                 Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
                 shipmentSrvMock.Setup(ss => ss.GetShipment(
@@ -158,11 +158,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     )
                 ).Returns<Guid>(key => shipments.FirstOrDefault(x => x.Key == key));
 
-                containerBuilder.Register(c => shipmentSrvMock.Object)
-                    .As<IShipmentService>()
-                    .InstancePerApiRequest();
-
-                return containerBuilder.Build();
+                return shipmentSrvMock;
             }
         }
 
@@ -172,28 +168,268 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             public async Task
                 Returns_201_And_Shipment_If_Request_Authorized_And_Success() {
 
-                throw new NotImplementedException();
+                // Arange
+                Guid[] availableShipmentTypeKeys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(availableShipmentTypeKeys));
+
+                var shipmentRequestModel = new ShipmentRequestModel {
+                    ShipmentTypeKey = availableShipmentTypeKeys[1],
+                    AffiliateKey = Guid.NewGuid(),
+                    Price = 12.23M,
+                    ReceiverName = "Receiver 1 Name",
+                    ReceiverSurname = "Receiver 1 Surname",
+                    ReceiverAddress = "Receiver 1 Address",
+                    ReceiverCity = "Receiver 1 City",
+                    ReceiverCountry = "Receiver 1 Country",
+                    ReceiverTelephone = "Receiver 1 Country",
+                    ReceiverZipCode = "12345",
+                    ReceiverEmail = "foo@example.com"
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            ApiBaseRequestPath),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentRequestModel>(
+                    shipmentRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var shipmentDto = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<ShipmentDto>(
+                        config, request, HttpStatusCode.Created);
+
+                // Assert
+                Assert.Equal(shipmentRequestModel.Price, shipmentDto.Price);
+                Assert.Equal(shipmentRequestModel.ReceiverName, shipmentDto.ReceiverName);
+                Assert.Equal(shipmentRequestModel.ReceiverEmail, shipmentDto.ReceiverEmail);
+                Assert.NotNull(shipmentDto.ShipmentType);
+                Assert.True(shipmentDto.ShipmentStates.Count() > 0);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_409_If_Request_Authorized_But_Conflicted() {
 
-                throw new NotImplementedException();
+                // Arange
+                Guid[] availableShipmentTypeKeys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(availableShipmentTypeKeys));
+
+                var shipmentRequestModel = new ShipmentRequestModel {
+                    ShipmentTypeKey = Guid.NewGuid(),
+                    AffiliateKey = Guid.NewGuid(),
+                    Price = 12.23M,
+                    ReceiverName = "Receiver 1 Name",
+                    ReceiverSurname = "Receiver 1 Surname",
+                    ReceiverAddress = "Receiver 1 Address",
+                    ReceiverCity = "Receiver 1 City",
+                    ReceiverCountry = "Receiver 1 Country",
+                    ReceiverTelephone = "Receiver 1 Country",
+                    ReceiverZipCode = "12345",
+                    ReceiverEmail = "foo@example.com"
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            ApiBaseRequestPath),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentRequestModel>(
+                    shipmentRequestModel, new JsonMediaTypeFormatter());
+
+                // Act
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_400_If_Request_Authorized_But_Invalid() {
 
-                throw new NotImplementedException();
+                // Arange
+                Guid[] availableShipmentTypeKeys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(availableShipmentTypeKeys));
+
+                var shipmentRequestModel = new ShipmentRequestModel {
+                    ReceiverName = "ANameWhichIsMoreThan50CharsANameWhichIsMoreThan50Chars",
+                    ReceiverSurname = "ASurnameWhichIsMoreThan50CharsASurnameWhichIsMoreThan50Chars",
+                    ReceiverAddress = "AnAddressWhichIsMoreThan50CharsAnAddressWhichIsMoreThan50Chars",
+                    ReceiverCity = "ACityWhichIsMoreThan50CharsACityWhichIsMoreThan50Chars",
+                    ReceiverTelephone = "ATelephoneWhichIsMoreThan50CharsATelephoneWhichIsMoreThan50Chars",
+                    ReceiverEmail = "fooexample.com"
+                };
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            ApiBaseRequestPath),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                request.Content = new ObjectContent<ShipmentRequestModel>(
+                    shipmentRequestModel, new JsonMediaTypeFormatter());
+
+                var httpError = await IntegrationTestHelper.
+                    GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
+
+                var modelState = (HttpError)httpError["ModelState"];
+                var affiliateKeyError = modelState["requestModel.AffiliateKey"] as string[];
+                var shipmentTypeKeyError = modelState["requestModel.ShipmentTypeKey"] as string[];
+                var priceError = modelState["requestModel.Price"] as string[];
+                var receiverNameError = modelState["requestModel.ReceiverName"] as string[];
+                var receiverSurnameError = modelState["requestModel.ReceiverSurname"] as string[];
+                var receiverAddressError = modelState["requestModel.ReceiverAddress"] as string[];
+                var receiverCityError = modelState["requestModel.ReceiverCity"] as string[];
+                var receiverCountryError = modelState["requestModel.ReceiverCountry"] as string[];
+                var receiverTelephoneError = modelState["requestModel.ReceiverTelephone"] as string[];
+                var receiverEmailError = modelState["requestModel.ReceiverEmail"] as string[];
+                var receiverZipCodeError = modelState["requestModel.ReceiverZipCode"] as string[];
+
+                // Assert
+                Assert.NotNull(affiliateKeyError);
+                Assert.NotNull(shipmentTypeKeyError);
+                Assert.NotNull(priceError);
+                Assert.NotNull(receiverNameError);
+                Assert.NotNull(receiverSurnameError);
+                Assert.NotNull(receiverAddressError);
+                Assert.NotNull(receiverCityError);
+                Assert.NotNull(receiverCountryError);
+                Assert.NotNull(receiverTelephoneError);
+                Assert.NotNull(receiverEmailError);
+                Assert.NotNull(receiverZipCodeError);
             }
 
             [Fact, NullCurrentPrincipal]
             public async Task
                 Returns_400_If_Request_Authorized_But_Message_Body_Is_Empty() {
 
-                throw new NotImplementedException();
+                // Arange
+                Guid[] availableShipmentTypeKeys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(availableShipmentTypeKeys));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Post,
+                        uri: string.Format(
+                            "https://localhost/{0}",
+                            ApiBaseRequestPath),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                var httpError = await IntegrationTestHelper
+                    .GetResponseMessageBodyAsync<HttpError>(
+                        config, request, HttpStatusCode.BadRequest);
+
+                var modelState = (HttpError)httpError["ModelState"];
+                var requestModelError = modelState["requestModel"] as string[];
+
+                // Assert
+                Assert.NotNull(requestModelError);
+            }
+
+            private static IContainer GetContainer() {
+
+                return GetContainer(new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                });
+            }
+
+            private static IContainer GetContainer(Guid[] availableShipmentTypeKeys) {
+
+                var shipments = GetDummyShipments(new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                });
+                var shipmentSrvMock = GetShipmentSrvMock(shipments, availableShipmentTypeKeys);
+
+                return GetContainerThroughMock(shipmentSrvMock);
+            }
+
+            private static Mock<IShipmentService> GetShipmentSrvMock(
+                IEnumerable<Shipment> shipments) {
+
+                return GetShipmentSrvMock(shipments, availableShipmentTypeKeys: new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                });
+            }
+
+            private static Mock<IShipmentService> GetShipmentSrvMock(
+                IEnumerable<Shipment> shipments, Guid[] availableShipmentTypeKeys) {
+
+                Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
+                shipmentSrvMock.Setup(ss => ss.GetShipment(
+                        It.IsAny<Guid>()
+                    )
+                ).Returns<Guid>(key => shipments.FirstOrDefault(x => x.Key == key));
+
+                // For the valid result
+                shipmentSrvMock.Setup(ss => ss.AddShipment(
+                        It.IsAny<Shipment>()
+                    )
+                ).Returns<Shipment>(shipment => {
+                    
+                    shipment.Key = Guid.NewGuid();
+                    shipment.CreatedOn = DateTime.Now;
+                    shipment.ShipmentType = new ShipmentType {
+                        Key = availableShipmentTypeKeys[1],
+                        Name = "Small",
+                        Price = 4.19M,
+                        CreatedOn = DateTime.Now,
+                    };
+
+                    shipment.ShipmentStates = new List<ShipmentState> { 
+                        new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = shipment.Key, ShipmentStatus = ShipmentStatus.Ordered }
+                    };
+
+                    return new CreatedResult<Shipment>(true) {
+                        Entity = shipment
+                    };
+                });
+
+                // For the invalid result
+                shipmentSrvMock.Setup(ss => ss.AddShipment(
+                        It.Is<Shipment>(s => 
+                            !availableShipmentTypeKeys.Contains(
+                                s.ShipmentTypeKey
+                            )
+                        )
+                    )
+                ).Returns(new CreatedResult<Shipment>(false));
+
+                return shipmentSrvMock;
             }
         }
 
@@ -320,7 +556,8 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 var shipments = GetDummyShipments(keys);
                 var shipmentSrvMock = GetShipmentSrvMock(shipments);
                 var config = IntegrationTestHelper
-                    .GetInitialIntegrationTestConfig(GetContainer(keys, shipmentSrvMock));
+                    .GetInitialIntegrationTestConfig(
+                        GetContainerThroughMock(shipmentSrvMock));
 
                 var shipmentRequestModel = new ShipmentUpdateRequestModel {
                     ShipmentTypeKey = Guid.NewGuid(),
@@ -402,23 +639,10 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 var shipments = GetDummyShipments(keys);
                 var shipmentSrvMock = GetShipmentSrvMock(shipments);
 
-                return GetContainer(keys, shipmentSrvMock);
+                return GetContainerThroughMock(shipmentSrvMock);
             }
 
-            private static IContainer GetContainer(
-                Guid[] keys, Mock<IShipmentService> shipmentSrvMock) {
-
-                var containerBuilder = GetInitialContainerBuilder();
-
-                containerBuilder.Register(c => shipmentSrvMock.Object)
-                    .As<IShipmentService>()
-                    .InstancePerApiRequest();
-
-                return containerBuilder.Build();
-            }
-
-            private static Mock<IShipmentService> GetShipmentSrvMock(
-                IEnumerable<Shipment> shipments) {
+            private static Mock<IShipmentService> GetShipmentSrvMock(IEnumerable<Shipment> shipments) {
 
                 Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
                 shipmentSrvMock.Setup(ss => ss.GetShipment(
@@ -487,6 +711,17 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 .InstancePerApiRequest();
 
             return builder;
+        }
+
+        private static IContainer GetContainerThroughMock(Mock<IShipmentService> shipmentSrvMock) {
+
+            var containerBuilder = GetInitialContainerBuilder();
+
+            containerBuilder.Register(c => shipmentSrvMock.Object)
+                .As<IShipmentService>()
+                .InstancePerApiRequest();
+
+            return containerBuilder.Build();
         }
     }
 }

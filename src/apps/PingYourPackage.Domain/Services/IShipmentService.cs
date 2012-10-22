@@ -9,9 +9,6 @@ namespace PingYourPackage.Domain.Services {
     
     public interface IShipmentService {
 
-        Shipment AddShipment(Guid affiliateKey, Shipment shipment);
-        Shipment ChangeShipmentState(Guid shipmentKey, ShipmentStatus shipmentStatus);
-
         PaginatedList<ShipmentType> GetShipmentTypes(int pageIndex, int pageSize);
         ShipmentType GetShipmentType(Guid key);
         CreatedResult<ShipmentType> AddShipmentType(ShipmentType shipmentType);

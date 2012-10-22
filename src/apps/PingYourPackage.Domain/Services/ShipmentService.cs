@@ -29,14 +29,6 @@ namespace PingYourPackage.Domain.Services {
             _membershipService = membershipService;
         }
 
-        public Shipment AddShipment(Guid affiliateKey, Shipment shipment) {
-            throw new NotImplementedException();
-        }
-
-        public Shipment ChangeShipmentState(Guid shipmentKey, ShipmentStatus shipmentStatus) {
-            throw new NotImplementedException();
-        }
-
         // ShipmentType
 
         public PaginatedList<ShipmentType> GetShipmentTypes(int pageIndex, int pageSize) {
