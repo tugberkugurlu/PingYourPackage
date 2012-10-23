@@ -102,12 +102,15 @@
     <Compile Include="Http\HttpRequestMessageExtensions.cs" />
     <Compile Include="MessageHandlers\PingYourPackageAuthHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
+    <Compile Include="ModelBinding\BindShipmentAttribute.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
+    <Compile Include="ModelBinding\ShipmentParameterBinding.cs" />
     <Compile Include="Model\AffiliateExtensions.cs" />
     <Compile Include="Model\AffiliateRequestModelExtensions.cs" />
     <Compile Include="Model\AffiliateUpdateRequestModelExtensions.cs" />
     <Compile Include="Model\PaginatedListExtensions.cs" />
     <Compile Include="Model\RoleExtensions.cs" />
+    <Compile Include="Model\ShipmentByAffiliateRequestModelExtensions.cs" />
     <Compile Include="Model\ShipmentExtensions.cs" />
     <Compile Include="Model\ShipmentRequestModelExtensions.cs" />
     <Compile Include="Model\ShipmentStateExtensions.cs" />

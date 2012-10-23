@@ -11,27 +11,28 @@ namespace PingYourPackage.Domain.Entities {
         public static IQueryable<Shipment> GetShipmentsByAffiliateKey(
             this IEntityRepository<Shipment> shipmentRepository, Guid affiliateKey) {
             
-            return shipmentRepository.GetAll().Where(x => x.AffiliateKey == affiliateKey);
+            return shipmentRepository.AllIncluding(x => 
+                    x.ShipmentType, x => x.ShipmentStates).Where(x => 
+                        x.AffiliateKey == affiliateKey);
         }
-
 
         public static IQueryable<Shipment> GetNotDeliveredShipments(
             this IEntityRepository<Shipment> shipmentRepository) {
 
-                var shipmenents = from shipment in shipmentRepository.GetAll()
-                                  where shipment.ShipmentStates.Any(x => 
-                                      x.ShipmentStatus != ShipmentStatus.Delivered)
-                                  select shipment;
+            var shipmenents = from shipment in shipmentRepository.AllIncluding(
+                                   x => x.ShipmentType, x => x.ShipmentStates) 
+                              where shipment.ShipmentStates.Any(
+                                    x => x.ShipmentStatus != ShipmentStatus.Delivered)
+                              select shipment;
 
-                return shipmenents;
+            return shipmenents;
         }
 
         public static IQueryable<Shipment> GetNotDeliveredShipments(
             this IEntityRepository<Shipment> shipmentRepository, Guid affiliateKey) {
 
-                return shipmentRepository.GetNotDeliveredShipments().Where(x => 
-                    x.AffiliateKey == affiliateKey);
+            return shipmentRepository.GetNotDeliveredShipments()
+                .Where(x => x.AffiliateKey == affiliateKey);
         }
-
     }
 }

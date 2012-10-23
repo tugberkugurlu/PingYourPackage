@@ -48,24 +48,24 @@ namespace PingYourPackage.Domain.Services {
             return userCtx;
         }
 
-        public CreatedResult<UserWithRoles> CreateUser(string username, string email, string password) {
+        public OperationResult<UserWithRoles> CreateUser(string username, string email, string password) {
 
             return CreateUser(username, password, email, roles: null);
         }
 
-        public CreatedResult<UserWithRoles> CreateUser(string username, string email, string password, string role) {
+        public OperationResult<UserWithRoles> CreateUser(string username, string email, string password, string role) {
 
             return CreateUser(username, password, email, roles: new[] { role });
         }
 
-        public CreatedResult<UserWithRoles> CreateUser(string username, string email, string password, string[] roles) {
+        public OperationResult<UserWithRoles> CreateUser(string username, string email, string password, string[] roles) {
 
             var existingUser = _userRepository.GetAll().Any(
                 x => x.Name == username);
 
             if (existingUser) {
 
-                return new CreatedResult<UserWithRoles>(false);
+                return new OperationResult<UserWithRoles>(false);
             }
 
             var passwordSalt = _cryptoService.GenerateSalt();
@@ -90,7 +90,7 @@ namespace PingYourPackage.Domain.Services {
 	            }
             }
 
-            return new CreatedResult<UserWithRoles>(true) { 
+            return new OperationResult<UserWithRoles>(true) { 
                 Entity = GetUserWithRoles(user)
             };
         }

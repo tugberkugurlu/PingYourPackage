@@ -342,7 +342,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     st.Key = Guid.NewGuid();
                     st.CreatedOn = DateTime.Now;
 
-                    return new CreatedResult<ShipmentType>(true) { Entity = st };
+                    return new OperationResult<ShipmentType>(true) { Entity = st };
                 });
 
                 shipmentSrvMock.Setup(ss => ss.AddShipmentType(
@@ -354,7 +354,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                             )
                         )
                     )
-                ).Returns(new CreatedResult<ShipmentType>(false));
+                ).Returns(new OperationResult<ShipmentType>(false));
 
                 containerBuilder.Register(c => shipmentSrvMock.Object)
                     .As<IShipmentService>()

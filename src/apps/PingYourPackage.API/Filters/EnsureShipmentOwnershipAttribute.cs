@@ -18,6 +18,7 @@ namespace PingYourPackage.API.Filters {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class EnsureShipmentOwnershipAttribute : Attribute, IAuthorizationFilter {
 
+        private const string ShipmentDictionaryKey = "__AffiliateShipmentsController_Shipment";
         public bool AllowMultiple { get { return false; } }
 
         public Task<HttpResponseMessage> ExecuteAuthorizationFilterAsync(
@@ -44,7 +45,7 @@ namespace PingYourPackage.API.Filters {
             IShipmentService shipmentService = actionContext.Request.GetShipmentService();
             Shipment shipment = shipmentService.GetShipment(shipmentKey);
 
-            // Check shipmeny ownership
+            // Check the shipment existance
             if (shipment == null) {
 
                 return Task.FromResult(
@@ -57,6 +58,12 @@ namespace PingYourPackage.API.Filters {
                 return Task.FromResult(
                     new HttpResponseMessage(HttpStatusCode.Unauthorized));
             }
+
+            // Stick the shipment inside the Properties
+            // dictionary so that action won't need to have 
+            // another trip to database.
+            actionContext.Request
+                .Properties[ShipmentDictionaryKey] = shipment;
 
             // the request is legit, continue executing.
             return continuation();

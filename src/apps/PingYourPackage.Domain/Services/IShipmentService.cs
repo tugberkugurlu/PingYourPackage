@@ -11,21 +11,21 @@ namespace PingYourPackage.Domain.Services {
 
         PaginatedList<ShipmentType> GetShipmentTypes(int pageIndex, int pageSize);
         ShipmentType GetShipmentType(Guid key);
-        CreatedResult<ShipmentType> AddShipmentType(ShipmentType shipmentType);
+        OperationResult<ShipmentType> AddShipmentType(ShipmentType shipmentType);
         ShipmentType UpdateShipmentType(ShipmentType shipmentType);
 
         PaginatedList<Affiliate> GetAffiliates(int pageIndex, int pageSize);
         Affiliate GetAffiliate(Guid key);
-        CreatedResult<Affiliate> AddAffiliate(Guid userKey, Affiliate affiliate);
+        OperationResult<Affiliate> AddAffiliate(Guid userKey, Affiliate affiliate);
         Affiliate UpdateAffiliate(Affiliate affiliate);
 
         PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize);
         PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize, Guid affiliateKey);
         Shipment GetShipment(Guid key);
-        CreatedResult<Shipment> AddShipment(Shipment shipment);
+        OperationResult<Shipment> AddShipment(Shipment shipment);
         Shipment UpdateShipment(Shipment shipment);
+        OperationResult RemoveShipment(Shipment shipment);
 
-        bool IsShipmentOwnedByAffiliate(Guid shipmentKey, Guid affiliateKey);
         bool IsAffiliateRelatedToUser(Guid affiliateKey, string username);
     }
 }

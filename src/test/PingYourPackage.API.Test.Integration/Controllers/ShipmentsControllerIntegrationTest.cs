@@ -414,7 +414,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = shipment.Key, ShipmentStatus = ShipmentStatus.Ordered }
                     };
 
-                    return new CreatedResult<Shipment>(true) {
+                    return new OperationResult<Shipment>(true) {
                         Entity = shipment
                     };
                 });
@@ -427,7 +427,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                             )
                         )
                     )
-                ).Returns(new CreatedResult<Shipment>(false));
+                ).Returns(new OperationResult<Shipment>(false));
 
                 return shipmentSrvMock;
             }

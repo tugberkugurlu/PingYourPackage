@@ -401,7 +401,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 ).Returns<string, string, string, string[]>(
                     (username, email, password, roles) => 
 
-                    new CreatedResult<UserWithRoles>(true) {
+                    new OperationResult<UserWithRoles>(true) {
                         Entity = new UserWithRoles {
                             User = new User {
                                 Key = Guid.NewGuid(),
@@ -433,7 +433,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         ),
                         It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string[]>()
                     )
-                ).Returns(new CreatedResult<UserWithRoles>(false));
+                ).Returns(new OperationResult<UserWithRoles>(false));
 
                 return mockMemSrv.Object;
             }

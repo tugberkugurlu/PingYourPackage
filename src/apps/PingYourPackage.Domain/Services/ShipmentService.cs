@@ -45,13 +45,13 @@ namespace PingYourPackage.Domain.Services {
             return shipmentType;
         }
 
-        public CreatedResult<ShipmentType> AddShipmentType(ShipmentType shipmentType) {
+        public OperationResult<ShipmentType> AddShipmentType(ShipmentType shipmentType) {
 
             // If there is already one which has the same name,
             // return unseccessful result back
             if (_shipmentTypeRepository.GetSingleByName(shipmentType.Name) != null) {
 
-                return new CreatedResult<ShipmentType>(false);
+                return new OperationResult<ShipmentType>(false);
             }
 
             shipmentType.Key = Guid.NewGuid();
@@ -60,7 +60,7 @@ namespace PingYourPackage.Domain.Services {
             _shipmentTypeRepository.Add(shipmentType);
             _shipmentTypeRepository.Save();
 
-            return new CreatedResult<ShipmentType>(true) { 
+            return new OperationResult<ShipmentType>(true) { 
                 Entity = shipmentType
             };
         }
@@ -92,7 +92,7 @@ namespace PingYourPackage.Domain.Services {
             return affiliate;
         }
 
-        public CreatedResult<Affiliate> AddAffiliate(Guid userKey, Affiliate affiliate) {
+        public OperationResult<Affiliate> AddAffiliate(Guid userKey, Affiliate affiliate) {
 
             var userResult = _membershipService.GetUser(userKey);
             if (userResult == null ||
@@ -101,7 +101,7 @@ namespace PingYourPackage.Domain.Services {
                         "affiliate", StringComparison.OrdinalIgnoreCase)) ||
                 _affiliateRepository.GetSingle(userKey) != null) {
 
-                return new CreatedResult<Affiliate>(false);
+                return new OperationResult<Affiliate>(false);
             }
 
             affiliate.Key = userKey;
@@ -111,7 +111,7 @@ namespace PingYourPackage.Domain.Services {
             _affiliateRepository.Save();
 
             affiliate.User = userResult.User;
-            return new CreatedResult<Affiliate>(true) {
+            return new OperationResult<Affiliate>(true) {
                 Entity = affiliate
             };
         }
@@ -128,8 +128,7 @@ namespace PingYourPackage.Domain.Services {
 
         public PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize) {
 
-            var shipments = _shipmentRepository
-                .AllIncluding(x => x.ShipmentType, x => x.ShipmentStates)
+            var shipments = GetInitialShipments()
                 .ToPaginatedList(pageIndex, pageSize);
 
             return shipments;
@@ -138,8 +137,7 @@ namespace PingYourPackage.Domain.Services {
         public PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize, Guid affiliateKey) {
 
             var shipments = _shipmentRepository
-                .AllIncluding(x => x.ShipmentType, x => x.ShipmentStates)
-                .Where(x => x.AffiliateKey == affiliateKey)
+                .GetShipmentsByAffiliateKey(affiliateKey)
                 .ToPaginatedList(pageIndex, pageSize);
 
             return shipments;
@@ -147,21 +145,20 @@ namespace PingYourPackage.Domain.Services {
 
         public Shipment GetShipment(Guid key) {
 
-            var shipment = _shipmentRepository
-                .AllIncluding(x => x.ShipmentType, x => x.ShipmentStates)
+            var shipment = GetInitialShipments()
                 .FirstOrDefault(x => x.Key == key);
 
             return shipment;
         }
 
-        public CreatedResult<Shipment> AddShipment(Shipment shipment) {
+        public OperationResult<Shipment> AddShipment(Shipment shipment) {
 
             var affiliate = _affiliateRepository.GetSingle(shipment.AffiliateKey);
             var shipmentType = _shipmentTypeRepository.GetSingle(shipment.ShipmentTypeKey);
 
             if (affiliate == null || shipmentType == null) {
 
-                return new CreatedResult<Shipment>(false);
+                return new OperationResult<Shipment>(false);
             }
 
             shipment.Key = Guid.NewGuid();
@@ -178,7 +175,7 @@ namespace PingYourPackage.Domain.Services {
             shipment.ShipmentType = shipmentType;
             shipment.ShipmentStates = new List<ShipmentState> { shipmentState };
 
-            return new CreatedResult<Shipment>(true) {
+            return new OperationResult<Shipment>(true) {
                 Entity = shipment
             };
         }
@@ -195,7 +192,26 @@ namespace PingYourPackage.Domain.Services {
             return shipment;
         }
 
+        public OperationResult RemoveShipment(Shipment shipment) {
+
+            if (IsShipmentRemovable(shipment)) {
+
+                _shipmentRepository.Delete(shipment);
+                _shipmentRepository.Save();
+
+                return new OperationResult(true);
+            }
+
+            return new OperationResult(false);
+        }
+
         // Private helpers
+
+        private IQueryable<Shipment> GetInitialShipments() {
+
+            return _shipmentRepository.AllIncluding(x => 
+                    x.ShipmentType, x => x.ShipmentStates);
+        }
 
         private ShipmentState InsertFirstShipmentState(Guid ShipmentKey) {
 
@@ -217,16 +233,16 @@ namespace PingYourPackage.Domain.Services {
             return shipmentState;
         }
 
-        // Others
+        private bool IsShipmentRemovable(Shipment shipment) {
 
-        public bool IsShipmentOwnedByAffiliate(Guid shipmentKey, Guid affiliateKey) {
+            var latestStatus = (from shipmentState in shipment.ShipmentStates.ToList()
+                                orderby shipmentState.ShipmentStatus descending
+                                select shipmentState).First();
 
-            var shipment = _shipmentRepository
-                .GetShipmentsByAffiliateKey(affiliateKey)
-                .FirstOrDefault(x => x.Key == shipmentKey);
-
-            return shipment != null;
+            return latestStatus.ShipmentStatus > ShipmentStatus.Scheduled;
         }
+
+        // Others
 
         public bool IsAffiliateRelatedToUser(Guid affiliateKey, string username) {
 
