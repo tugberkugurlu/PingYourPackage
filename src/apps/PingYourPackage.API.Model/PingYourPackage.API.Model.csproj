@@ -56,6 +56,7 @@
     <Compile Include="RequestModels\AffiliateBaseRequestModel.cs" />
     <Compile Include="RequestModels\AffiliateRequestModel.cs" />
     <Compile Include="RequestModels\AffiliateUpdateRequestModel.cs" />
+    <Compile Include="RequestModels\ShipmentByAffiliateUpdateRequestModel.cs" />
     <Compile Include="RequestModels\ShipmentBaseRequestModel.cs" />
     <Compile Include="RequestModels\ShipmentByAffiliateRequestModel.cs" />
     <Compile Include="RequestModels\ShipmentRequestModel.cs" />

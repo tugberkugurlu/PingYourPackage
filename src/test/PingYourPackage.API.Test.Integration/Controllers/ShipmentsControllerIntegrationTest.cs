@@ -91,14 +91,14 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 var configAndRequest = GetConfigAndRequestMessage(keys, requestKey);
 
                 // Act
-                var userDto = await IntegrationTestHelper
+                var shipmentDto = await IntegrationTestHelper
                     .GetResponseMessageBodyAsync<ShipmentDto>(
                         configAndRequest.Item1, 
                         configAndRequest.Item2, 
                         HttpStatusCode.OK);
 
                 // Assert
-                Assert.Equal(requestKey, userDto.Key);
+                Assert.Equal(requestKey, shipmentDto.Key);
             }
 
             [Fact, NullCurrentPrincipal]
@@ -448,7 +448,6 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     .GetInitialIntegrationTestConfig(GetContainer(keys));
 
                 var shipmentRequestModel = new ShipmentUpdateRequestModel {
-                    ShipmentTypeKey = Guid.NewGuid(),
                     Price = 12.23M,
                     ReceiverName = "Receiver 1 Name",
                     ReceiverSurname = "Receiver 1 Surname",
@@ -520,7 +519,6 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         config, request, HttpStatusCode.BadRequest);
 
                 var modelState = (HttpError)httpError["ModelState"];
-                var shipmentTypeKeyError = modelState["requestModel.ShipmentTypeKey"] as string[];
                 var priceError = modelState["requestModel.Price"] as string[];
                 var receiverNameError = modelState["requestModel.ReceiverName"] as string[];
                 var receiverSurnameError = modelState["requestModel.ReceiverSurname"] as string[];
@@ -532,7 +530,6 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 var receiverZipCodeError = modelState["requestModel.ReceiverZipCode"] as string[];
 
                 // Assert
-                Assert.NotNull(shipmentTypeKeyError);
                 Assert.NotNull(priceError);
                 Assert.NotNull(receiverNameError);
                 Assert.NotNull(receiverSurnameError);
@@ -546,7 +543,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             [Fact, NullCurrentPrincipal]
             public async Task
-                Returns_200_And_Updated_Shipment_If_Request_Authorized_But_Request_Is_Valid() {
+                Returns_200_And_Updated_Shipment_If_Request_Authorized_And_Request_Is_Valid() {
 
                 // Arrange
                 Guid[] keys = new[] { 
@@ -560,7 +557,6 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         GetContainerThroughMock(shipmentSrvMock));
 
                 var shipmentRequestModel = new ShipmentUpdateRequestModel {
-                    ShipmentTypeKey = Guid.NewGuid(),
                     Price = 12.23M,
                     ReceiverName = "Receiver 1 Name",
                     ReceiverSurname = "Receiver 1 Surname",
@@ -665,14 +661,13 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
             };
 
-            List<Shipment> shipments = new List<Shipment>();
             for (int i = 0; i < 3; i++) {
 
-                shipments.Add(new Shipment {
+                yield return new Shipment {
                     Key = keys[i],
                     AffiliateKey = Guid.NewGuid(),
                     ShipmentTypeKey = shipmentTypeKeys[i],
-                    Price = 12.23M * i,
+                    Price = 12.23M * (i + 1),
                     ReceiverName = string.Format("Receiver {0} Name", i),
                     ReceiverSurname = string.Format("Receiver {0} Surname", i),
                     ReceiverAddress = string.Format("Receiver {0} Address", i),
@@ -692,10 +687,8 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = keys[i], ShipmentStatus = ShipmentStatus.Ordered },
                         new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = keys[i], ShipmentStatus = ShipmentStatus.Scheduled }
                     }
-                });
+                };
             }
-
-            return shipments;
         }
 
         private static ContainerBuilder GetInitialContainerBuilder() {

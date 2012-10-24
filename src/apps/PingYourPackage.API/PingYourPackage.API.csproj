@@ -111,6 +111,7 @@
     <Compile Include="Model\PaginatedListExtensions.cs" />
     <Compile Include="Model\RoleExtensions.cs" />
     <Compile Include="Model\ShipmentByAffiliateRequestModelExtensions.cs" />
+    <Compile Include="Model\ShipmentByAffiliateUpdateRequestModelExtensions.cs" />
     <Compile Include="Model\ShipmentExtensions.cs" />
     <Compile Include="Model\ShipmentRequestModelExtensions.cs" />
     <Compile Include="Model\ShipmentStateExtensions.cs" />

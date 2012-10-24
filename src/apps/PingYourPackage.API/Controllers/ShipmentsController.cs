@@ -18,6 +18,7 @@ namespace PingYourPackage.API.Controllers {
     [Authorize(Roles = "Admin,Employee")]
     public class ShipmentsController : ApiController {
 
+        private const string RouteName = "DefaultHttpRoute";
         private readonly IShipmentService _shipmentService;
 
         public ShipmentsController(IShipmentService shipmentService) {
@@ -59,8 +60,11 @@ namespace PingYourPackage.API.Controllers {
             var response = Request.CreateResponse(HttpStatusCode.Created,
                 createdShipmentResult.Entity.ToShipmentDto());
 
-            response.Headers.Location = new Uri(Url.Link("DefaultHttpRoute",
-                new { key = createdShipmentResult.Entity.Key }));
+            response.Headers.Location = new Uri(
+                Url.Link(RouteName, new {
+                    key = createdShipmentResult.Entity.Key
+                })
+            );
 
             return response;
         }

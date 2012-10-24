@@ -10,10 +10,11 @@ namespace PingYourPackage.API.Model {
 
     internal static class ShipmentByAffiliateRequestModelExtensions {
 
-        internal static Shipment ToShipment(this ShipmentByAffiliateRequestModel requestModel) {
+        internal static Shipment ToShipment(this ShipmentByAffiliateRequestModel requestModel, Guid affiliateKey) {
 
             return new Shipment {
                 ShipmentTypeKey = requestModel.ShipmentTypeKey.Value,
+                AffiliateKey = affiliateKey,
                 Price = requestModel.Price.Value,
                 ReceiverName = requestModel.ReceiverName,
                 ReceiverSurname = requestModel.ReceiverSurname,
@@ -24,22 +25,6 @@ namespace PingYourPackage.API.Model {
                 ReceiverTelephone = requestModel.ReceiverTelephone,
                 ReceiverEmail = requestModel.ReceiverEmail
             };
-        }
-
-        internal static Shipment ToShipment(this ShipmentByAffiliateRequestModel requestModel, Shipment existingShipment) {
-
-            existingShipment.ShipmentTypeKey = requestModel.ShipmentTypeKey.Value;
-            existingShipment.Price = requestModel.Price.Value;
-            existingShipment.ReceiverName = requestModel.ReceiverName;
-            existingShipment.ReceiverSurname = requestModel.ReceiverSurname;
-            existingShipment.ReceiverAddress = requestModel.ReceiverAddress;
-            existingShipment.ReceiverZipCode = requestModel.ReceiverZipCode;
-            existingShipment.ReceiverCity = requestModel.ReceiverCity;
-            existingShipment.ReceiverCountry = requestModel.ReceiverCountry;
-            existingShipment.ReceiverTelephone = requestModel.ReceiverTelephone;
-            existingShipment.ReceiverEmail = requestModel.ReceiverEmail;
-
-            return existingShipment;
         }
     }
 }

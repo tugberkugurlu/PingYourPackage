@@ -11,5 +11,8 @@ namespace PingYourPackage.API.Model.RequestModels {
 
         [Required]
         public Guid? AffiliateKey { get; set; }
+
+        [Required]
+        public Guid? ShipmentTypeKey { get; set; }
     }
 }

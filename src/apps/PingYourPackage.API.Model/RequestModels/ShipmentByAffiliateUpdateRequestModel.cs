@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace PingYourPackage.API.Model.RequestModels {
 
-    public class ShipmentByAffiliateRequestModel : ShipmentBaseRequestModel {
+    public class ShipmentByAffiliateUpdateRequestModel : ShipmentBaseRequestModel {
 
-        [Required]
-        public Guid? ShipmentTypeKey { get; set; }
     }
 }

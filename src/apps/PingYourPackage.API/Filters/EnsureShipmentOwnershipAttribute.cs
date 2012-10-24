@@ -26,12 +26,12 @@ namespace PingYourPackage.API.Filters {
             CancellationToken cancellationToken,
             Func<Task<HttpResponseMessage>> continuation) {
 
-            // We are here sure that user is authanticated and request can be
-            // kept executing because AuthorizeAttribute has been run
-            // before this filter's OnActionExecuting method.
-            // Also, we are sure that affiliate is associated with
-            // the currently authanticated user as the previous action filter has
-            // checked against this.
+            // We are here sure that the user is authanticated and request 
+            // can be kept executing because the AuthorizeAttribute has 
+            // been invoked before this filter's OnActionExecuting method.
+            // Also, we are sure that the affiliate is associated with
+            // the currently authanticated user as the previous action filter 
+            // has checked against this.
             IHttpRouteData routeData = actionContext.Request.GetRouteData();
             Uri requestUri = actionContext.Request.RequestUri;
 
@@ -40,8 +40,8 @@ namespace PingYourPackage.API.Filters {
 
             // Check if the affiliate really owns the shipment
             // whose key came from the request. We don't need to check the 
-            // existence of the affiliate as it has been also 
-            // already done by AffiliateShipmentsDispatcher.
+            // existence of the affiliate as this check has been already 
+            // performed by the AffiliateShipmentsDispatcher.
             IShipmentService shipmentService = actionContext.Request.GetShipmentService();
             Shipment shipment = shipmentService.GetShipment(shipmentKey);
 
@@ -55,17 +55,20 @@ namespace PingYourPackage.API.Filters {
             // Check the shipment ownership
             if (shipment.AffiliateKey != affiliateKey) {
 
+                // You might want to return "404 NotFound" response here 
+                // if you don't want to expose the existence of the shipment.
                 return Task.FromResult(
                     new HttpResponseMessage(HttpStatusCode.Unauthorized));
             }
 
-            // Stick the shipment inside the Properties
-            // dictionary so that action won't need to have 
-            // another trip to database.
+            // Stick the shipment inside the Properties dictionary so 
+            // that we won't need to have another trip to database.
+            // The ShipmentParameterBinding will bind the Shipment param
+            // if needed.
             actionContext.Request
                 .Properties[ShipmentDictionaryKey] = shipment;
 
-            // the request is legit, continue executing.
+            // The request is legit, continue executing.
             return continuation();
         }
 

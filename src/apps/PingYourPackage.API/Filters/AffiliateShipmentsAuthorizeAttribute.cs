@@ -28,7 +28,7 @@ namespace PingYourPackage.API.Filters {
 
             // If not authorized at all, don't bother checking for the 
             // user - affiliate relation
-            if (actionContext.Response != null) { 
+            if (actionContext.Response == null) { 
 
                 // We are here sure that the request has been authorized and 
                 // the user is in the Affiliate role. We also don't need 
@@ -42,8 +42,10 @@ namespace PingYourPackage.API.Filters {
 
                 if (!shipmentService.IsAffiliateRelatedToUser(affiliateKey, principal.Identity.Name)) {
 
-                    // Set Unauthorized response as the user and affiliate isn't
-                    // related to each other.
+                    // Set Unauthorized response as the user and 
+                    // affiliate isn't related to each other. You might
+                    // want to return "404 NotFound" response here if you don't
+                    // want to expose the existence of the affiliate.
                     actionContext.Response = request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }

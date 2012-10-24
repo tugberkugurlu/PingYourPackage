@@ -94,6 +94,7 @@
     <Compile Include="Common\ICollectionExtensions.cs" />
     <Compile Include="Common\IEnumerableExtensions.cs" />
     <Compile Include="Controllers\AffiliatesControllerIntegrationTest.cs" />
+    <Compile Include="Controllers\AffiliateShipmentsControllerIntegrationTest.cs" />
     <Compile Include="Controllers\AuthControllerIntegrationTest.cs" />
     <Compile Include="Controllers\RolesControllerIntegrationTest.cs" />
     <Compile Include="Controllers\ShipmentsControllerIntegrationTest.cs" />

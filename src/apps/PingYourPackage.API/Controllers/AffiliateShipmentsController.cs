@@ -60,7 +60,7 @@ namespace PingYourPackage.API.Controllers {
         public HttpResponseMessage PostShipment(Guid key, ShipmentByAffiliateRequestModel requestModel) {
 
             var createdShipmentResult =
-                _shipmentService.AddShipment(requestModel.ToShipment());
+                _shipmentService.AddShipment(requestModel.ToShipment(key));
 
             if (!createdShipmentResult.IsSuccess) {
 
@@ -70,8 +70,12 @@ namespace PingYourPackage.API.Controllers {
             var response = Request.CreateResponse(HttpStatusCode.Created,
                 createdShipmentResult.Entity.ToShipmentDto());
 
-            response.Headers.Location = new Uri(Url.Link(RouteName,
-                new { key = createdShipmentResult.Entity.Key }));
+            response.Headers.Location = new Uri(
+                Url.Link(RouteName, new { 
+                    key = createdShipmentResult.Entity.AffiliateKey,
+                    shipmentKey = createdShipmentResult.Entity.Key
+                })
+            );
 
             return response;
         }
@@ -80,8 +84,8 @@ namespace PingYourPackage.API.Controllers {
         [EmptyParameterFilter("requestModel")]
         public ShipmentDto PutShipment(
             Guid key, 
-            Guid shipmentKey, 
-            ShipmentByAffiliateRequestModel requestModel,
+            Guid shipmentKey,
+            ShipmentByAffiliateUpdateRequestModel requestModel,
             [BindShipment]Shipment shipment) {
 
             var updatedShipment = _shipmentService.UpdateShipment(

@@ -239,7 +239,7 @@ namespace PingYourPackage.Domain.Services {
                                 orderby shipmentState.ShipmentStatus descending
                                 select shipmentState).First();
 
-            return latestStatus.ShipmentStatus > ShipmentStatus.Scheduled;
+            return latestStatus.ShipmentStatus < ShipmentStatus.InTransit;
         }
 
         // Others

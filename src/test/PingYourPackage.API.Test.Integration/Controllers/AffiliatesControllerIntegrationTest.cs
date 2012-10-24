@@ -187,39 +187,24 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
         private static IEnumerable<Affiliate> GetDummyAffiliates(Guid[] keys) {
 
-            List<Affiliate> affiliates = new List<Affiliate> { 
-                new Affiliate { 
-                    Key = keys[0], CompanyName = "Company A", TelephoneNumber = "123-152-1827", Address = "Address A, 12345", CreatedOn = DateTime.Now,
-                    User = new User { 
-                        Name = "CompA",
-                        Email = "compa@expample.com",
-                        IsLocked = false,
-                        CreatedOn = DateTime.Now.AddDays(-5),
-                        LastUpdatedOn = DateTime.Now.AddDays(-1)
-                    }
-                },
-                new Affiliate { 
-                    Key = keys[1], CompanyName = "Company B", TelephoneNumber = "123-152-1827", Address = "Address B, 12345", CreatedOn = DateTime.Now,
-                    User = new User { 
-                        Name = "CompB",
-                        Email = "compb@expample.com",
-                        IsLocked = false,
-                        CreatedOn = DateTime.Now.AddDays(-5)
-                    }
-                },
-                new Affiliate { 
-                    Key = keys[2], CompanyName = "Company C", TelephoneNumber = "123-152-1827", Address = "Address C, 12345", CreatedOn = DateTime.Now,
-                    User = new User { 
-                        Name = "CompC",
-                        Email = "compc@expample.com",
-                        IsLocked = false,
-                        CreatedOn = DateTime.Now.AddDays(-5),
-                        LastUpdatedOn = DateTime.Now.AddDays(-1)
-                    }
-                }
-            };
+            for (int i = 0; i < 3; i++) {
 
-            return affiliates;
+                yield return new Affiliate {
+                    Key = keys[i],
+                    CompanyName = string.Format("Company {0}", i),
+                    TelephoneNumber = string.Format("123-152-182{0}", i),
+                    Address = string.Format("Address {0}, 1234{0}", i),
+                    CreatedOn = DateTime.Now.AddDays(-5),
+                    User = new User {
+                        Key = keys[i],
+                        Name = string.Format("Comp{0}", i),
+                        Email = string.Format("comp{0}@expample.com", i),
+                        IsLocked = false,
+                        CreatedOn = DateTime.Now.AddDays(-5),
+                        LastUpdatedOn = DateTime.Now.AddDays(-1)
+                    }
+                };
+            }
         }
     }
 }

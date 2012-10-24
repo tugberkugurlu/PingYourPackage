@@ -10,10 +10,22 @@ using PingYourPackage.API.Model.Dtos;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace PingYourPackage.API.Test.Integration {
     
     internal static class IntegrationTestHelper {
+
+        internal static Guid[] GetKeys(int count) {
+
+            var array = new Guid[count];
+            for (int i = 0; i < count; i++) {
+                array[i] = Guid.NewGuid();
+            }
+
+            return array;
+        }
 
         internal static HttpConfiguration GetInitialIntegrationTestConfig() {
 
