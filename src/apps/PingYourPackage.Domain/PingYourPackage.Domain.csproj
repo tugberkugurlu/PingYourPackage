@@ -52,6 +52,7 @@
     <Compile Include="Entities\Extensions\IQueryableExtensions.cs" />
     <Compile Include="Entities\Extensions\RoleRepositoryExtensions.cs" />
     <Compile Include="Entities\Extensions\ShipmentRepositoryExtensions.cs" />
+    <Compile Include="Entities\Extensions\ShipmentStateRepositoryExtensions.cs" />
     <Compile Include="Entities\Extensions\ShipmentTypeRepositoryExtensions.cs" />
     <Compile Include="Entities\Extensions\UserInRoleRepositoryExtensions.cs" />
     <Compile Include="Entities\Core\IEntity.cs" />

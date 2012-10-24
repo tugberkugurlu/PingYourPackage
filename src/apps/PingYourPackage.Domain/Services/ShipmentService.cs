@@ -205,6 +205,37 @@ namespace PingYourPackage.Domain.Services {
             return new OperationResult(false);
         }
 
+        // ShipmentState
+
+        public IEnumerable<ShipmentState> GetShipmentStates(Guid shipmentKey) {
+
+            var shipmentStates = _shipmentStateRepository.GetAllByShipmentKey(shipmentKey);
+            return shipmentStates;
+        }
+
+        public OperationResult<ShipmentState> AddShipmentState(Guid shipmentKey, ShipmentStatus status) {
+
+            if (!IsShipmentStateInsertable(shipmentKey, status)) {
+
+                return new OperationResult<ShipmentState>(false);
+            }
+
+            var shipmentState = InsertShipmentState(shipmentKey, status);
+            return new OperationResult<ShipmentState>(true) { 
+                Entity = shipmentState
+            };
+        }
+
+        // Others
+
+        public bool IsAffiliateRelatedToUser(Guid affiliateKey, string username) {
+
+            var affiliate = GetAffiliate(affiliateKey);
+
+            return affiliate != null &&
+                   affiliate.User.Name.Equals(username);
+        }
+
         // Private helpers
 
         private IQueryable<Shipment> GetInitialShipments() {
@@ -233,6 +264,16 @@ namespace PingYourPackage.Domain.Services {
             return shipmentState;
         }
 
+        private bool IsShipmentStateInsertable(Guid shipmentKey, ShipmentStatus status) {
+
+            var shipmentStates = GetShipmentStates(shipmentKey);
+            var latestState = (from state in shipmentStates
+                               orderby state.ShipmentStatus descending
+                               select state).First();
+
+            return status > latestState.ShipmentStatus;
+        }
+
         private bool IsShipmentRemovable(Shipment shipment) {
 
             var latestStatus = (from shipmentState in shipment.ShipmentStates.ToList()
@@ -240,16 +281,6 @@ namespace PingYourPackage.Domain.Services {
                                 select shipmentState).First();
 
             return latestStatus.ShipmentStatus < ShipmentStatus.InTransit;
-        }
-
-        // Others
-
-        public bool IsAffiliateRelatedToUser(Guid affiliateKey, string username) {
-
-            var affiliate = GetAffiliate(affiliateKey);
-
-            return affiliate != null && 
-                   affiliate.User.Name.Equals(username);
         }
     }
 }

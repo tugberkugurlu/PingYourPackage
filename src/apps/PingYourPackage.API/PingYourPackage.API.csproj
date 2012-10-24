@@ -93,8 +93,10 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ShipmentsController.cs" />
+    <Compile Include="Controllers\ShipmentStatesController.cs" />
     <Compile Include="Controllers\ShipmentTypesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Dispatcher\ShipmentStatesDispatcher.cs" />
     <Compile Include="Filters\AffiliateShipmentsAuthorizeAttribute.cs" />
     <Compile Include="Filters\EnsureShipmentOwnershipAttribute.cs" />
     <Compile Include="Filters\EmptyParameterFilterAttribute.cs" />

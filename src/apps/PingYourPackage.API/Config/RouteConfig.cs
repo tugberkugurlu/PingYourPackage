@@ -27,7 +27,8 @@ namespace PingYourPackage.API.Config {
                 "ShipmentStatesHttpRoute",
                 "api/shipments/{key}/shipmentstates",
                 new { controller = "ShipmentStates" },
-                constraints: new { key = new GuidRouteConstraint() });
+                constraints: new { key = new GuidRouteConstraint() },
+                handler: new ShipmentStatesDispatcher(config));
 
             routes.MapHttpRoute(
                 "DefaultHttpRoute",
