@@ -20,7 +20,7 @@ namespace PingYourPackage.API.Controllers {
         public UserDto GetUser(IPrincipal principal) {
 
             // It's certain that the user exists and the principal is not null
-            // because the request wouldn't arrive here unless the user exists
+            // because the request wouldn't arrive here if the user doesn't exist
 
             UserWithRoles user = _membershipService
                 .GetUser(principal.Identity.Name);

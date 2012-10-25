@@ -14,6 +14,7 @@ namespace PingYourPackage.API.Model {
 
             return new ShipmentStateDto { 
                 Key = shipmentState.Key,
+                ShipmentKey = shipmentState.ShipmentKey,
                 ShipmentStatus = shipmentState.ShipmentStatus.ToString(),
                 CreatedOn = shipmentState.CreatedOn
             };
