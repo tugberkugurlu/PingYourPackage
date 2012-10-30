@@ -941,8 +941,8 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             for (int i = 0; i < 9; i++) {
                 
                 var states = new List<ShipmentState> { 
-                    new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = shipmentKeys[(i / 3)], ShipmentStatus = ShipmentStatus.Ordered },
-                    new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = shipmentKeys[(i / 3)], ShipmentStatus = ShipmentStatus.Scheduled }
+                    new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = shipmentKeys[i], ShipmentStatus = ShipmentStatus.Ordered },
+                    new ShipmentState { Key = Guid.NewGuid(), ShipmentKey = shipmentKeys[i], ShipmentStatus = ShipmentStatus.Scheduled }
                 };
 
                 // Make the first shipment InTransit for each affiliate

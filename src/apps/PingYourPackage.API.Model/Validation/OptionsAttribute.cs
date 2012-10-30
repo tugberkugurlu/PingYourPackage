@@ -31,7 +31,7 @@ namespace PingYourPackage.API.Model.Validation {
                 CultureInfo.CurrentCulture,
                 base.ErrorMessageString,
                 name,
-                string.Join(",", _availableOptions));
+                string.Join(", ", _availableOptions));
         }
 
         public override bool IsValid(object value) {

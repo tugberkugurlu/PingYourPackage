@@ -11,7 +11,7 @@ namespace PingYourPackage.API.Model.RequestModels {
     public class ShipmentStateRequestModel {
                 
         [Required]
-        [Options("Ordered", "Scheduled", "Delivered", "InTransit")]
+        [Options("Ordered", "Scheduled", "InTransit", "Delivered")]
         public string ShipmentStatus { get; set; }
     }
 }
