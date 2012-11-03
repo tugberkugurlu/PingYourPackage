@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.API.Client"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{A65F81B4-9B7E-4CB7-86B0-9477EB0C4562}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingYourPackage.API.Client.Web", "src\apps\PingYourPackage.API.Client.Web\PingYourPackage.API.Client.Web.csproj", "{2FB88405-0936-467E-A8F6-4FDA5792F3D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{3B44684F-DDF5-4693-A3B0-CFCB8B7C7E85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B44684F-DDF5-4693-A3B0-CFCB8B7C7E85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B44684F-DDF5-4693-A3B0-CFCB8B7C7E85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB88405-0936-467E-A8F6-4FDA5792F3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB88405-0936-467E-A8F6-4FDA5792F3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB88405-0936-467E-A8F6-4FDA5792F3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB88405-0936-467E-A8F6-4FDA5792F3D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +82,6 @@ Global
 		{07577155-9347-4C1B-A54B-0E621D293A03} = {5EBE89E7-382E-46FC-BB7F-BFAF804B1527}
 		{D3AD5114-FB84-45A4-9AF9-53963651FB12} = {845A6952-29B1-47B0-99C1-07A65737AE8D}
 		{3B44684F-DDF5-4693-A3B0-CFCB8B7C7E85} = {A65F81B4-9B7E-4CB7-86B0-9477EB0C4562}
+		{2FB88405-0936-467E-A8F6-4FDA5792F3D9} = {A65F81B4-9B7E-4CB7-86B0-9477EB0C4562}
 	EndGlobalSection
 EndGlobal

@@ -19,11 +19,6 @@ namespace PingYourPackage.Domain.Services {
             }
         }
 
-        public string EncryptPassword(string password) {
-
-            return EncryptPassword(password, GenerateSalt());
-        }
-
         public string EncryptPassword(string password, string salt) {
 
             if (string.IsNullOrEmpty(password)) {
@@ -39,7 +34,7 @@ namespace PingYourPackage.Domain.Services {
             using (var sha256 = SHA256.Create()) {
 
                 var saltedPassword = 
-                    string.Format("{0}{1}", GenerateSalt(), password);
+                    string.Format("{0}{1}", salt, password);
    
                 byte[] saltedPasswordAsBytes = 
                     Encoding.UTF8.GetBytes(saltedPassword);
