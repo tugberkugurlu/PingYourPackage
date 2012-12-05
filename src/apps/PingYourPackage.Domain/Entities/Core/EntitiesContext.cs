@@ -13,8 +13,8 @@ namespace PingYourPackage.Domain.Entities {
 
         public EntitiesContext() : base("PingYourPackage") { }
 
-        public IDbSet<ShipmentType> PackageTypes { get; set; }
-        public IDbSet<Affiliate> PackageSenders { get; set; }
+        public IDbSet<ShipmentType> ShipmentTypes { get; set; }
+        public IDbSet<Affiliate> Affiliates { get; set; }
         public IDbSet<Shipment> Shipments { get; set; }
         public IDbSet<ShipmentState> ShipmentStates { get; set; }
 

@@ -7,27 +7,28 @@ using System.Web.Http.Hosting;
 using PingYourPackage.Domain.Services;
 using Xunit;
 using Moq;
+using System.Threading.Tasks;
 
 namespace PingYourPackage.API.Test.MessageHandlers {
     
     public class PingYourPackageAuthHandlerTest {
 
         [Fact]
-        public void AuthenticateUser_Returns_IPrincipal_If_Valid() {
+        public async Task AuthenticateUser_Returns_IPrincipal_If_Valid() {
 
             string validUsername = "tugberk";
             string validPassword = "12345678";
             var req = SetUpAuthTestInfrastructure(validUsername, validPassword);
 
             var authHandler = new BasicAuthHandlerTestHelper();
-            var returnedPrincipal = authHandler.RunAuthenticateUserMethod(
+            var returnedPrincipal = await authHandler.RunAuthenticateUserMethodAsync(
                 req, validUsername, validPassword, default(CancellationToken));
 
             Assert.Equal(validUsername, returnedPrincipal.Identity.Name);
         }
 
         [Fact]
-        public void AuthenticateUser_Returns_null_If_Not_Valid() {
+        public async Task AuthenticateUser_Returns_null_If_Not_Valid() {
 
             string validUsername = "tugberk";
             string validPassword = "12345678";
@@ -38,7 +39,7 @@ namespace PingYourPackage.API.Test.MessageHandlers {
                 SetUpAuthTestInfrastructure(validUsername, validPassword);
 
             var authHandler = new BasicAuthHandlerTestHelper();
-            var returnedPrincipal = authHandler.RunAuthenticateUserMethod(
+            var returnedPrincipal = await authHandler.RunAuthenticateUserMethodAsync(
                 req, invalidUsername, invalidPassword, default(CancellationToken));
 
             Assert.Null(returnedPrincipal);
@@ -77,13 +78,13 @@ namespace PingYourPackage.API.Test.MessageHandlers {
 
         private class BasicAuthHandlerTestHelper : PingYourPackageAuthHandler {
 
-            public IPrincipal RunAuthenticateUserMethod(
+            public Task<IPrincipal> RunAuthenticateUserMethodAsync(
                 HttpRequestMessage request,
                 string username,
                 string password,
                 CancellationToken cancellationToken) {
 
-                return AuthenticateUser(request, username, 
+                return AuthenticateUserAsync(request, username, 
                     password, cancellationToken);
             }
         }

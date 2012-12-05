@@ -19,7 +19,14 @@ namespace PingYourPackage.API.WebHost {
             var efMigrationSettings = new PingYourPackage.Domain.Migrations.Configuration();
             var efMigrator = new DbMigrator(efMigrationSettings);
 
-            efMigrator.Update();
+            try {
+
+                efMigrator.Update();
+            }
+            catch (Exception ex) {
+
+                throw;
+            }
         }
     }
 }

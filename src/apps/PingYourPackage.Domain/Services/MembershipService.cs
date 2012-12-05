@@ -25,7 +25,6 @@ namespace PingYourPackage.Domain.Services {
             _roleRepository = roleRepository;
             _userInRoleRepository = userInRoleRepository;
             _cryptoService = cryptoService;
-
         }
 
         public ValidUserContext ValidateUser(string username, string password) {

@@ -22,7 +22,7 @@ namespace PingYourPackage.API.Controllers {
         // authed user has been checked by the handler 
         // and AffiliateShipmentsAuthorizeAttribute.
 
-        // The action methdo which requests the shipment instance:
+        // The action method which requests the shipment instance:
         // We can just get the shipment as the shipment 
         // existance and its ownership by the affiliate has been 
         // approved by the EnsureShipmentOwnershipAttribute.

@@ -34,7 +34,7 @@ namespace PingYourPackage.Domain.Services {
         public PaginatedList<ShipmentType> GetShipmentTypes(int pageIndex, int pageSize) {
 
             var shipmentTypes = _shipmentTypeRepository
-                .GetAll().ToPaginatedList(pageIndex, pageSize);
+                .Paginate(pageIndex, pageSize, x => x.CreatedOn);
 
             return shipmentTypes;
         }
@@ -78,7 +78,8 @@ namespace PingYourPackage.Domain.Services {
         public PaginatedList<Affiliate> GetAffiliates(int pageIndex, int pageSize) {
 
             var affiliates = _affiliateRepository
-                .AllIncluding(x => x.User).ToPaginatedList(pageIndex, pageSize);
+                .AllIncluding(x => x.User).OrderBy(x => x.CreatedOn)
+                .ToPaginatedList(pageIndex, pageSize);
 
             return affiliates;
         }
@@ -128,6 +129,7 @@ namespace PingYourPackage.Domain.Services {
 
         public PaginatedList<Shipment> GetShipments(int pageIndex, int pageSize) {
 
+            //var shipments = _shipmentRepository.Paginate(pageIndex, pageSize, x => x.CreatedOn);
             var shipments = GetInitialShipments()
                 .ToPaginatedList(pageIndex, pageSize);
 
@@ -138,6 +140,7 @@ namespace PingYourPackage.Domain.Services {
 
             var shipments = _shipmentRepository
                 .GetShipmentsByAffiliateKey(affiliateKey)
+                .OrderBy(x => x.CreatedOn)
                 .ToPaginatedList(pageIndex, pageSize);
 
             return shipments;
@@ -241,7 +244,7 @@ namespace PingYourPackage.Domain.Services {
         private IQueryable<Shipment> GetInitialShipments() {
 
             return _shipmentRepository.AllIncluding(x => 
-                    x.ShipmentType, x => x.ShipmentStates);
+                    x.ShipmentType, x => x.ShipmentStates).OrderBy(x => x.CreatedOn);
         }
 
         private ShipmentState InsertFirstShipmentState(Guid ShipmentKey) {

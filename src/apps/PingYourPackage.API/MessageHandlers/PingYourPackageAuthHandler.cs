@@ -3,16 +3,14 @@ using System.Security.Principal;
 using PingYourPackage.Domain.Services;
 using WebAPIDoodle.Http;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PingYourPackage.API.MessageHandlers {
 
     public class PingYourPackageAuthHandler : 
         BasicAuthenticationHandler {
 
-        public PingYourPackageAuthHandler() 
-            : base(suppressIfAlreadyAuthenticated: true) { }
-
-        protected override IPrincipal AuthenticateUser(
+        protected override Task<IPrincipal> AuthenticateUserAsync(
             HttpRequestMessage request, 
             string username, 
             string password, 
@@ -23,13 +21,7 @@ namespace PingYourPackage.API.MessageHandlers {
             var validUserCtx = membershipService
                 .ValidateUser(username, password);
 
-            return validUserCtx.Principal;
-        }
-
-        protected override void HandleUnauthenticatedRequest(UnauthenticatedRequestContext context) {
-            
-            // Do nothing here. The Autharization 
-            // will be handled by the AuthorizeAttribute.
+            return Task.FromResult(validUserCtx.Principal);
         }
     }
 }
