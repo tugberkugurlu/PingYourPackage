@@ -20,11 +20,11 @@ namespace PingYourPackage.API.Config {
 
         public static void Configure(HttpConfiguration config) {
 
-            //Message Handlers
+            // Message Handlers
             config.MessageHandlers.Add(new RequireHttpsMessageHandler());
             config.MessageHandlers.Add(new PingYourPackageAuthHandler());
 
-            //Formatters
+            // Formatters
             var jqueryFormatter = config.Formatters.FirstOrDefault(
                 x => x.GetType() == 
                     typeof(JQueryMvcFormUrlEncodedFormatter));
@@ -41,7 +41,7 @@ namespace PingYourPackage.API.Config {
                     new SuppressedRequiredMemberSelector();
             }
 
-            //Filters
+            // Filters
             config.Filters.Add(
                 new InvalidModelStateFilterAttribute());
 

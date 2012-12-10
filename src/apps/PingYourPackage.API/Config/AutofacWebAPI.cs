@@ -32,11 +32,11 @@ namespace PingYourPackage.API.Config {
             builder.RegisterAssemblyTypes(
                 Assembly.GetExecutingAssembly()).PropertiesAutowired();
 
-            //EF DbContext
+            // EF DbContext
             builder.RegisterType<EntitiesContext>()
                 .As<DbContext>().InstancePerApiRequest();
 
-            //Repositories
+            // Repositories
             builder.RegisterType<EntityRepository<User>>()
                 .As<IEntityRepository<User>>()
                 .InstancePerApiRequest();
@@ -65,7 +65,7 @@ namespace PingYourPackage.API.Config {
                 .As<IEntityRepository<ShipmentState>>()
                 .InstancePerApiRequest();
 
-            //services
+            // Services
             builder.RegisterType<CryptoService>()
                 .As<ICryptoService>()
                 .InstancePerApiRequest();
