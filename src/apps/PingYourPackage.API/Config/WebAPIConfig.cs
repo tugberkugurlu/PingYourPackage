@@ -62,17 +62,19 @@ namespace PingYourPackage.API.Config {
                 validator => !(validator 
                     is DataAnnotationsModelValidatorProvider));
 
+            // ParameterBindingRules
+
+            // Any complex type parameter which is Assignable From 
+            // IRequestCommand will be bound from the URI
+            config.ParameterBindingRules.Insert(0,
+                descriptor => typeof(IRequestCommand).IsAssignableFrom(descriptor.ParameterType)
+                    ? new FromUriAttribute().GetBinding(descriptor) : null);
+
             // If the parameter type is IPrincipal,
             // use PrincipalParameterBinding
             config.ParameterBindingRules.Add(
                 typeof(IPrincipal), descriptor =>
                 new PrincipalParameterBinding(descriptor));
-
-            // any complex type parameter which is Assignable From 
-            // IRequestCommand will be bound from the URI
-            config.ParameterBindingRules.Insert(0,
-                descriptor => typeof(IRequestCommand).IsAssignableFrom(descriptor.ParameterType)
-                    ? new FromUriAttribute().GetBinding(descriptor) : null);
         }
     }
 }

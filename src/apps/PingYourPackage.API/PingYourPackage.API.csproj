@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Controllers.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
