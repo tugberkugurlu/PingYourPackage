@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using Autofac.Integration.WebApi;
+using PingYourPackage.Domain.Services;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,27 +23,29 @@ namespace PingYourPackage.API.Test.Integration {
             var config = IntegrationTestHelper
                 .GetInitialIntegrationTestConfig(GetInitialServices());
 
-            using (var httpServer = new HttpServer(config))
-            using (var client = httpServer.ToHttpClient()) {
+            var request = HttpRequestMessageHelper.ConstructRequest(
+                httpMethod: httpMethod,
+                uri: string.Format("https://localhost/{0}", path),
+                mediaType: mediaType,
+                username: testUserName,
+                password: testPassword);
 
-                var request = HttpRequestMessageHelper.ConstructRequest(
-                    httpMethod: httpMethod,
-                    uri: string.Format("https://localhost/{0}", path),
-                    mediaType: mediaType,
-                    username: testUserName,
-                    password: testPassword);
+            //Act
+            var response = await IntegrationTestHelper.GetResponseAsync(config, request);
 
-                //Act
-                var response = await client.SendAsync(request);
-
-                //Assert
-                Assert.Equal(expectedStatus, response.StatusCode);
-            }
+            //Assert
+            Assert.Equal(expectedStatus, response.StatusCode);
         }
 
         private static IContainer GetInitialServices() {
 
-            var builder = IntegrationTestHelper.GetInitialContainerBuilder();
+            var builder = IntegrationTestHelper.GetEmptyContainerBuilder();
+
+            builder.Register(c =>
+                ServicesMockHelper.GetInitialMembershipServiceMock().Object)
+                .As<IMembershipService>()
+                .InstancePerApiRequest();
+
             return builder.Build();
         }
     }

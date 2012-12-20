@@ -130,7 +130,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 });
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.GetUsers(
                         It.IsAny<int>(), It.IsAny<int>()
@@ -211,7 +211,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
                 var users = GetDummyUsers(keys);
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.GetUser(
                         It.Is<Guid>(
@@ -392,7 +392,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 });
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.CreateUser(
                         It.IsAny<string>(), It.IsAny<string>(), 
@@ -549,32 +549,26 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     Email = "FooBar@example.com",
                 };
 
-                using (var httpServer = new HttpServer(config))
-                using (var client = httpServer.ToHttpClient()) {
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Put,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            "api/users",
+                            keys[2]),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
 
-                    var request = HttpRequestMessageHelper
-                        .ConstructRequest(
-                            httpMethod: HttpMethod.Put,
-                            uri: string.Format(
-                                "https://localhost/{0}/{1}",
-                                "api/users",
-                                keys[2]),
-                            mediaType: "application/json",
-                            username: Constants.ValidAdminUserName,
-                            password: Constants.ValidAdminPassword);
+                request.Content = new ObjectContent<UserUpdateRequestModel>(
+                    userRequestModel, new JsonMediaTypeFormatter());
 
-                    request.Content = new ObjectContent<UserUpdateRequestModel>(
-                        userRequestModel, new JsonMediaTypeFormatter());
+                // Act
+                var userDto = await IntegrationTestHelper.GetResponseMessageBodyAsync<UserDto>(config, request, HttpStatusCode.OK);
 
-                    // Act
-                    var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-                    var userDto = await response.Content.ReadAsAsync<UserDto>();
-
-                    // Assert
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Assert.Equal(userRequestModel.Name, userDto.Name);
-                    Assert.Equal(userRequestModel.Email, userDto.Email);
-                }
+                // Assert
+                Assert.Equal(userRequestModel.Name, userDto.Name);
+                Assert.Equal(userRequestModel.Email, userDto.Email);
             }
 
             [Fact, NullCurrentPrincipal]
@@ -617,7 +611,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
                 var users = GetDummyUsers(keys);
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.GetUser(
                         It.Is<Guid>(

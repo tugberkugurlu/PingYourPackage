@@ -24,7 +24,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
             // Arrange
             var mockMemSrv = ServicesMockHelper
-                .GetInitialMembershipService();
+                .GetInitialMembershipServiceMock();
 
             mockMemSrv.Setup(ms =>
                 ms.GetUser(Constants.ValidAffiliateUserName)
@@ -48,33 +48,27 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 .GetInitialIntegrationTestConfig(
                     GetInitialServices(mockMemSrv.Object));
 
-            using (var httpServer = new HttpServer(config))
-            using (var client = httpServer.ToHttpClient()) {
+            var request = HttpRequestMessageHelper
+                .ConstructRequest(
+                    httpMethod: HttpMethod.Get,
+                    uri: string.Format(
+                        "https://localhost/{0}", "api/auth"),
+                    mediaType: "application/json",
+                    username: Constants.ValidAffiliateUserName,
+                    password: Constants.ValidAffiliatePassword);
 
-                var request = HttpRequestMessageHelper
-                    .ConstructRequest(
-                        httpMethod: HttpMethod.Get,
-                        uri: string.Format(
-                            "https://localhost/{0}", "api/auth"),
-                        mediaType: "application/json",
-                        username: Constants.ValidAffiliateUserName,
-                        password: Constants.ValidAffiliatePassword);
+            // Act
+            var user = await IntegrationTestHelper.GetResponseMessageBodyAsync<UserDto>(config, request, HttpStatusCode.OK);
 
-                // Act
-                var response = await client.SendAsync(request);
-                var user = await response.Content.ReadAsAsync<UserDto>();
-
-                // Assert
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                Assert.Equal(Constants.ValidAffiliateUserName, user.Name);
-                Assert.True(user.Roles.Any(
-                    role => role.Name.Equals(
-                            "Affiliate", 
-                            StringComparison.OrdinalIgnoreCase
-                        )
+            // Assert
+            Assert.Equal(Constants.ValidAffiliateUserName, user.Name);
+            Assert.True(user.Roles.Any(
+                role => role.Name.Equals(
+                        "Affiliate", 
+                        StringComparison.OrdinalIgnoreCase
                     )
-                );
-            }
+                )
+            );
         }
 
         private static IContainer GetInitialServices(

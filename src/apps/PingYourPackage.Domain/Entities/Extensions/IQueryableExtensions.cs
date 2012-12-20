@@ -9,17 +9,12 @@ namespace PingYourPackage.Domain.Entities {
     public static class IQueryableExtensions {
 
         public static PaginatedList<T> ToPaginatedList<T>(
-            this IQueryable<T> query, 
-            int pageIndex, 
-            int pageSize) {
+            this IQueryable<T> query, int pageIndex, int pageSize) {
 
-            var baseQuery = query;
-            query = query.Skip(
-                (pageIndex - 1) * pageSize).Take(pageSize);
+            var totalCount = query.Count();
+            var collection = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
-            var totalCount = baseQuery.Count();
-            return new PaginatedList<T>(
-                pageIndex, pageSize, totalCount, query);
+            return new PaginatedList<T>(pageIndex, pageSize, totalCount, collection);
         }
     }
 }

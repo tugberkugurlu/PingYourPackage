@@ -162,7 +162,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
         public class GetShipments {
 
             [Fact, NullCurrentPrincipal]
-            public Task Returns_200_And_Shipments_If_Request_Authorized() {
+            public Task Returns_200_And_Shipments_For_Affiliates_If_Request_Authorized() {
 
                 // Arrange
                 var shipmentKeys = IntegrationTestHelper.GetKeys(9);
@@ -983,7 +983,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 .GetEmptyContainerBuilder();
 
             var mockMemSrv = ServicesMockHelper
-                .GetInitialMembershipService();
+                .GetInitialMembershipServiceMock();
 
             builder.Register(c => mockMemSrv.Object)
                 .As<IMembershipService>()

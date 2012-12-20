@@ -10,7 +10,7 @@ using System.Net;
 
 namespace PingYourPackage.API.Filters {
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class EmptyParameterFilterAttribute : ActionFilterAttribute {
 
         public string ParameterName { get; private set; }

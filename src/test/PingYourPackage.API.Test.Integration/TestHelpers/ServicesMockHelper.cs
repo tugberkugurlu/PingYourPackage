@@ -8,51 +8,51 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PingYourPackage.API.Test.Integration {
-    
+
     internal static class ServicesMockHelper {
 
-        internal static Mock<IMembershipService> GetInitialMembershipService() {
+        internal static Mock<IMembershipService> GetInitialMembershipServiceMock() {
 
             var membershipServiceMock = new Mock<IMembershipService>();
 
-            var adminPrincipal = new GenericPrincipal(
-                new GenericIdentity(Constants.ValidAdminUserName),
-                new[] { "Admin" });
+            var users = new[] { 
+                new { 
+                    Name = Constants.ValidAdminUserName, 
+                    Password = Constants.ValidAdminPassword, 
+                    Roles = new[] { "Admin" } 
+                },
+                new { 
+                    Name = Constants.ValidEmployeeUserName, 
+                    Password = Constants.ValidEmployeePassword, 
+                    Roles = new[] { "Employee" } 
+                },
+                new { 
+                    Name = Constants.ValidAffiliateUserName, 
+                    Password = Constants.ValidAffiliatePassword, 
+                    Roles = new[] { "Affiliate" } 
+                }
+            }.ToDictionary(
+                user => user.Name, user => user
+            );
 
             membershipServiceMock.Setup(ms => ms.ValidateUser(
-                Constants.ValidAdminUserName,
-                Constants.ValidAdminPassword))
-                .Returns(new ValidUserContext {
-                    Principal = adminPrincipal
-                });
+                It.IsAny<string>(), It.IsAny<string>())
+            ).Returns<string, string>(
+                (username, password) => {
 
-            var employeePrincipal = new GenericPrincipal(
-                new GenericIdentity(Constants.ValidEmployeeUserName),
-                new[] { "Employee" });
+                    var user = users.FirstOrDefault(x => x.Key.Equals(
+                        username, StringComparison.OrdinalIgnoreCase)).Value;
 
-            membershipServiceMock.Setup(ms => ms.ValidateUser(
-                Constants.ValidEmployeeUserName,
-                Constants.ValidEmployeePassword))
-                .Returns(new ValidUserContext {
-                    Principal = employeePrincipal
-                });
+                    var validUserContext = (user != null)
+                        ? new ValidUserContext {
+                            Principal = new GenericPrincipal(
+                                new GenericIdentity(user.Name), user.Roles
+                            )
+                        } : new ValidUserContext();
 
-            var affiliatePrincipal = new GenericPrincipal(
-                new GenericIdentity(Constants.ValidAffiliateUserName),
-                new[] { "Affiliate" });
-
-            membershipServiceMock.Setup(ms => ms.ValidateUser(
-                Constants.ValidAffiliateUserName,
-                Constants.ValidAffiliatePassword))
-                .Returns(new ValidUserContext {
-                    Principal = affiliatePrincipal
-                });
-
-            // For invalid user
-            membershipServiceMock.Setup(ms => ms.ValidateUser(
-                Constants.InvalidUserName,
-                Constants.InvalidPassword))
-                .Returns(new ValidUserContext());
+                    return validUserContext;
+                }
+            );
 
             return membershipServiceMock;
         }

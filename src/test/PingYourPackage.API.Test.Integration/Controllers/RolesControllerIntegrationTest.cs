@@ -111,7 +111,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 });
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.GetRoles()).Returns(roles);
 
@@ -192,7 +192,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
 
                 var roles = GetDummyRoles(keys);
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.GetRole(
                         It.Is<Guid>(key =>
@@ -274,7 +274,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                     Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
                 });
                 var mockMemSrv = ServicesMockHelper
-                    .GetInitialMembershipService();
+                    .GetInitialMembershipServiceMock();
 
                 mockMemSrv.Setup(ms => ms.GetRole(
                         It.Is<string>(name =>

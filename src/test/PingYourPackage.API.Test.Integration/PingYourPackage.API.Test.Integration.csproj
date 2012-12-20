@@ -103,7 +103,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers\IntegrationAuthTestHelper.cs" />
     <Compile Include="TestHelpers\HttpRequestMessageHelper.cs" />
-    <Compile Include="TestHelpers\HttpServerExtensions.cs" />
     <Compile Include="TestHelpers\IntegrationTestHelper.cs" />
     <Compile Include="TestHelpers\ServicesMockHelper.cs" />
     <Compile Include="xUnit\NullCurrentPrincipalAttribute.cs" />

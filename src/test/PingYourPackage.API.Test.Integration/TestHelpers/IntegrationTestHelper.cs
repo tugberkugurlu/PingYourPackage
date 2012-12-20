@@ -49,19 +49,7 @@ namespace PingYourPackage.API.Test.Integration {
             var builder = new ContainerBuilder();
 
             builder.RegisterAssemblyTypes(
-                Assembly.GetAssembly(typeof(WebAPIConfig))).PropertiesAutowired();
-
-            return builder;
-        }
-
-        internal static ContainerBuilder GetInitialContainerBuilder() {
-
-            var builder = GetEmptyContainerBuilder();
-
-            builder.Register(c => 
-                ServicesMockHelper.GetInitialMembershipService().Object)
-                .As<IMembershipService>()
-                .InstancePerApiRequest();
+                Assembly.GetAssembly(typeof(WebAPIConfig)));
 
             return builder;
         }
@@ -106,13 +94,13 @@ namespace PingYourPackage.API.Test.Integration {
             return result;
         }
 
-        internal static Task<HttpResponseMessage> GetResponseAsync(
+        internal static async Task<HttpResponseMessage> GetResponseAsync(
             HttpConfiguration config, HttpRequestMessage request) {
 
             using (var httpServer = new HttpServer(config))
-            using (var client = httpServer.ToHttpClient()) {
+            using (var client = HttpClientFactory.Create(innerHandler: httpServer)) {
 
-                return client.SendAsync(request);
+                return await client.SendAsync(request);
             }
         }
     }

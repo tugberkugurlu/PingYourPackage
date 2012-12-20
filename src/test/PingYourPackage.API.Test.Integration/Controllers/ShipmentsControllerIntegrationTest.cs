@@ -11,7 +11,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Xunit;
@@ -697,7 +696,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 .GetEmptyContainerBuilder();
 
             var mockMemSrv = ServicesMockHelper
-                .GetInitialMembershipService();
+                .GetInitialMembershipServiceMock();
 
             builder.Register(c => mockMemSrv.Object)
                 .As<IMembershipService>()

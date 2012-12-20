@@ -549,7 +549,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                 .GetEmptyContainerBuilder();
 
             var mockMemSrv = ServicesMockHelper
-                .GetInitialMembershipService();
+                .GetInitialMembershipServiceMock();
 
             builder.Register(c => mockMemSrv.Object)
                 .As<IMembershipService>()
