@@ -179,7 +179,7 @@ namespace PingYourPackage.Domain.Services {
 
         public IEnumerable<Role> GetRoles() {
 
-            return _roleRepository.All;
+            return _roleRepository.GetAll();
         }
 
         public Role GetRole(Guid key) {

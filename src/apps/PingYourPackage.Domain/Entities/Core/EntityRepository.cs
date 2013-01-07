@@ -30,13 +30,6 @@ namespace PingYourPackage.Domain.Entities {
             return _entitiesContext.Set<T>();
         }
 
-        public virtual IQueryable<T> All {
-
-            get {
-                return GetAll();
-            }
-        }
-
         public virtual IQueryable<T> AllIncluding(
             params Expression<Func<T, object>>[] includeProperties) {
 
