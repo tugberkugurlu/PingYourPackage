@@ -75,48 +75,22 @@ namespace PingYourPackage.Domain.Entities {
             return query.ToPaginatedList(pageIndex, pageSize);
         }
 
-        public virtual void AddGraph(T entity) {
-
-            _entitiesContext.Set<T>().Add(entity);
-        }
-
         public virtual void Add(T entity) {
 
             DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
-            if (dbEntityEntry.State != EntityState.Detached) {
-
-                dbEntityEntry.State = EntityState.Added;
-            }
-            else {
-
-                _entitiesContext.Set<T>().Add(entity);
-            }
+            _entitiesContext.Set<T>().Add(entity);
         }
 
         public virtual void Edit(T entity) {
 
             DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
-            if (dbEntityEntry.State == EntityState.Detached) {
-
-                _entitiesContext.Set<T>().Attach(entity);
-            }
-
             dbEntityEntry.State = EntityState.Modified;
         }
 
         public virtual void Delete(T entity) {
 
             DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(entity);
-            if (dbEntityEntry.State != EntityState.Detached) {
-
-                dbEntityEntry.State = EntityState.Deleted;
-            }
-            else {
-
-                DbSet dbSet = _entitiesContext.Set<T>();
-                dbSet.Attach(entity);
-                dbSet.Remove(entity);
-            }
+            dbEntityEntry.State = EntityState.Deleted;
         }
 
         public virtual void Save() {

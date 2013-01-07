@@ -99,11 +99,6 @@ namespace PingYourPackage.Domain.Services {
             string username,
             string email) {
 
-            if (user == null) {
-
-                throw new ArgumentNullException("user");
-            }
-
             user.Name = username;
             user.Email = email;
             user.LastUpdatedOn = DateTime.Now;
