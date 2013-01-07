@@ -26,11 +26,9 @@ namespace PingYourPackage.API.Config {
                 new AutofacWebApiDependencyResolver(container);
         }
 
-        private static IContainer RegisterServices(
-            ContainerBuilder builder) {
-            
-            builder.RegisterAssemblyTypes(
-                Assembly.GetExecutingAssembly()).PropertiesAutowired();
+        private static IContainer RegisterServices(ContainerBuilder builder) {
+
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             // EF DbContext
             builder.RegisterType<EntitiesContext>()
