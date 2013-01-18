@@ -1,12 +1,8 @@
 ﻿using PingYourPackage.API.Dispatcher;
 using PingYourPackage.API.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
-using System.Web.Http.Routing;
+using System.Web.Http.Dispatcher;
 
 namespace PingYourPackage.API.Config {
 
@@ -16,19 +12,31 @@ namespace PingYourPackage.API.Config {
 
             var routes = config.Routes;
 
+            // Pipelines
+            HttpMessageHandler affiliateShipmentsPipeline =
+                HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new[] { new AffiliateShipmentsDispatcher() });
+
+            HttpMessageHandler shipmentStatesPipeline =
+                HttpClientFactory.CreatePipeline(
+                    new HttpControllerDispatcher(config),
+                    new[] { new ShipmentStatesDispatcher() });
+
+            // Routes
             routes.MapHttpRoute(
                 "AffiliateShipmentsHttpRoute",
                 "api/affiliates/{key}/shipments/{shipmentKey}",
                 defaults: new { controller = "AffiliateShipments", shipmentKey = RouteParameter.Optional },
                 constraints: new { key = new GuidRouteConstraint(), shipmentKey = new GuidRouteConstraint() },
-                handler: new AffiliateShipmentsDispatcher(config));
+                handler: affiliateShipmentsPipeline);
 
             routes.MapHttpRoute(
                 "ShipmentStatesHttpRoute",
                 "api/shipments/{key}/shipmentstates",
                 defaults: new { controller = "ShipmentStates" },
                 constraints: new { key = new GuidRouteConstraint() },
-                handler: new ShipmentStatesDispatcher(config));
+                handler: shipmentStatesPipeline);
 
             routes.MapHttpRoute(
                 "DefaultHttpRoute",

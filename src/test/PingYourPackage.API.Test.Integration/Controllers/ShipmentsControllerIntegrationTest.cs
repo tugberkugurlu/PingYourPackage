@@ -654,6 +654,135 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
         }
 
+        public class DeleteShipment {
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_404_If_Request_Authorized_But_Shipment_Does_Not_Exist() {
+
+                // Arrange
+                Guid[] keys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+                var requestKey = Guid.NewGuid();
+                var config = IntegrationTestHelper
+                    .GetInitialIntegrationTestConfig(GetContainer(keys));
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Delete,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            ApiBaseRequestPath, requestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var response = await IntegrationTestHelper
+                    .GetResponseAsync(config, request);
+
+                // Assert
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_204_If_Request_Authorized_And_Shipment_Is_Removeable() {
+
+                // Arrange
+                Guid[] keys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+                var requestKey = keys[1];
+                var shipments = GetDummyShipments(keys);
+                var shipmentSrvMock = GetShipmentSrvMock(shipments);
+
+                shipmentSrvMock.Setup(ss => ss.RemoveShipment(It.IsAny<Shipment>()))
+                    .Returns<Shipment>(s => new OperationResult(true));
+
+                var container = GetContainer(shipmentSrvMock);
+                var config = IntegrationTestHelper.GetInitialIntegrationTestConfig(container);
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Delete,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            ApiBaseRequestPath, requestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var response = await IntegrationTestHelper.GetResponseAsync(config, request);
+
+                // Assert
+                shipmentSrvMock.Verify(ss => ss.RemoveShipment(It.IsAny<Shipment>()), Times.Once());
+                Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            }
+
+            [Fact, NullCurrentPrincipal]
+            public async Task
+                Returns_409_If_Request_Authorized_But_Shipment_Is_Not_Removeable() {
+
+                // Arrange
+                Guid[] keys = new[] { 
+                    Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()
+                };
+                var requestKey = keys[1];
+                var shipments = GetDummyShipments(keys);
+                var shipmentSrvMock = GetShipmentSrvMock(shipments);
+
+                shipmentSrvMock.Setup(ss => ss.RemoveShipment(It.IsAny<Shipment>()))
+                    .Returns<Shipment>(s => new OperationResult(false));
+
+                var container = GetContainer(shipmentSrvMock);
+                var config = IntegrationTestHelper.GetInitialIntegrationTestConfig(container);
+
+                var request = HttpRequestMessageHelper
+                    .ConstructRequest(
+                        httpMethod: HttpMethod.Delete,
+                        uri: string.Format(
+                            "https://localhost/{0}/{1}",
+                            ApiBaseRequestPath, requestKey),
+                        mediaType: "application/json",
+                        username: Constants.ValidAdminUserName,
+                        password: Constants.ValidAdminPassword);
+
+                // Act
+                var response = await IntegrationTestHelper.GetResponseAsync(config, request);
+
+                // Assert
+                shipmentSrvMock.Verify(ss => ss.RemoveShipment(It.IsAny<Shipment>()), Times.Once());
+                Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+            }
+
+            private static IContainer GetContainer(Guid[] keys) {
+
+                var shipments = GetDummyShipments(keys);
+                var shipmentSrvMock = GetShipmentSrvMock(shipments);
+
+                return GetContainer(GetShipmentSrvMock(shipments));
+            }
+
+            private static IContainer GetContainer(Mock<IShipmentService> shipmentSrvMock) {
+
+                return GetContainerThroughMock(shipmentSrvMock);
+            }
+
+            private static Mock<IShipmentService> GetShipmentSrvMock(IEnumerable<Shipment> shipments) {
+
+                Mock<IShipmentService> shipmentSrvMock = new Mock<IShipmentService>();
+                shipmentSrvMock.Setup(ss => ss.GetShipment(
+                        It.IsAny<Guid>()
+                    )
+                ).Returns<Guid>(key => shipments.FirstOrDefault(x => x.Key == key));
+
+                return shipmentSrvMock;
+            }
+        }
+
         private static IEnumerable<Shipment> GetDummyShipments(Guid[] keys) {
 
             var shipmentTypeKeys = new Guid[] { 

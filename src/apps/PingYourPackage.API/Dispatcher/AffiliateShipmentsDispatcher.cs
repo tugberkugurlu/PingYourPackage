@@ -13,10 +13,7 @@ using System.Web.Http.Routing;
 
 namespace PingYourPackage.API.Dispatcher {
 
-    public class AffiliateShipmentsDispatcher : HttpControllerDispatcher {
-
-        public AffiliateShipmentsDispatcher(HttpConfiguration config) 
-            : base(config) { }
+    public class AffiliateShipmentsDispatcher : DelegatingHandler {
 
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, 

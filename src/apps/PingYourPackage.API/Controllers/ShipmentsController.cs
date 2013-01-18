@@ -83,5 +83,22 @@ namespace PingYourPackage.API.Controllers {
 
             return updatedShipment.ToShipmentDto();
         }
+
+        public HttpResponseMessage DeleteShipment(Guid key) {
+
+            var shipment = _shipmentService.GetShipment(key);
+            if (shipment == null) {
+
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var shipmentRemoveResult = _shipmentService.RemoveShipment(shipment);
+            if (!shipmentRemoveResult.IsSuccess) {
+
+                return new HttpResponseMessage(HttpStatusCode.Conflict);
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
     }
 }

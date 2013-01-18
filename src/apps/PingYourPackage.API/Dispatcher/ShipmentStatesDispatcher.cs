@@ -10,10 +10,7 @@ using System.Web.Http.Routing;
 
 namespace PingYourPackage.API.Dispatcher {
 
-    public class ShipmentStatesDispatcher : HttpControllerDispatcher {
-
-        public ShipmentStatesDispatcher(HttpConfiguration config) 
-            : base(config) { }
+    public class ShipmentStatesDispatcher : DelegatingHandler {
 
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken) {
