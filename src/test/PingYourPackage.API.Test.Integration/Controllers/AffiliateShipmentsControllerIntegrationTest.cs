@@ -821,7 +821,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
             }
 
             [Fact, NullCurrentPrincipal]
-            public async Task Returns_200_If_Request_Authorized_And_Request_Is_Deleted_Sucessfully() {
+            public async Task Returns_204_If_Request_Authorized_And_Request_Is_Deleted_Sucessfully() {
 
                 // Arrange
                 var shipmentKeys = IntegrationTestHelper.GetKeys(9);
@@ -847,7 +847,7 @@ namespace PingYourPackage.API.Test.Integration.Controllers {
                         configAndRequest.Item1, configAndRequest.Item2);
 
                 // Assert
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
             }
 
             private static Tuple<HttpConfiguration, HttpRequestMessage> GetConfigAndRequestMessage(

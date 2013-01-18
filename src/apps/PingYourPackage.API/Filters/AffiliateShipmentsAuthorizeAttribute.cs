@@ -39,8 +39,10 @@ namespace PingYourPackage.API.Filters {
                 Guid affiliateKey = GetAffiliateKey(request.GetRouteData());
                 IPrincipal principal = Thread.CurrentPrincipal;
                 IShipmentService shipmentService = request.GetShipmentService();
+                bool isAffiliateRelatedToUser =
+                    shipmentService.IsAffiliateRelatedToUser(affiliateKey, principal.Identity.Name);
 
-                if (!shipmentService.IsAffiliateRelatedToUser(affiliateKey, principal.Identity.Name)) {
+                if (!isAffiliateRelatedToUser) {
 
                     // Set Unauthorized response as the user and 
                     // affiliate isn't related to each other. You might

@@ -107,7 +107,7 @@ namespace PingYourPackage.API.Controllers {
                 return new HttpResponseMessage(HttpStatusCode.Conflict);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }

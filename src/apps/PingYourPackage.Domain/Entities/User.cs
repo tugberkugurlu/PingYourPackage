@@ -37,7 +37,6 @@ namespace PingYourPackage.Domain.Entities {
         public User() {
 
             UserInRoles = new HashSet<UserInRole>();
-            Affiliate = new Affiliate();
         }
     }
 }
