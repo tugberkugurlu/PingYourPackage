@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PingYourPackage.API;
 using System.Net.Http;
+using System.Web.Http.Dependencies;
 
 namespace PingYourPackage.API {
     
@@ -13,18 +14,20 @@ namespace PingYourPackage.API {
 
         internal static IShipmentService GetShipmentService(this HttpRequestMessage request) {
 
-            var dependencyScope = request.GetDependencyScope();
-            var shipmentService = (IShipmentService)dependencyScope.GetService(typeof(IShipmentService));
-
-            return shipmentService;
+            return request.GetService<IShipmentService>();
         }
 
         internal static IMembershipService GetMembershipService(this HttpRequestMessage request) {
 
-            var dependencyScope = request.GetDependencyScope();
-            var membershipService = (IMembershipService)dependencyScope.GetService(typeof(IMembershipService));
+            return request.GetService<IMembershipService>();
+        }
 
-            return membershipService;
+        private static TService GetService<TService>(this HttpRequestMessage request) {
+
+            IDependencyScope dependencyScope = request.GetDependencyScope();
+            TService service = (TService)dependencyScope.GetService(typeof(TService));
+
+            return service;
         }
     }
 }
