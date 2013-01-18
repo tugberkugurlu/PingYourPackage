@@ -35,6 +35,7 @@
   GET /api/shipments/{key} [single]
   POST /api/shipments
   PUT /api/shipments/{key}
+  DELETE /api/shipments/{key}
 
 [Authorize(Roles = "Affiliate")]
 [api/affiliates/{key}/shipments] => AffiliateShipmentsHttpRoute => AffiliateShipmentsController
