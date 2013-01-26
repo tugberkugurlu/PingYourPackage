@@ -189,8 +189,7 @@ namespace PingYourPackage.Domain.Services {
 
         public PaginatedList<UserWithRoles> GetUsers(int pageIndex, int pageSize) {
 
-            var users = _userRepository.GetAll()
-                .ToPaginatedList(pageIndex, pageSize);
+            var users = _userRepository.Paginate<Guid>(pageIndex, pageSize, x => x.Key);
 
             return new PaginatedList<UserWithRoles>(
                 users.PageIndex,
