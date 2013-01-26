@@ -32,36 +32,14 @@ namespace PingYourPackage.API.Config {
 
             // EF DbContext
             builder.RegisterType<EntitiesContext>()
-                .As<DbContext>().InstancePerApiRequest();
+                   .As<DbContext>()
+                   .InstancePerApiRequest();
 
-            // Repositories
-            builder.RegisterType<EntityRepository<User>>()
-                .As<IEntityRepository<User>>()
-                .InstancePerApiRequest();
-
-            builder.RegisterType<EntityRepository<Role>>()
-                .As<IEntityRepository<Role>>()
-                .InstancePerApiRequest();
-
-            builder.RegisterType<EntityRepository<UserInRole>>()
-                .As<IEntityRepository<UserInRole>>()
-                .InstancePerApiRequest();
-
-            builder.RegisterType<EntityRepository<Affiliate>>()
-                .As<IEntityRepository<Affiliate>>()
-                .InstancePerApiRequest();
-
-            builder.RegisterType<EntityRepository<Shipment>>()
-                .As<IEntityRepository<Shipment>>()
-                .InstancePerApiRequest();
-
-            builder.RegisterType<EntityRepository<ShipmentType>>()
-                .As<IEntityRepository<ShipmentType>>()
-                .InstancePerApiRequest();
-
-            builder.RegisterType<EntityRepository<ShipmentState>>()
-                .As<IEntityRepository<ShipmentState>>()
-                .InstancePerApiRequest();
+            // Register repositories by using Autofac's OpenGenerics feature
+            // More info: http://code.google.com/p/autofac/wiki/OpenGenerics
+            builder.RegisterGeneric(typeof(EntityRepository<>))
+                   .As(typeof(IEntityRepository<>))
+                   .InstancePerApiRequest();
 
             // Services
             builder.RegisterType<CryptoService>()
