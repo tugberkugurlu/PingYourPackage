@@ -1,10 +1,6 @@
-﻿using PingYourPackage.API.Model.Dtos;
-using PingYourPackage.Domain.Entities;
-using System;
+﻿using PingYourPackage.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WebApiDoodle.Net.Http.Client.Model;
 
 namespace PingYourPackage.API.Model {
     

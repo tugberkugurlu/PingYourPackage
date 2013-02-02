@@ -83,6 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\WebAPIDoodle.Meta.1.3.0\lib\net40\WebAPIDoodle.Meta.dll</HintPath>
     </Reference>
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model">
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0-pre02\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AutofacWebAPI.cs" />

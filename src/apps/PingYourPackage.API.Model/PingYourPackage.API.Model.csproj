@@ -11,6 +11,8 @@
     <AssemblyName>PingYourPackage.API.Model</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,13 +40,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model">
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0-pre02\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dtos\AffiliateDto.cs" />
     <Compile Include="Dtos\AffiliateMemberInfoDto.cs" />
-    <Compile Include="Dtos\IDto.cs" />
-    <Compile Include="Dtos\IPaginatedDto.cs" />
-    <Compile Include="Dtos\PaginatedDto.cs" />
     <Compile Include="Dtos\RoleDto.cs" />
     <Compile Include="Dtos\ShipmentDto.cs" />
     <Compile Include="Dtos\ShipmentStateDto.cs" />
@@ -70,8 +72,11 @@
     <Compile Include="Validation\MinimumAttribute.cs" />
     <Compile Include="Validation\OptionsAttribute.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

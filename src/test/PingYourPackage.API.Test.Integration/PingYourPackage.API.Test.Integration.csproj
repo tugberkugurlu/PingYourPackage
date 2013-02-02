@@ -85,6 +85,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model">
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0-pre02\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+    </Reference>
     <Reference Include="xunit">
       <HintPath>..\..\..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
     </Reference>

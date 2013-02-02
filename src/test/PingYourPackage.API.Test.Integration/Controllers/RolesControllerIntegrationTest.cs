@@ -2,7 +2,6 @@
 using Autofac.Integration.WebApi;
 using System;
 using System.Threading.Tasks;
-using System.Web.Http;
 using System.Net.Http;
 using System.Net;
 using Xunit;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using PingYourPackage.API.Model.Dtos;
 using System.Linq;
 using Moq;
-using System.Globalization;
 
 namespace PingYourPackage.API.Test.Integration.Controllers {
 

@@ -1,17 +1,14 @@
-﻿using PingYourPackage.API.Model.Dtos;
+﻿using PingYourPackage.API.Model;
+using PingYourPackage.API.Model.Dtos;
 using PingYourPackage.API.Model.RequestCommands;
-using PingYourPackage.API.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+using PingYourPackage.API.Model.RequestModels;
 using PingYourPackage.Domain.Services;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using PingYourPackage.API.Model.RequestModels;
-using PingYourPackage.API.Filters;
+using System.Web.Http;
+using WebApiDoodle.Net.Http.Client.Model;
 
 namespace PingYourPackage.API.Controllers {
 

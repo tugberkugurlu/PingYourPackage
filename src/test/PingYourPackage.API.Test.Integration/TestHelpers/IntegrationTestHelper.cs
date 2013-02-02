@@ -1,17 +1,14 @@
 ﻿using Autofac;
-using Autofac.Integration.WebApi;
 using PingYourPackage.API.Config;
-using System.Web.Http;
-using System.Reflection;
-using PingYourPackage.Domain.Services;
-using System.Net;
-using Xunit;
-using PingYourPackage.API.Model.Dtos;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Linq;
-using System.Collections.Generic;
 using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Web.Http;
+using WebApiDoodle.Net.Http.Client.Model;
+using Xunit;
 
 namespace PingYourPackage.API.Test.Integration {
     
