@@ -97,6 +97,9 @@
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model">
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0-pre04\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+    </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -167,7 +170,16 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PingYourPackage.API.Client\PingYourPackage.API.Client.csproj">
+      <Project>{3b44684f-ddf5-4693-a3b0-cfcb8b7c7e85}</Project>
+      <Name>PingYourPackage.API.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingYourPackage.API.Model\PingYourPackage.API.Model.csproj">
+      <Project>{4a4247b1-c3d1-44da-826f-e5569eac955f}</Project>
+      <Name>PingYourPackage.API.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
