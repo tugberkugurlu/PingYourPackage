@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using PingYourPackage.API.Client.Clients;
+using PingYourPackage.API.Model.Dtos;
+using PingYourPackage.API.Model.RequestCommands;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using WebApiDoodle.Net.Http.Client.Model;
 
 namespace PingYourPackage.API.Client.Web.Controllers {
+
     public class HomeController : Controller {
 
-        public ActionResult Index() {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+        private const int DefaultPageSize = 5;
+        private readonly IShipmentsClient _shipmentsClient;
 
-            return View();
+        public HomeController(IShipmentsClient shipmentsClient) {
+
+            _shipmentsClient = shipmentsClient;
         }
 
-        public ActionResult About() {
-            ViewBag.Message = "Your app description page.";
+        public async Task<ViewResult> Index(int page = 1) {
 
-            return View();
-        }
+            PaginatedDto<ShipmentDto> shipments = 
+                await _shipmentsClient.GetShipmentsAsync(
+                    new PaginatedRequestCommand(page, DefaultPageSize));
 
-        public ActionResult Contact() {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(shipments);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PingYourPackage.API.Client {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ApiClientContextExtensions {
 
-        public static IShipmentsClient GetCarsClient(this ApiClientContext apiClientContext) {
+        public static IShipmentsClient GetShipmentsClient(this ApiClientContext apiClientContext) {
 
             return apiClientContext.GetClient<IShipmentsClient>(() => new ShipmentsClient(apiClientContext.HttpClient, apiClientContext.AffiliateKey));
         }
