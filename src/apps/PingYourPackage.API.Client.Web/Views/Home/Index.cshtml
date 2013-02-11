@@ -1,9 +1,42 @@
 ﻿@model WebApiDoodle.Net.Http.Client.Model.PaginatedDto<PingYourPackage.API.Model.Dtos.ShipmentDto>
-
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Shipments";
 }
 <h2>Shipments</h2>
 
-@foreach (var shipment in Model.Items) {
-}
+<table>
+    <thead>
+        <tr>
+            <th>Shipment Key</th>
+            <th>Price</th>
+            <th>Receiver Name</th>
+            <th>Receiver Surname</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shipment in Model.Items) {
+            <tr>
+                <td>
+                    @shipment.Key
+                </td>
+                <td>
+                    @shipment.Price
+                </td>
+                <td>
+                    @shipment.ReceiverName
+                </td>
+                <td>
+                    @shipment.ReceiverSurname
+                </td>
+                <td>
+                    @shipment.ShipmentStates.OrderByDescending(x => x.ShipmentStatus).FirstOrDefault().ShipmentStatus
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    @Html.ActionLink("Add New Shipment", "Create")
+</p>

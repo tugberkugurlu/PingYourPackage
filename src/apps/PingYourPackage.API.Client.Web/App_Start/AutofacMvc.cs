@@ -21,11 +21,10 @@ namespace PingYourPackage.API.Client.Web {
         private static IContainer RegisterServices(ContainerBuilder builder) {
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
-            string affiliateKey = ConfigurationManager.AppSettings["Api:AffiliateKey"];
 
             ApiClientContext apiClientContex =
-                ApiClientContext.Create(affiliateKey, cfg =>
-                    cfg.SetCredentialsFromAppSetting("Api:Username", "Api:Password")
+                ApiClientContext.Create(cfg =>
+                    cfg.SetCredentialsFromAppSetting("Api:AffiliateKey", "Api:Username", "Api:Password")
                        .ConnectTo("https://localhost:44306"));
 
             // Register the client

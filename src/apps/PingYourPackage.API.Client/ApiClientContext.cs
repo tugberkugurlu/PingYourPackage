@@ -59,12 +59,7 @@ namespace PingYourPackage.API.Client {
             }
         }
 
-        public static ApiClientContext Create(string affiliateKey, Action<ApiClientConfigurationExpression> action) {
-
-            if (string.IsNullOrEmpty(affiliateKey)) {
-
-                throw new ArgumentException("The argument 'affiliateKey' is null or empty.", "affiliateKey");
-            }
+        public static ApiClientContext Create(Action<ApiClientConfigurationExpression> action) {
 
             var apiClientContext = new ApiClientContext();
             var configurationExpression = new ApiClientConfigurationExpression(apiClientContext);

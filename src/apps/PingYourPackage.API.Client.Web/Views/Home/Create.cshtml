@@ -1,0 +1,108 @@
+﻿@model PingYourPackage.API.Model.RequestModels.ShipmentByAffiliateRequestModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    
+    <fieldset>
+        <legend>ShipmentByAffiliateRequestModel</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ShipmentTypeKey)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ShipmentTypeKey)
+            @Html.ValidationMessageFor(model => model.ShipmentTypeKey)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Price)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Price)
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverName)
+            @Html.ValidationMessageFor(model => model.ReceiverName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverSurname)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverSurname)
+            @Html.ValidationMessageFor(model => model.ReceiverSurname)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverAddress)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverAddress)
+            @Html.ValidationMessageFor(model => model.ReceiverAddress)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverZipCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverZipCode)
+            @Html.ValidationMessageFor(model => model.ReceiverZipCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverCity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverCity)
+            @Html.ValidationMessageFor(model => model.ReceiverCity)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverCountry)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverCountry)
+            @Html.ValidationMessageFor(model => model.ReceiverCountry)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverTelephone)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverTelephone)
+            @Html.ValidationMessageFor(model => model.ReceiverTelephone)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReceiverEmail)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ReceiverEmail)
+            @Html.ValidationMessageFor(model => model.ReceiverEmail)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
