@@ -12,6 +12,7 @@
             <th>Receiver Name</th>
             <th>Receiver Surname</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +32,10 @@
                 </td>
                 <td>
                     @shipment.ShipmentStates.OrderByDescending(x => x.ShipmentStatus).FirstOrDefault().ShipmentStatus
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = shipment.Key })
+                    @Html.ActionLink("Edit", "Edit", new { id = shipment.Key })
                 </td>
             </tr>
         }

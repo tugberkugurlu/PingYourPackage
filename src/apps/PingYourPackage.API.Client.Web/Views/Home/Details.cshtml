@@ -1,0 +1,33 @@
+﻿@model PingYourPackage.API.Model.Dtos.ShipmentDto
+@{
+    ViewBag.Title = string.Concat("Shipment (", Model.Key, ")");
+}
+<h2>@ViewBag.Title</h2>
+
+@Html.DisplayForModel()
+
+<h2>Shipment States</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Date/Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var state in Model.ShipmentStates.OrderBy(x => x.CreatedOn)) {
+            <tr>
+                <td>
+                    @state.ShipmentStatus
+                </td>
+                <td>
+                    @state.CreatedOn
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    @Html.ActionLink("Shipments List", "Index")
+    @Html.ActionLink("Add New Shipment", "Create")
+</p>

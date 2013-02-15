@@ -29,79 +29,73 @@ namespace PingYourPackage.API.Client.Clients {
         public async Task<PaginatedDto<ShipmentDto>> GetShipmentsAsync(PaginatedRequestCommand paginationCmd) {
 
             var parameters = new { key = _affiliateKey, page = paginationCmd.Page, take = paginationCmd.Take };
-            using (var apiResponse = await base.GetAsync(BaseUriTemplate, parameters)) {
-
-                if (apiResponse.IsSuccess) {
-
-                    return apiResponse.Model;
-                }
-
-                throw new HttpApiRequestException(
-                    string.Format(ErrorMessages.HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode, apiResponse.HttpError);
-            }
+            var responseTask = base.GetAsync(BaseUriTemplate, parameters);
+            var shipments = await HandleResponseAsync(responseTask);
+            return shipments;
         }
 
         public async Task<ShipmentDto> GetShipmentAsync(Guid shipmentKey) {
 
             var parameters = new { key = _affiliateKey, shipmentKey = shipmentKey };
-            using (var apiResponse = await base.GetSingleAsync(BaseUriTemplateForSingle, parameters)) {
-
-                if (apiResponse.IsSuccess) {
-
-                    return apiResponse.Model;
-                }
-
-                throw new HttpApiRequestException(
-                    string.Format(ErrorMessages.HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode, apiResponse.HttpError);
-            }
+            var responseTask = base.GetSingleAsync(BaseUriTemplateForSingle, parameters);
+            var shipment = await HandleResponseAsync(responseTask);
+            return shipment;
         }
 
         public async Task<ShipmentDto> AddShipmentAsync(ShipmentByAffiliateRequestModel requestModel) {
 
             var parameters = new { key = _affiliateKey };
-            using (var apiResponse = await base.PostAsync(BaseUriTemplate, requestModel, parameters)) {
-
-                if (apiResponse.IsSuccess) {
-
-                    return apiResponse.Model;
-                }
-
-                throw new HttpApiRequestException(
-                    string.Format(ErrorMessages.HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode, apiResponse.HttpError);
-            }
+            var responseTask = base.PostAsync(BaseUriTemplate, requestModel, parameters);
+            var shipment = await HandleResponseAsync(responseTask);
+            return shipment;
         }
 
         public async Task<ShipmentDto> UpdateShipmentAsync(Guid shipmentKey, ShipmentByAffiliateUpdateRequestModel requestModel) {
 
             var parameters = new { key = _affiliateKey, shipmentKey = shipmentKey };
-            using (var apiResponse = await base.PutAsync(BaseUriTemplateForSingle, requestModel, parameters)) {
+            var responseTask = base.PutAsync(BaseUriTemplateForSingle, requestModel, parameters);
+            var shipment = await HandleResponseAsync(responseTask);
+            return shipment;
+        }
+
+        public async Task RemoveCar(Guid shipmentKey) {
+            
+            var parameters = new { key = _affiliateKey, shipmentKey = shipmentKey };
+            var responseTask = base.DeleteAsync(BaseUriTemplateForSingle, parameters);
+            await HandleResponseAsync(responseTask);
+        }
+
+        // private helpers
+
+        private async Task<TResult> HandleResponseAsync<TResult>(Task<HttpApiResponseMessage<TResult>> responseTask) {
+
+            using (var apiResponse = await responseTask) {
 
                 if (apiResponse.IsSuccess) {
 
                     return apiResponse.Model;
                 }
 
-                throw new HttpApiRequestException(
-                    string.Format(ErrorMessages.HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode, apiResponse.HttpError);
+                throw GetHttpApiRequestException(apiResponse);
             }
         }
 
-        public async Task RemoveCar(Guid shipmentKey) {
-            
-            var parameters = new { key = _affiliateKey, shipmentKey = shipmentKey };
-            using (var apiResponse = await base.DeleteAsync(BaseUriTemplateForSingle, parameters)) {
+        private async Task HandleResponseAsync(Task<HttpApiResponseMessage> responseTask) {
+
+            using (var apiResponse = await responseTask) {
 
                 if (!apiResponse.IsSuccess) {
 
-                    throw new HttpApiRequestException(
-                        string.Format(ErrorMessages.HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                        apiResponse.Response.StatusCode, apiResponse.HttpError);
+                    throw GetHttpApiRequestException(apiResponse);
                 }
             }
+        }
+
+        private HttpApiRequestException GetHttpApiRequestException(HttpApiResponseMessage apiResponse) {
+
+            return new HttpApiRequestException(
+                string.Format(ErrorMessages.HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                apiResponse.Response.StatusCode, apiResponse.HttpError);
         }
     }
 }

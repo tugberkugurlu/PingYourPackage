@@ -754,3 +754,8 @@ tr.pager td {
             margin: 0;
         }
 }
+
+.display-label {
+    font-weight: bold;
+    margin-top: 2.5px;
+}

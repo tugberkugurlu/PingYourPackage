@@ -13,7 +13,6 @@ using WebApiDoodle.Net.Http.Client.Model;
 
 namespace PingYourPackage.API.Controllers {
 
-    [Authorize(Roles = "Admin,Employee")]
     public class ShipmentTypesController : ApiController {
 
         private readonly IShipmentService _shipmentService;
@@ -24,6 +23,7 @@ namespace PingYourPackage.API.Controllers {
             _shipmentService = shipmentService;
         }
 
+        [Authorize]
         public PaginatedDto<ShipmentTypeDto> GetShipmentTypes(
             PaginatedRequestCommand cmd) {
 
@@ -34,6 +34,7 @@ namespace PingYourPackage.API.Controllers {
                 shipmentTypes.Select(st => st.ToShipmentTypeDto()));
         }
 
+        [Authorize]
         public ShipmentTypeDto GetShipmentType(Guid key) {
 
             var shipmetType = _shipmentService.GetShipmentType(key);
@@ -45,6 +46,7 @@ namespace PingYourPackage.API.Controllers {
             return shipmetType.ToShipmentTypeDto();
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [EmptyParameterFilter("requestModel")]
         public HttpResponseMessage PostShipmentType(
             ShipmentTypeRequestModel requestModel) {
@@ -66,6 +68,7 @@ namespace PingYourPackage.API.Controllers {
             return response;
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [EmptyParameterFilter("requestModel")]
         public ShipmentTypeDto PutShipmentType(
             Guid key,

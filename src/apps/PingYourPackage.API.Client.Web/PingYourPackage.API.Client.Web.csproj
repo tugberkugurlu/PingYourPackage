@@ -51,6 +51,9 @@
       <HintPath>..\..\..\packages\Autofac.Mvc4.3.0.0\lib\net40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -111,10 +114,7 @@
     </Reference>
     <Reference Include="WebApiDoodle.Net.Http.Client, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.2.0.0-pre04\lib\net40\WebApiDoodle.Net.Http.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="WebApiDoodle.Net.Http.Client.Model">
-      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0-pre04\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.2.0.0-pre05\lib\net40\WebApiDoodle.Net.Http.Client.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -185,6 +185,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Create.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PingYourPackage.API.Client\PingYourPackage.API.Client.csproj">

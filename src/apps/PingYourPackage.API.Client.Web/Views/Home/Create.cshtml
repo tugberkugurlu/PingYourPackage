@@ -17,7 +17,7 @@
             @Html.LabelFor(model => model.ShipmentTypeKey)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ShipmentTypeKey)
+            @Html.DropDownListFor(model => model.ShipmentTypeKey, (IEnumerable<SelectListItem>)ViewBag.ShipmentTypes, "Choose Shipment Type...")
             @Html.ValidationMessageFor(model => model.ShipmentTypeKey)
         </div>
 

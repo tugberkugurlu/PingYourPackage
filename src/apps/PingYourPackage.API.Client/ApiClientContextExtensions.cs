@@ -16,6 +16,11 @@ namespace PingYourPackage.API.Client {
             return apiClientContext.GetClient<IShipmentsClient>(() => new ShipmentsClient(apiClientContext.HttpClient, apiClientContext.AffiliateKey));
         }
 
+        public static IShipmentTypesClient GetShipmentTypesClient(this ApiClientContext apiClientContext) {
+
+            return apiClientContext.GetClient<IShipmentTypesClient>(() => new ShipmentTypesClient(apiClientContext.HttpClient));
+        }
+
         internal static TClient GetClient<TClient>(this ApiClientContext apiClientContext, Func<TClient> valueFactory) {
 
             return (TClient)apiClientContext.Clients.GetOrAdd(typeof(TClient), k => valueFactory());
