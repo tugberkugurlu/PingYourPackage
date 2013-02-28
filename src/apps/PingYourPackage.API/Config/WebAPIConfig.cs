@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PingYourPackage.API.Formatting;
+using PingYourPackage.API.MessageHandlers;
+using PingYourPackage.API.Model.RequestCommands;
+using PingYourPackage.API.ModelBinding;
 using System.Linq;
 using System.Net.Http.Formatting;
-using System.Web;
+using System.Security.Principal;
 using System.Web.Http;
-using PingYourPackage.API.MessageHandlers;
+using System.Web.Http.ModelBinding;
 using System.Web.Http.Validation;
 using System.Web.Http.Validation.Providers;
-using PingYourPackage.API.Formatting;
-using System.Web.Http.ModelBinding;
-using System.Security.Principal;
-using PingYourPackage.API.ModelBinding;
-using PingYourPackage.API.Model.RequestCommands;
-using WebAPIDoodle.Filters;
+using WebApiDoodle.Web.Filters;
 
 namespace PingYourPackage.API.Config {
 

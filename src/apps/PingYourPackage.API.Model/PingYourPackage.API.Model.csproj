@@ -40,6 +40,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dtos\AffiliateDto.cs" />
@@ -68,6 +72,9 @@
     <Compile Include="Validation\MaximumAttribute.cs" />
     <Compile Include="Validation\MinimumAttribute.cs" />
     <Compile Include="Validation\OptionsAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
