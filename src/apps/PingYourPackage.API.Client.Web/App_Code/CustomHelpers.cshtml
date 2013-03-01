@@ -1,0 +1,61 @@
+﻿﻿@inherits PingYourPackage.API.Client.Web.Infrastructure.HelperPage
+@using System.Web.Mvc;
+@using System.Web.Mvc.Html;
+@using System.Web.Routing;
+@using WebApiDoodle.Net.Http.Client.Model;
+
+@helper Pager(IPaginatedDto<IDto> paginatedDto) {
+    
+    var routeDictionary = RouteData.Values;
+    if(Url.RequestContext.HttpContext.Request.QueryString.AllKeys.Any()) {
+        foreach (var key in Url.RequestContext.HttpContext.Request.QueryString.AllKeys) {
+            routeDictionary.Add(key, Url.RequestContext.HttpContext.Request.QueryString[key]);
+        }
+    }
+    
+    <ul class="pagination">
+        @if(paginatedDto.HasPreviousPage) {
+            
+            var tempRouteDataDictionary = new RouteValueDictionary(routeDictionary);
+            tempRouteDataDictionary.Remove("page");
+            tempRouteDataDictionary.Add("page", (paginatedDto.PageIndex - 1).ToString());
+            
+            <li>
+                @Html.RouteLink(
+                    "<<< Previous",
+                    tempRouteDataDictionary
+                )
+                @*@Html.ActionLink(
+                    Strings.Previous,
+                    RouteData.Values["action"].ToString(), 
+                    new { 
+                        controller = RouteData.Values["controller"], 
+                        page = paginatedDto.PageIndex - 1
+                    }
+                )*@
+            </li>
+        }
+
+        @if(paginatedDto.HasNextPage) {
+            
+            var tempRouteDataDictionary = new RouteValueDictionary(routeDictionary);
+            tempRouteDataDictionary.Remove("page");
+            tempRouteDataDictionary.Add("page", (paginatedDto.PageIndex + 1).ToString());
+            
+            <li>
+                @Html.RouteLink(
+                    "Next >>>",
+                    tempRouteDataDictionary
+                )
+                @*@Html.ActionLink(
+                    Strings.Next,
+                    RouteData.Values["action"].ToString(), 
+                    new { 
+                        controller = RouteData.Values["controller"], 
+                        page = paginatedDto.PageIndex + 1
+                    }
+                )*@
+            </li>
+        }
+    </ul>
+}

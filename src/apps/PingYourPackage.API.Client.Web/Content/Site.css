@@ -759,3 +759,26 @@ tr.pager td {
     font-weight: bold;
     margin-top: 2.5px;
 }
+
+.pagination {
+    display: inline-block;
+    margin: 15px 0 5px 0;
+    padding: 0;
+}
+
+.pagination li {
+  display: inline;
+}
+
+    .pagination li a {
+
+        background-color: #d3dce0;
+        border: 1px solid #787878;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 600;
+        padding: 3px;
+        margin-right: 8px;
+        width: auto;
+        text-decoration:none;
+    }

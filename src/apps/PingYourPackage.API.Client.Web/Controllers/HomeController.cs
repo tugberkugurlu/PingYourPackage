@@ -1,4 +1,5 @@
 ﻿using PingYourPackage.API.Client.Clients;
+using PingYourPackage.API.Client.Web.Models;
 using PingYourPackage.API.Model.Dtos;
 using PingYourPackage.API.Model.RequestCommands;
 using PingYourPackage.API.Model.RequestModels;
@@ -48,7 +49,7 @@ namespace PingYourPackage.API.Client.Web.Controllers {
                 ShipmentDto shipment =
                     await _shipmentsClient.AddShipmentAsync(requestModel);
 
-                return RedirectToAction("Index", new { id = shipment.Key });
+                return RedirectToAction("Details", new { id = shipment.Key });
             }
 
             await GetAndSetShipmentTypesAsync();
@@ -62,6 +63,49 @@ namespace PingYourPackage.API.Client.Web.Controllers {
             return View(shipment);
         }
 
+        [HttpGet]
+        public async Task<ViewResult> Edit(Guid id) {
+
+            ViewResult editViewResult = await GetEditViewResultAsync(id);
+            return editViewResult;
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit_Post(
+            Guid id,
+            [Bind(Prefix = "ShipmentForEdit")]
+            ShipmentByAffiliateUpdateRequestModel requestModel) {
+
+            if (ModelState.IsValid) {
+
+                ShipmentDto updatedShipment =
+                    await _shipmentsClient.UpdateShipmentAsync(id, requestModel);
+
+                return RedirectToAction("Details", new { id = updatedShipment.Key });
+            }
+
+            ViewResult editViewResult = await GetEditViewResultAsync(id);
+            return editViewResult;
+        }
+
+        [HttpGet]
+        public async Task<ViewResult> Delete(Guid id) {
+
+            ShipmentDto shipment = await _shipmentsClient.GetShipmentAsync(id);
+            return View(shipment);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete_Post(Guid id) {
+
+            await _shipmentsClient.RemoveShipmentAsync(id);
+            return RedirectToAction("Index");
+        }
+
         // private helpers
         private async Task GetAndSetShipmentTypesAsync() {
 
@@ -71,6 +115,27 @@ namespace PingYourPackage.API.Client.Web.Controllers {
             ViewBag.ShipmentTypes = shipmentTypes.Items.Select(x => new SelectListItem() { 
                 Text = x.Name,
                 Value = x.Key.ToString()
+            });
+        }
+
+        private async Task<ViewResult> GetEditViewResultAsync(Guid id) {
+
+            ShipmentDto shipment = await _shipmentsClient.GetShipmentAsync(id);
+            var shipmentForEdit = new ShipmentByAffiliateUpdateRequestModel {
+                Price = shipment.Price,
+                ReceiverName = shipment.ReceiverName,
+                ReceiverSurname = shipment.ReceiverSurname,
+                ReceiverAddress = shipment.ReceiverAddress,
+                ReceiverZipCode = shipment.ReceiverZipCode,
+                ReceiverCity = shipment.ReceiverCity,
+                ReceiverCountry = shipment.ReceiverCountry,
+                ReceiverTelephone = shipment.ReceiverTelephone,
+                ReceiverEmail = shipment.ReceiverEmail
+            };
+
+            return View(new ShipmentEditViewModel { 
+                Shipment = shipment,
+                ShipmentForEdit = shipmentForEdit
             });
         }
     }

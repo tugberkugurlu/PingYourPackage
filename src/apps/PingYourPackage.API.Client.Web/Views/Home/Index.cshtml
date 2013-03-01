@@ -36,11 +36,14 @@
                 <td>
                     @Html.ActionLink("Details", "Details", new { id = shipment.Key })
                     @Html.ActionLink("Edit", "Edit", new { id = shipment.Key })
+                    @Html.ActionLink("Delete", "Delete", new { id = shipment.Key })
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+ @CustomHelpers.Pager(Model)
 
 <p>
     @Html.ActionLink("Add New Shipment", "Create")

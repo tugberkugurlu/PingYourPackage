@@ -1,0 +1,100 @@
+﻿@model PingYourPackage.API.Model.Dtos.ShipmentDto
+
+@{
+    ViewBag.Title = string.Concat("Shipment (", Model.Key, ")");
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>Are you sure you want to delete this?</h3>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.Key)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.Key)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.AffiliateKey)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.AffiliateKey)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.Price)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.Price)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverName)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverName)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverSurname)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverSurname)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverAddress)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverAddress)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverZipCode)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverZipCode)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverCity)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverCity)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverCountry)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverCountry)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverTelephone)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverTelephone)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.ReceiverEmail)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.ReceiverEmail)
+</div>
+
+<div class="display-label">
+        @Html.DisplayNameFor(model => model.CreatedOn)
+</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.CreatedOn)
+</div>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

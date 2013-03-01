@@ -114,13 +114,13 @@
       <Private>True</Private>
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="WebApiDoodle.Net.Http.Client, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebApiDoodle.Net.Http.Client, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.2.0.0\lib\net40\WebApiDoodle.Net.Http.Client.dll</HintPath>
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.2.0.1\lib\net40\WebApiDoodle.Net.Http.Client.dll</HintPath>
     </Reference>
-    <Reference Include="WebApiDoodle.Net.Http.Client.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.1\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -148,11 +148,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\HelperPage.cs" />
+    <Compile Include="Models\ShipmentEditViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="App_Code\CustomHelpers.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -192,6 +195,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Create.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Views\Home\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PingYourPackage.API.Client\PingYourPackage.API.Client.csproj">

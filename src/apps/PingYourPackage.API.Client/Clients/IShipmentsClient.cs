@@ -13,6 +13,6 @@ namespace PingYourPackage.API.Client.Clients {
         Task<ShipmentDto> GetShipmentAsync(Guid shipmentKey);
         Task<ShipmentDto> AddShipmentAsync(ShipmentByAffiliateRequestModel requestModel);
         Task<ShipmentDto> UpdateShipmentAsync(Guid shipmentKey, ShipmentByAffiliateUpdateRequestModel requestModel);
-        Task RemoveCar(Guid shipmentKey);
+        Task RemoveShipmentAsync(Guid shipmentKey);
     }
 }

@@ -58,7 +58,7 @@ namespace PingYourPackage.API.Client.Clients {
             return shipment;
         }
 
-        public async Task RemoveCar(Guid shipmentKey) {
+        public async Task RemoveShipmentAsync(Guid shipmentKey) {
             
             var parameters = new { key = _affiliateKey, shipmentKey = shipmentKey };
             var responseTask = base.DeleteAsync(BaseUriTemplateForSingle, parameters);

@@ -48,13 +48,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebApiDoodle.Net.Http.Client, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebApiDoodle.Net.Http.Client, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.2.0.0\lib\net40\WebApiDoodle.Net.Http.Client.dll</HintPath>
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.2.0.1\lib\net40\WebApiDoodle.Net.Http.Client.dll</HintPath>
     </Reference>
-    <Reference Include="WebApiDoodle.Net.Http.Client.Model, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebApiDoodle.Net.Http.Client.Model, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.0\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
+      <HintPath>..\..\..\packages\WebApiDoodle.Net.Http.Client.Model.2.0.1\lib\net40\WebApiDoodle.Net.Http.Client.Model.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = string.Concat("Shipment (", Model.Key, ")");
 }
+
 <h2>@ViewBag.Title</h2>
 
 @Html.DisplayForModel()
@@ -28,6 +29,7 @@
     </tbody>
 </table>
 <p>
-    @Html.ActionLink("Shipments List", "Index")
-    @Html.ActionLink("Add New Shipment", "Create")
+    @Html.ActionLink("List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Key })
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Key })
 </p>

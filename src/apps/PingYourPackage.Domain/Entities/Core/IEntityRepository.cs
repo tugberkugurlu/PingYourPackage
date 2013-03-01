@@ -25,8 +25,9 @@ namespace PingYourPackage.Domain.Entities {
             params Expression<Func<T, object>>[] includeProperties);
 
         void Add(T entity);
-        void Delete(T entity);
         void Edit(T entity);
+        void Delete(T entity);
+        void DeleteGraph(T entity);
         void Save();
     }
 }

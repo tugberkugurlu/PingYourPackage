@@ -199,7 +199,7 @@ namespace PingYourPackage.Domain.Services {
 
             if (IsShipmentRemovable(shipment)) {
 
-                _shipmentRepository.Delete(shipment);
+                _shipmentRepository.DeleteGraph(shipment);
                 _shipmentRepository.Save();
 
                 return new OperationResult(true);

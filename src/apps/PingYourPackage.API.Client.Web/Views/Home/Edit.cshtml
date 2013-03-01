@@ -1,0 +1,96 @@
+﻿@model PingYourPackage.API.Client.Web.Models.ShipmentEditViewModel
+@{
+    ViewBag.Title = string.Concat("Shipment (", Model.Shipment.Key, ")");
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.Price)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.Price)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.Price)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverName)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverName)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverSurname)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverSurname)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverSurname)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverAddress)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverAddress)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverAddress)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverZipCode)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverZipCode)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverZipCode)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverCity)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverCity)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverCity)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverCountry)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverCountry)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverCountry)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverTelephone)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverTelephone)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverTelephone)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.ShipmentForEdit.ReceiverEmail)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.ShipmentForEdit.ReceiverEmail)
+        @Html.ValidationMessageFor(model => model.ShipmentForEdit.ReceiverEmail)
+    </div>
+
+    <p>
+        <input type="submit" value="Save" />
+    </p>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
