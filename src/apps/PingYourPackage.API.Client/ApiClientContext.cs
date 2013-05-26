@@ -12,7 +12,9 @@ namespace PingYourPackage.API.Client {
 
         private ApiClientContext() { }
 
-        private static readonly Lazy<ConcurrentDictionary<Type, object>> _clients = new Lazy<ConcurrentDictionary<Type, object>>(() => new ConcurrentDictionary<Type, object>(), isThreadSafe: true);
+        private static readonly Lazy<ConcurrentDictionary<Type, object>> _clients = 
+            new Lazy<ConcurrentDictionary<Type, object>>(() => 
+                new ConcurrentDictionary<Type, object>(), isThreadSafe: true);
 
         private static readonly Lazy<HttpClient> _httpClient =
                     new Lazy<HttpClient>(
@@ -45,13 +47,6 @@ namespace PingYourPackage.API.Client {
 
                 if (!_httpClient.IsValueCreated) {
 
-                    if (BaseUri == null) {
-                        throw new ArgumentNullException("BaseUri");
-                    }
-                    if (string.IsNullOrEmpty(AuthorizationValue)) {
-                        throw new ArgumentNullException("AuthorizationValue");
-                    }
-
                     InitializeHttpClient();
                 }
 
@@ -70,6 +65,14 @@ namespace PingYourPackage.API.Client {
         }
 
         private void InitializeHttpClient() {
+
+            if (BaseUri == null) {
+                throw new ArgumentNullException("BaseUri");
+            }
+
+            if (string.IsNullOrEmpty(AuthorizationValue)) {
+                throw new ArgumentNullException("AuthorizationValue");
+            }
 
             // Set BaseUri
             _httpClient.Value.BaseAddress = BaseUri;
