@@ -35,6 +35,13 @@ namespace PingYourPackage.API.Client.Web.Controllers {
         }
 
         [HttpGet]
+        public async Task<ActionResult> Details(Guid id) {
+
+            ShipmentDto shipment = await _shipmentsClient.GetShipmentAsync(id);
+            return View(shipment);
+        }
+
+        [HttpGet]
         public async Task<ViewResult> Create() {
 
             await GetAndSetShipmentTypesAsync();
@@ -56,13 +63,6 @@ namespace PingYourPackage.API.Client.Web.Controllers {
 
             await GetAndSetShipmentTypesAsync();
             return View(requestModel);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> Details(Guid id) {
-
-            ShipmentDto shipment = await _shipmentsClient.GetShipmentAsync(id);
-            return View(shipment);
         }
 
         [HttpGet]
