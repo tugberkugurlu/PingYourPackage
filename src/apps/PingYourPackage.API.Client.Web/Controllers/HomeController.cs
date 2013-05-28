@@ -17,7 +17,9 @@ namespace PingYourPackage.API.Client.Web.Controllers {
         private readonly IShipmentsClient _shipmentsClient;
         private readonly IShipmentTypesClient _shipmentTypesClient;
 
-        public HomeController(IShipmentsClient shipmentsClient, IShipmentTypesClient shipmentTypesClient) {
+        public HomeController(
+            IShipmentsClient shipmentsClient, 
+            IShipmentTypesClient shipmentTypesClient) {
 
             _shipmentsClient = shipmentsClient;
             _shipmentTypesClient = shipmentTypesClient;

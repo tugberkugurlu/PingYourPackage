@@ -15,7 +15,8 @@ namespace PingYourPackage.API.Client.Web {
         internal static void Initialize() {
 
             var builder = new ContainerBuilder();
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(RegisterServices(builder)));
+            DependencyResolver.SetResolver(
+                new AutofacDependencyResolver(RegisterServices(builder)));
         }
 
         private static IContainer RegisterServices(ContainerBuilder builder) {
@@ -24,8 +25,9 @@ namespace PingYourPackage.API.Client.Web {
 
             ApiClientContext apiClientContex =
                 ApiClientContext.Create(cfg =>
-                    cfg.SetCredentialsFromAppSetting("Api:AffiliateKey", "Api:Username", "Api:Password")
-                       .ConnectTo("https://localhost:44306"));
+                    cfg.SetCredentialsFromAppSetting(
+                        "Api:AffiliateKey", "Api:Username", "Api:Password")
+                                .ConnectTo("https://localhost:44306"));
 
             // Register the clients
             builder.Register(c => apiClientContex.GetShipmentsClient())
