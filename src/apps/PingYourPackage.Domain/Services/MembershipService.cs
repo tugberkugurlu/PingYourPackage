@@ -81,7 +81,7 @@ namespace PingYourPackage.Domain.Services {
             _userRepository.Add(user);
             _userRepository.Save();
 
-            if (roles != null || roles.Length > 0) { 
+            if (roles != null && roles.Length > 0) { 
 
                 foreach (var roleName in roles) {
 
